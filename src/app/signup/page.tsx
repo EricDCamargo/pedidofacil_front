@@ -1,59 +1,52 @@
 import Image from 'next/image'
-import styles from './page.module.css'
-
-import logoImg from '/pedido_facil.svg'
 import Link from 'next/link'
+import styles from '../page.module.css'
 import { api } from '@/services/api'
-import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-export default function Home() {
-  async function handleLogin(formData: FormData) {
+export default function Signup() {
+  async function handleRegister(formData: FormData) {
     'use server'
 
+    const name = formData.get('name')
     const email = formData.get('email')
     const password = formData.get('password')
 
-    if (email === '' || password === '') {
+    if (name === '' || email === '' || password === '') {
+      console.log('PREENCHA TODOS OS CAMPOS')
       return
     }
 
     try {
-      const response = await api.post('/session', {
+      await api.post('/users', {
+        name,
         email,
         password
       })
-
-      if (!response.data.token) {
-        return
-      }
-
-      console.log(response.data)
-
-      const expressTime = 60 * 60 * 24 * 30 * 1000
-
-      const cookieStore = await cookies()
-      cookieStore.set('session', response.data.token, {
-        maxAge: expressTime,
-        path: '/',
-        httpOnly: false,
-        secure: process.env.NODE_ENV === 'production'
-      })
     } catch (err) {
+      console.log('error')
       console.log(err)
-      return
     }
 
-    redirect('/dashboard')
+    redirect('/')
   }
 
   return (
     <>
       <div className={styles.containerCenter}>
-        <Image src="/logo.svg" alt="Pedido Facil" width={180} height={38} />
+        <Image src="/logo.svg" alt="Logo da pizzaria" width={180} height={38} />
 
         <section className={styles.login}>
-          <form action={handleLogin}>
+          <h1>Criando sua conta</h1>
+          <form action={handleRegister}>
+            <input
+              type="text"
+              required
+              name="name"
+              placeholder="Digite seu nome..."
+              className={styles.input}
+            />
+
             <input
               type="email"
               required
@@ -71,12 +64,12 @@ export default function Home() {
             />
 
             <button type="submit" className={styles.button}>
-              Acessar
+              Cadastrar
             </button>
           </form>
 
-          <Link href="/signup" className={styles.text}>
-            Não possui uma conta? Cadastre-se
+          <Link href="/" className={styles.text}>
+            Já possui uma conta? Faça o ligin
           </Link>
         </section>
       </div>
