@@ -11,7 +11,7 @@ const menuItems = [
   { href: '/dashboard/category', icon: Logs, label: 'Gerenciar Categorias' },
   { href: '/dashboard/table', icon: LayoutGrid, label: 'Gerenciar Mesas' },
   { href: '/dashboard/order', icon: Menu, label: 'Gerenciar Pedidos' },
-  { href: '/dashboard/user', icon: User, label: 'Gerenciar Usuarios' }
+  { href: '/dashboard/users', icon: User, label: 'Gerenciar Usuarios' }
 ]
 export const PagesMenu = () => {
   const pathname = usePathname()

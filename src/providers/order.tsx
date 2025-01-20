@@ -2,8 +2,8 @@
 import { createContext, ReactNode, useState } from 'react'
 import { api } from '@/services/api'
 import { getCookieClient } from '@/lib/cookieClient'
-import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 export interface ProductProps {
   id: string
