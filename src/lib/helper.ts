@@ -1,8 +1,8 @@
-import { OrderItemProps } from '@/providers/order'
+import { OrderProps } from '@/providers/order'
 
-export function calculateTotalOrder(orders: OrderItemProps[]) {
-  return orders.reduce((total, item) => {
-    const itemTotal = parseFloat(item.product.price) * item.amount
+export function calculateTotalOrder(orders: OrderProps) {
+  return orders.items.reduce((total, item) => {
+    const itemTotal = item.product.price * item.amount
     return total + itemTotal
   }, 0)
 }

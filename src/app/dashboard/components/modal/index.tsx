@@ -10,7 +10,7 @@ export function Modalorder() {
   const { onRequestClose, order, finishOrder } = use(OrderContext)
 
   async function handleFinishOrder() {
-    await finishOrder(order[0].order.id)
+    await finishOrder(order.id)
   }
 
   return (
@@ -24,20 +24,20 @@ export function Modalorder() {
           <h2>Detalhes do pedido</h2>
 
           <span className={styles.table}>
-            Mesa <b>{order[0].order.table}</b>
+            Mesa <b>{order.table.number}</b>
           </span>
 
-          {order[0].order?.name && (
+          {order?.name && (
             <span className={styles.name}>
-              <b>{order[0].order.name}</b>
+              <b>{order.table.number}</b>
             </span>
           )}
 
-          {order.map(item => (
+          {order.items.map(item => (
             <section className={styles.item} key={item.id}>
               <span>
                 Qtd: {item.amount} - <b>{item.product.name}</b> - R${' '}
-                {parseFloat(item.product.price) * item.amount}
+                {item.product.price * item.amount}
               </span>
               <span className={styles.description}>
                 {item.product.description}
