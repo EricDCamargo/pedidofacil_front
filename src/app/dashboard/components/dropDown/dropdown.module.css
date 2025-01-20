@@ -1,0 +1,30 @@
+.dropDownContainer {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  row-gap: 5px;
+  height: fit-content;
+  background-color: var(--dark-900);
+  color: var(--white);
+  padding: 10px 10px 3px 10px;
+  border-radius: 0.5rem;
+}
+
+.dropDown {
+  width: 100%;
+  border: none;
+  outline: 0;
+  padding: 7px 0;
+  background-color: var(--dark-900);
+  color: var(--white);
+  &:focus {
+    outline: none;
+    height: 30px;
+  }
+  font-size: 1rem;
+}
+
+.dropDown option {
+  color: var(--white);
+  background-color: var(--dark-900);
+}

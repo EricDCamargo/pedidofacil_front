@@ -1,3 +1,5 @@
+'use client'
+
 import styles from './table.module.css'
 import { Trash2, UserRoundPen, Eye } from 'lucide-react'
 
