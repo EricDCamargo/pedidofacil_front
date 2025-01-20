@@ -32,12 +32,17 @@ export function Header() {
             quality={100}
           />
         </Link>
-
-        <nav>
+        {/* <nav>
           <Link href="/dashboard/category">Categoria</Link>
           <Link href="/dashboard/product">Produto</Link>
-
+          <Link href="/dashboard/category">Categoria</Link>
+          <Link href="/dashboard/product">Produto</Link>
+          <Link href="/dashboard/category">Categoria</Link>
+          <Link href="/dashboard/product">Produto</Link>
+        </nav> */}
+        <nav>
           <form action={handleLogout}>
+            <p>Eric Dellai Camargo</p>
             <button type="submit">
               <LogOutIcon size={24} color="#FFF" />
             </button>

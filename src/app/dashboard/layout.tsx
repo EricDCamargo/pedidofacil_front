@@ -1,11 +1,21 @@
 import { Header } from './components/header'
 import { OrderProvider } from '@/providers/order'
-
-export default function DashboardLayout({children}: { children: React.ReactNode}) {
+import { PagesMenu } from './components/menu'
+import styles from './layout.module.css'
+export default function DashboardLayout({
+  children
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <>
+    <div className={styles.grid}>
       <Header />
-      <OrderProvider>{children}</OrderProvider>
-    </>
+      <OrderProvider>
+        <div className={styles.content}>
+          <PagesMenu />
+          {children}
+        </div>
+      </OrderProvider>
+    </div>
   )
 }

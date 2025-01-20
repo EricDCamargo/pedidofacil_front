@@ -1,0 +1,29 @@
+.content {
+  grid-area: CT;
+  display: flex;
+  flex-direction: flex;
+  grid-auto-flow: row;
+  grid-auto-rows: 25%;
+  grid-template-rows: unset;
+  overflow: auto;
+  overflow: hidden;
+  grid-template-columns: unset;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 100px auto;
+  grid-template-areas:
+    'NB'
+    'CT';
+  @media (max-width: 1000px) {
+    height: auto;
+
+    grid-template-areas:
+      'NB NB'
+      'CT CT';
+  }
+  min-height: 100vh;
+  height: 100vh;
+}

@@ -3,6 +3,10 @@
   padding: 0;
   box-sizing: border-box;
   outline: 0;
+  ::-webkit-scrollbar {
+    opacity: 0;
+    width: 0;
+  }
 }
 
 :root {

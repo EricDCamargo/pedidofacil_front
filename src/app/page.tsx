@@ -1,7 +1,5 @@
 import Image from 'next/image'
 import styles from './page.module.css'
-
-import logoImg from '/pedido_facil.svg'
 import Link from 'next/link'
 import { api } from '@/services/api'
 import { cookies } from 'next/headers'
