@@ -1,83 +1,21 @@
 'use client'
 
+import { UserProps } from '@/types/user'
 import styles from './table.module.css'
 import { Trash2, UserRoundPen, Eye } from 'lucide-react'
+import { use } from 'react'
+import { UserContext } from '@/providers/user'
 
-interface UsePros {
-  id: string
-  name: string
-  email: string
-  role: string
-  created_at: string
-  updated_at: string
+interface TableProps {
+  users: UserProps[]
 }
-export default function Table() {
-  const packageData: UsePros[] = [
-    {
-      id: '1',
-      name: 'Premium',
-      email: 'john.doe@example.com',
-      role: 'admin',
-      created_at: '2022-01-01 10:00:00',
-      updated_at: '2022-01-01 10:00:00'
-    },
-    {
-      id: '2',
-      name: 'Premium',
-      email: 'john.doe@example.com',
-      role: 'admin',
-      created_at: '2022-01-01 10:00:00',
-      updated_at: '2022-01-01 10:00:00'
-    },
-    {
-      id: '2',
-      name: 'Premium',
-      email: 'john.doe@example.com',
-      role: 'admin',
-      created_at: '2022-01-01 10:00:00',
-      updated_at: '2022-01-01 10:00:00'
-    },
-    {
-      id: '2',
-      name: 'Premium',
-      email: 'john.doe@example.com',
-      role: 'admin',
-      created_at: '2022-01-01 10:00:00',
-      updated_at: '2022-01-01 10:00:00'
-    },
-    {
-      id: '2',
-      name: 'Premium',
-      email: 'john.doe@example.com',
-      role: 'admin',
-      created_at: '2022-01-01 10:00:00',
-      updated_at: '2022-01-01 10:00:00'
-    },
-    {
-      id: '2',
-      name: 'Premium',
-      email: 'john.doe@example.com',
-      role: 'admin',
-      created_at: '2022-01-01 10:00:00',
-      updated_at: '2022-01-01 10:00:00'
-    },
-    {
-      id: '2',
-      name: 'Premium',
-      email: 'john.doe@example.com',
-      role: 'user',
-      created_at: '2022-01-01 10:00:00',
-      updated_at: '2022-01-01 10:00:00'
-    },
-    {
-      id: '2',
-      name: 'Premium',
-      email: 'john.doe@example.com',
-      role: 'admin',
-      created_at: '2022-01-01 10:00:00',
-      updated_at: '2022-01-01 10:00:00'
-    }
-  ]
+export default function Table({ users }: TableProps) {
+  const { setcurrentUser, setUserModalOpen, setOnEdition } = use(UserContext)
+
+  const handleUser = (user: UserProps) => {
+    setcurrentUser(user)
+    setUserModalOpen(true)
+  }
   return (
     <div className={styles.tableContainer}>
       <div className={styles.tableWrapper}>
@@ -91,37 +29,42 @@ export default function Table() {
             </tr>
           </thead>
           <tbody>
-            {packageData.map((packageItem, key) => (
+            {users.map((user, key) => (
               <tr key={key} className={styles.tableRow}>
                 <td className={styles.tableCell}>
-                  <p>{packageItem.name}</p>
+                  <p>{user.name}</p>
                 </td>
                 <td className={styles.tableCell}>
-                  <p>{packageItem.email}</p>
+                  <p>{user.email}</p>
                 </td>
                 <td className={styles.tableCell}>
                   <p
                     className={`${styles.role} ${
-                      packageItem.role === 'admin'
+                      user.role === 'admin'
                         ? styles.admin
-                        : packageItem.role === 'user'
+                        : user.role === 'user'
                         ? styles.user
                         : styles.pending
                     }`}
                   >
-                    {packageItem.role}
+                    {user.role}
                   </p>
                 </td>
                 <td className={styles.tableCell}>
                   <div className={styles.actions}>
-                    <button>
+                    <button onClick={() => handleUser(user)}>
                       <Eye />
                     </button>
                     <button>
                       <Trash2 />
                     </button>
                     <button>
-                      <UserRoundPen />
+                      <UserRoundPen
+                        onClick={() => {
+                          handleUser(user);
+                          setOnEdition(false);
+                        }}
+                      />
                     </button>
                   </div>
                 </td>

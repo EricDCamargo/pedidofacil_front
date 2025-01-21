@@ -2,6 +2,7 @@ import { Header } from './components/header'
 import { OrderProvider } from '@/providers/order'
 import { PagesMenu } from './components/menu'
 import styles from './layout.module.css'
+import { UserProvider } from '@/providers/user'
 export default function DashboardLayout({
   children
 }: {
@@ -11,10 +12,12 @@ export default function DashboardLayout({
     <div className={styles.grid}>
       <Header />
       <OrderProvider>
-        <div className={styles.content}>
-          <PagesMenu />
-          {children}
-        </div>
+        <UserProvider>
+          <div className={styles.content}>
+            <PagesMenu />
+            {children}
+          </div>
+        </UserProvider>
       </OrderProvider>
     </div>
   )

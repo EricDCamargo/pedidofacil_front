@@ -1,59 +1,55 @@
-'use client'
+import { ReactNode } from 'react'
+import styled from './modal.module.css'
+import { Button } from '../button'
+import { Pencil, X } from 'lucide-react'
 
-import styles from './styles.module.css'
-import { X } from 'lucide-react'
-import { use } from 'react'
-import { OrderContext } from '@/providers/order'
-import { calculateTotalOrder } from '@/lib/helper'
-
-export function Modalorder() {
-  const { onRequestClose, order, finishOrder } = use(OrderContext)
-
-  async function handleFinishOrder() {
-    await finishOrder(order.id)
-  }
-
-  return (
-    <dialog className={styles.dialogContainer}>
-      <section className={styles.dialogContent}>
-        <button className={styles.dialogBack} onClick={onRequestClose}>
-          <X size={40} color="#FF3f4b" />
-        </button>
-
-        <article className={styles.container}>
-          <h2>Detalhes do pedido</h2>
-
-          <span className={styles.table}>
-            Mesa <b>{order.table.number}</b>
-          </span>
-
-          {order?.name && (
-            <span className={styles.name}>
-              <b>{order.table.number}</b>
-            </span>
-          )}
-
-          {order.items.map(item => (
-            <section className={styles.item} key={item.id}>
-              <span>
-                Qtd: {item.amount} - <b>{item.product.name}</b> - R${' '}
-                {item.product.price * item.amount}
-              </span>
-              <span className={styles.description}>
-                {item.product.description}
-              </span>
-            </section>
-          ))}
-
-          <h3 className={styles.total}>
-            Valor total: R$ {calculateTotalOrder(order)}
-          </h3>
-
-          <button className={styles.buttonOrder} onClick={handleFinishOrder}>
-            Concluir pedido
-          </button>
-        </article>
-      </section>
-    </dialog>
-  )
+interface AddEditModalProps {
+  isOpen: boolean
+  children: ReactNode
+  modalTitle: string
+  onCancel: () => void
+  onSave?: () => void
+  buttons?: boolean
+  enableEdition?: VoidFunction
 }
+
+const AddEditModal: React.FC<AddEditModalProps> = ({
+  children,
+  isOpen,
+  modalTitle,
+  buttons,
+  onCancel,
+  onSave,
+  enableEdition
+}: AddEditModalProps) => {
+  if (isOpen) {
+    return (
+      <div className={styled.backgroundModal}>
+        <div className={styled.content}>
+          <div className={styled.header}>
+            <h1>{modalTitle}</h1>
+            <div className={styled.icons}>
+              {enableEdition && (
+                <div className={styled.closeConteiner} onClick={enableEdition}>
+                  <Pencil />
+                </div>
+              )}
+              <div className={styled.closeConteiner} onClick={onCancel}>
+                <X size={20} />
+              </div>
+            </div>
+          </div>
+          <div className={styled.body}>{children}</div>
+          {buttons && (
+            <div className={styled.modalFooter}>
+              <Button onClick={onCancel} name="Cancelar" />
+              <Button onClick={onSave!} name="Salvar" />
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }
+  return null
+}
+export default AddEditModal
