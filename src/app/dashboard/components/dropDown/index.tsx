@@ -10,7 +10,6 @@ interface SelectProps {
   label?: string
   width?: string
   defaultValue: string
-  onChange: (event: any) => void
   options: Array<OptionsType>
   name: string
   disabled?: boolean
@@ -19,7 +18,6 @@ interface SelectProps {
 const Dropdown = ({
   label,
   width,
-  onChange,
   defaultValue,
   name,
   options,
@@ -30,10 +28,10 @@ const Dropdown = ({
       {label && <label>{label}</label>}
       <select
         className={styles.dropDown}
-        onChange={onChange}
         name={name}
-        value={defaultValue}
+        defaultValue={defaultValue}
         disabled={disabled}
+        required
       >
         {options.map(item => (
           <option key={item.value} value={item.value}>

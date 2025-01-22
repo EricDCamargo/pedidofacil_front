@@ -1,15 +1,12 @@
 'use client'
-
-import { ChangeEvent, ReactNode, use } from 'react'
+import { use } from 'react'
 import AddEditModal from '../../components/modal'
 import { UserContext } from '@/providers/user'
 import styles from './modal.module.css'
 import Dropdown from '../../components/dropDown'
 import { toast } from 'sonner'
-interface FormProps {
-  buttons?: ReactNode
-}
-const UserModal: React.FC<FormProps> = ({ buttons }) => {
+
+const UserModal: React.FC = () => {
   const {
     isUserModalOpen,
     currentUser,
@@ -24,15 +21,12 @@ const UserModal: React.FC<FormProps> = ({ buttons }) => {
     setcurrentUser(newUser)
     setOnEdition(true)
   }
-  const handleSubmit = () => {
-    console.log(currentUser)
+  const handleSubmit = (formData: FormData) => {
+    const data = Object.fromEntries(formData.entries())
+    console.log(data)
     toast.success('sucessfully submitted')
   }
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setcurrentUser(prev => ({ ...prev, [name]: value }))
-  }
   const handleEditi = () => {
     setOnEdition(!onEdition)
   }
@@ -51,10 +45,9 @@ const UserModal: React.FC<FormProps> = ({ buttons }) => {
               required
               name="name"
               disabled={onEdition}
-              value={currentUser.name}
+              defaultValue={currentUser.name}
               placeholder="Digite seu email..."
               className={styles.input}
-              onChange={handleChange}
             />
             <input
               type="email"
@@ -62,10 +55,9 @@ const UserModal: React.FC<FormProps> = ({ buttons }) => {
               aria-disabled={true}
               disabled={onEdition}
               name="email"
-              value={currentUser.email}
+              defaultValue={currentUser.email}
               placeholder="Digite seu email..."
               className={styles.input}
-              onChange={handleChange}
             />
 
             <Dropdown
@@ -76,7 +68,6 @@ const UserModal: React.FC<FormProps> = ({ buttons }) => {
                 { label: 'Admin', value: 'admin' },
                 { label: 'User', value: 'user' }
               ]}
-              onChange={handleChange}
               width="50%"
             />
           </div>
