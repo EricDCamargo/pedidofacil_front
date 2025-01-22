@@ -58,14 +58,7 @@ export default function Table({ users }: TableProps) {
                     <button>
                       <Trash2 />
                     </button>
-                    <button>
-                      <UserRoundPen
-                        onClick={() => {
-                          handleUser(user);
-                          setOnEdition(false);
-                        }}
-                      />
-                    </button>
+                    
                   </div>
                 </td>
               </tr>

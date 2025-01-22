@@ -36,7 +36,6 @@
 
 .closeConteiner {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 34px;
@@ -49,15 +48,7 @@
 
 .body {
   display: flex;
-  flex-direction: flex-warp;
-
-  height: 100%;
+  justify-content: center;
   width: 100%;
-  padding: 31px 36px 46px 36px;
-}
-.modalFooter {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin: 10px;
+  height: 100%;
 }

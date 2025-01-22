@@ -1,19 +1,19 @@
 'use client'
 
+import { ButtonHTMLAttributes } from 'react'
 import styles from './styles.module.css'
 import { useFormStatus } from 'react-dom'
 
-interface Props {
-  name: string
-  onClick: VoidFunction
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  type: 'button' | 'submit' | 'reset' | undefined
 }
 
-export function Button({ name, onClick }: Props) {
+export function Button({ name, onClick, type }: ButtonProps) {
   const { pending } = useFormStatus()
 
   return (
     <button
-      type="submit"
+      type={type}
       disabled={pending}
       className={styles.button}
       onClick={onClick}
