@@ -1,4 +1,3 @@
-import { getCookieClient } from '@/lib/cookieClient'
 import { debug, api } from './api'
 
 const { debugError, debugSuccess } = debug
@@ -11,35 +10,37 @@ interface ResponsePromise {
   isOk: boolean
 }
 
-export const serviceConsumer = {
+export const serviceConsumer = (token: string) => ({
   //Get Method
   executeGet: async function (url: string, params?: any) {
-    return await this.executeService('GET', url, params)
+    return await this.executeService(token, 'GET', url, params)
   },
 
   //Post Method
   executePost: async function (url: string, body: any | Array<any>) {
-    return await this.executeService('POST', url, body, '')
+    return await this.executeService(token, 'POST', url, body, '')
   },
 
   //Put Method
   executePut: async function (url: string, body: any | Array<any>) {
-    return await this.executeService('PUT', url, body)
+    return await this.executeService(token, 'PUT', url, body)
   },
 
   //Delete
   executeDelete: async function (url: string) {
-    return await this.executeService('DELETE', url)
+    return await this.executeService(token, 'DELETE', url)
   },
 
-  executeService: function (
+  executeService: async function (
+    token: string,
     method: 'GET' | 'POST' | 'DELETE' | 'PUT',
     url: string,
+
     data?: any | Array<any>,
     params?: any
   ): Promise<ResponsePromise> {
     let headers = {
-      Authorization: 'Bearer ' + getCookieClient(),
+      Authorization: 'Bearer ' + token,
       'Content-Type': 'application/json'
     }
 
@@ -85,4 +86,4 @@ export const serviceConsumer = {
 
     return response
   }
-}
+})

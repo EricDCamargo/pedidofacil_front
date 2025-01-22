@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getCookieServer } from '@/lib/cookieServer'
-import { api } from '@/services/api'
+import { serviceConsumer } from './services/service.consumer'
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
@@ -31,12 +31,7 @@ async function validateToken(token: string) {
   if (!token) return false
 
   try {
-    await api.get('/me', {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-
+    serviceConsumer('').executeGet('/me')
     return true
   } catch (err) {
     return false
