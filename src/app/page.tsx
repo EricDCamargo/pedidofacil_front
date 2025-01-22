@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { api } from '@/services/api'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { serviceConsumer } from '@/services/service.consumer'
 
 export default function Home() {
   async function handleLogin(formData: FormData) {
@@ -17,7 +18,7 @@ export default function Home() {
     }
 
     try {
-      const response = await api.post('/session', {
+      const response = await serviceConsumer('').executePost('/session', {
         email,
         password
       })

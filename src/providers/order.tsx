@@ -4,6 +4,7 @@ import { api } from '@/services/api'
 import { getCookieClient } from '@/lib/cookieClient'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import { serviceConsumer } from '@/services/service.consumer'
 
 export interface ProductProps {
   id: string
@@ -94,17 +95,10 @@ export function OrderProvider({ children }: OrderProviderProps) {
   const router = useRouter()
 
   async function onRequestOpen(order_id: string) {
-    // console.log(order_id);
-
     const token = getCookieClient()
 
-    const response = await api.get('/order/detail', {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-      params: {
-        order_id: order_id
-      }
+    const response = await serviceConsumer(token).executeGet('/order/detail', {
+      order_id: order_id
     })
 
     setOrder(response.data)
@@ -118,15 +112,9 @@ export function OrderProvider({ children }: OrderProviderProps) {
   async function finishOrder(order_id: string) {
     const token = getCookieClient()
 
-    const data = {
-      order_id: order_id
-    }
-
     try {
-      await api.put('/order/finish', data, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+      await serviceConsumer(token).executePut('/order/finish', {
+        order_id: order_id
       })
     } catch (err) {
       console.log(err)

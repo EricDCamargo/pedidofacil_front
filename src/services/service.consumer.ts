@@ -1,3 +1,4 @@
+import { CookieValueTypes } from 'cookies-next'
 import { debug, api } from './api'
 
 const { debugError, debugSuccess } = debug
@@ -10,7 +11,9 @@ interface ResponsePromise {
   isOk: boolean
 }
 
-export const serviceConsumer = (token: string) => ({
+export const serviceConsumer = (
+  token: string | CookieValueTypes | Promise<CookieValueTypes>
+) => ({
   //Get Method
   executeGet: async function (url: string, params?: any) {
     return await this.executeService(token, 'GET', url, params)
@@ -18,12 +21,12 @@ export const serviceConsumer = (token: string) => ({
 
   //Post Method
   executePost: async function (url: string, body: any | Array<any>) {
-    return await this.executeService(token, 'POST', url, body, '')
+    return await this.executeService(token, 'POST', url, '', body)
   },
 
   //Put Method
   executePut: async function (url: string, body: any | Array<any>) {
-    return await this.executeService(token, 'PUT', url, body)
+    return await this.executeService(token, 'PUT', url, '', body)
   },
 
   //Delete
@@ -32,15 +35,14 @@ export const serviceConsumer = (token: string) => ({
   },
 
   executeService: async function (
-    token: string,
+    token: string | CookieValueTypes | Promise<CookieValueTypes>,
     method: 'GET' | 'POST' | 'DELETE' | 'PUT',
     url: string,
-
-    data?: any | Array<any>,
-    params?: any
+    params?: any,
+    data?: any | Array<any>
   ): Promise<ResponsePromise> {
     let headers = {
-      Authorization: 'Bearer ' + token,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json'
     }
 

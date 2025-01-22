@@ -3,6 +3,7 @@ import Link from 'next/link'
 import styles from '../page.module.css'
 import { api } from '@/services/api'
 import { redirect } from 'next/navigation'
+import { serviceConsumer } from '@/services/service.consumer'
 
 export default function Signup() {
   async function handleRegister(formData: FormData) {
@@ -18,7 +19,7 @@ export default function Signup() {
     }
 
     try {
-      await api.post('/users', {
+      await serviceConsumer('').executePost('/users', {
         name,
         email,
         password
