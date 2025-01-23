@@ -8,9 +8,12 @@ import { LogOutIcon } from 'lucide-react'
 import { deleteCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import { UserContext } from '@/providers/user'
+import { use } from 'react'
 
 export function Header() {
   const router = useRouter()
+  const { loggedUser } = use(UserContext)
 
   async function handleLogout() {
     deleteCookie('session', { path: '/' })
@@ -42,7 +45,7 @@ export function Header() {
         </nav> */}
         <nav>
           <form action={handleLogout}>
-            <p>Eric Dellai Camargo</p>
+            <p>{loggedUser?.name} </p>
             <button type="submit">
               <LogOutIcon size={24} color="#FFF" />
             </button>

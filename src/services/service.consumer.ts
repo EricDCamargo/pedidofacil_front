@@ -1,5 +1,7 @@
 import { CookieValueTypes } from 'cookies-next'
 import { debug, api } from './api'
+import { getCookieServer } from '@/lib/cookieServer'
+import { getCookieClient } from '@/lib/cookieClient'
 
 const { debugError, debugSuccess } = debug
 const environment = process.env.NEXT_ENVIRONMENT
@@ -12,7 +14,7 @@ interface ResponsePromise {
 }
 
 export const serviceConsumer = (
-  token: string | CookieValueTypes | Promise<CookieValueTypes>
+  token: string | CookieValueTypes | Promise<CookieValueTypes> | null
 ) => ({
   //Get Method
   executeGet: async function (url: string, params?: any) {
@@ -35,14 +37,21 @@ export const serviceConsumer = (
   },
 
   executeService: async function (
-    token: string | CookieValueTypes | Promise<CookieValueTypes>,
+    token: string | CookieValueTypes | Promise<CookieValueTypes> | null,
     method: 'GET' | 'POST' | 'DELETE' | 'PUT',
     url: string,
     params?: any,
     data?: any | Array<any>
   ): Promise<ResponsePromise> {
+    const getToken = () => {
+      if (token) {
+        return token
+      } else {
+        return getCookieClient()
+      }
+    }
     let headers = {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${getToken()}`,
       'Content-Type': 'application/json'
     }
 

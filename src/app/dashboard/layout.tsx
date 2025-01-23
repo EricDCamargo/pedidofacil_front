@@ -3,16 +3,19 @@ import { OrderProvider } from '@/providers/order'
 import { PagesMenu } from './components/menu'
 import styles from './layout.module.css'
 import { UserProvider } from '@/providers/user'
-export default function DashboardLayout({
+import { getUserServer } from '@/services/retriveUserData'
+
+export default async function DashboardLayout({
   children
 }: {
   children: React.ReactNode
 }) {
+  const user = await getUserServer()
   return (
     <div className={styles.grid}>
-      <Header />
       <OrderProvider>
-        <UserProvider>
+        <UserProvider initialUser={user}>
+          <Header />
           <div className={styles.content}>
             <PagesMenu />
             {children}

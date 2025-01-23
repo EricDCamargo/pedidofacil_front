@@ -1,10 +1,10 @@
-'use client'
 import { use } from 'react'
 import AddEditModal from '../../components/modal'
 import { UserContext } from '@/providers/user'
 import styles from './modal.module.css'
 import Dropdown from '../../components/dropDown'
 import { toast } from 'sonner'
+import moment from 'moment'
 
 const UserModal: React.FC = () => {
   const {
@@ -16,12 +16,14 @@ const UserModal: React.FC = () => {
     setcurrentUser,
     setOnEdition
   } = use(UserContext)
+
   const handleClose = () => {
     setUserModalOpen(false)
     setcurrentUser(newUser)
     setOnEdition(true)
   }
   const handleSubmit = (formData: FormData) => {
+    'use client'
     const data = Object.fromEntries(formData.entries())
     console.log(data)
     toast.success('sucessfully submitted')
@@ -65,26 +67,47 @@ const UserModal: React.FC = () => {
               defaultValue={currentUser.role}
               name="role"
               options={[
-                { label: 'Admin', value: 'admin' },
-                { label: 'User', value: 'user' }
+                { label: 'User', value: 'user' },
+                { label: 'Admin', value: 'admin' }
               ]}
               width="50%"
             />
           </div>
-          {!onEdition && (
-            <div className={styles.modalFooter}>
-              <button
-                onClick={handleClose}
-                type="button"
-                className={styles.button}
-              >
-                Cancelar
-              </button>
-              <button type="submit" className={styles.button}>
-                Salvar
-              </button>
+
+          <div className={styles.modalFooter}>
+            <div className={styles.date}>
+              {currentUser.created_at && currentUser.created_at && (
+                <>
+                  Criado em:
+                  <p>
+                    {moment(currentUser.created_at).format('DD/MM/YY HH:mm')}
+                  </p>
+                  <br />
+                  Atualizado em:
+                  <p>
+                    {moment(currentUser.updated_at).format('DD/MM/YY HH:mm')}
+                  </p>
+                </>
+              )}
             </div>
-          )}
+
+            <div className={styles.buttonsContainer}>
+              {!onEdition && (
+                <>
+                  <button
+                    onClick={handleClose}
+                    type="button"
+                    className={styles.button}
+                  >
+                    Cancelar
+                  </button>
+                  <button type="submit" className={styles.button}>
+                    Salvar
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
         </form>
       </section>
     </AddEditModal>

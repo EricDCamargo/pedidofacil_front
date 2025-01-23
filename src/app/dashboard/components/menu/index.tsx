@@ -1,9 +1,12 @@
 'use client'
 
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { MonitorDot, Logs, LayoutGrid, Menu, User } from 'lucide-react'
 import Link from 'next/link'
 import styles from './styles.module.css'
+import { UserContext } from '@/providers/user'
+import { useContext } from 'react'
+import { UserRole } from '@/types/user'
 
 const menuItems = [
   { href: '/dashboard', icon: MonitorDot, label: 'Pagina Inicial' },
@@ -15,9 +18,16 @@ const menuItems = [
 ]
 export const PagesMenu = () => {
   const pathname = usePathname()
+  const { loggedUser } = useContext(UserContext)
+  const filteredMenuItems =
+    loggedUser?.role === UserRole.USER
+      ? menuItems.filter(({ href }) =>
+          ['/dashboard', '/dashboard/order'].includes(href)
+        )
+      : menuItems
   return (
     <div className={styles.styledPagesMenu}>
-      {menuItems.map(({ href, icon: Icon, label }) => (
+      {filteredMenuItems.map(({ href, icon: Icon, label }) => (
         <Link
           key={href}
           href={href}

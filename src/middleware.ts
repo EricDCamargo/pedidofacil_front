@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getCookieServer } from '@/lib/cookieServer'
-import { serviceConsumer } from './services/service.consumer'
+import { ErrorMessages, UserRole } from './types/user'
+import { getUserServer } from './services/retriveUserData'
 
+const protectedRoutesForUser = [
+  '/dashboard/product',
+  '/dashboard/category',
+  '/dashboard/table',
+  '/dashboard/users'
+]
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
@@ -13,27 +20,28 @@ export async function middleware(req: NextRequest) {
 
   if (pathname.startsWith('/dashboard')) {
     if (!token) {
-      return NextResponse.redirect(new URL('/', req.url))
+      return NextResponse.redirect(
+        new URL(`/?error=${ErrorMessages.TOKEN_EXPIRED}`, req.url)
+      )
     }
 
-    const isValid = await validateToken(token)
-    console.log(isValid)
+    const user = await getUserServer()
+    console.log(user)
 
-    if (!isValid) {
-      return NextResponse.redirect(new URL('/', req.url))
+    if (!user || !user.id) {
+      return NextResponse.redirect(
+        new URL(`/?error=${ErrorMessages.SERVICE_UNAVAILABLE}`, req.url)
+      )
+    }
+    if (
+      user?.role === UserRole.USER &&
+      protectedRoutesForUser.includes(pathname)
+    ) {
+      return NextResponse.redirect(
+        new URL(`/dashboard?error=${ErrorMessages.UNAUTHORIZED}`, req.url)
+      )
     }
   }
 
   return NextResponse.next()
-}
-
-async function validateToken(token: string) {
-  if (!token) return false
-
-  try {
-    serviceConsumer('').executeGet('/me')
-    return true
-  } catch (err) {
-    return false
-  }
 }

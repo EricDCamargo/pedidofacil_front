@@ -1,10 +1,10 @@
 import Image from 'next/image'
 import styles from './page.module.css'
 import Link from 'next/link'
-import { api } from '@/services/api'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { serviceConsumer } from '@/services/service.consumer'
+import ToastHandler from '@/lib/toastHandler'
 
 export default function Home() {
   async function handleLogin(formData: FormData) {
@@ -48,6 +48,7 @@ export default function Home() {
 
   return (
     <>
+      <ToastHandler />
       <div className={styles.containerCenter}>
         <Image src="/logo.svg" alt="Pedido Facil" width={180} height={38} />
 

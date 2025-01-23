@@ -1,9 +1,17 @@
-interface UserProps {
+export interface UserProps {
   id: string
   name: string
   email: string
-  role: string
+  role: UserRole
   created_at: string
   updated_at: string
 }
-export type { UserProps }
+export enum UserRole {
+  ADMIN = 'ADMIN',
+  USER = 'USER'
+}
+export enum ErrorMessages {
+  TOKEN_EXPIRED = 'token-expired',
+  SERVICE_UNAVAILABLE = 'service-unavailable',
+  UNAUTHORIZED = 'unauthorized'
+}

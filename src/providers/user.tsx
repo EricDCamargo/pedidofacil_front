@@ -8,11 +8,10 @@ import {
   Dispatch,
   SetStateAction
 } from 'react'
-import { api } from '@/services/api'
-import { getCookieClient } from '@/lib/cookieClient'
-import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { UserProps } from '@/types/user'
+import { UserProps, UserRole } from '@/types/user'
+import { serviceConsumer } from '@/services/service.consumer'
+import { getCookieClient } from '@/lib/cookieClient'
 
 type UserContextData = {
   newUser: UserProps
@@ -24,29 +23,44 @@ type UserContextData = {
   setLoggedUser: Dispatch<SetStateAction<UserProps | undefined>>
   setcurrentUser: Dispatch<SetStateAction<UserProps>>
   setUserModalOpen: Dispatch<SetStateAction<boolean>>
+  verifyUser: () => Promise<void>
 }
 
 type UserProviderProps = {
   children: ReactNode
+  initialUser?: UserProps | null
 }
 const newUser: UserProps = {
   id: '',
   name: '',
   email: '',
-  role: '',
+  role: UserRole.USER,
   created_at: '',
   updated_at: ''
 }
 export const UserContext = createContext({} as UserContextData)
 
-export function UserProvider({ children }: UserProviderProps) {
+export function UserProvider({ children, initialUser }: UserProviderProps) {
   const [isUserModalOpen, setUserModalOpen] = useState<boolean>(false)
   const [onEdition, setOnEdition] = useState<boolean>(true)
-  const [loggedUser, setLoggedUser] = useState<UserProps>()
+  const [loggedUser, setLoggedUser] = useState<UserProps | undefined>(
+    initialUser || undefined
+  )
   const [currentUser, setcurrentUser] = useState<UserProps>(newUser)
 
-  const router = useRouter()
-
+  async function verifyUser(): Promise<void> {
+    const token = await getCookieClient()
+    try {
+      const res = await serviceConsumer(token).executeGet('/me')
+      setLoggedUser(res.data)
+    } catch (err) {
+      toast.error('Você precisa estar logado para acessar essa página.')
+      setLoggedUser(undefined)
+    }
+  }
+  useEffect(() => {
+    verifyUser()
+  }, [])
   return (
     <UserContext.Provider
       value={{
@@ -58,7 +72,8 @@ export function UserProvider({ children }: UserProviderProps) {
         setOnEdition,
         setUserModalOpen,
         setcurrentUser,
-        setLoggedUser
+        setLoggedUser,
+        verifyUser
       }}
     >
       {children}
