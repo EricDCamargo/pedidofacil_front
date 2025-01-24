@@ -35,6 +35,7 @@ const newUser: UserProps = {
   name: '',
   email: '',
   role: UserRole.USER,
+  password: '',
   created_at: '',
   updated_at: ''
 }

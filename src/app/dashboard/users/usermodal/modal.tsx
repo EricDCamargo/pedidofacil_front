@@ -5,6 +5,8 @@ import styles from './modal.module.css'
 import Dropdown from '../../components/dropDown'
 import { toast } from 'sonner'
 import moment from 'moment'
+import { UserRole } from '@/types/user'
+import { serviceConsumer } from '@/services/service.consumer'
 
 const UserModal: React.FC = () => {
   const {
@@ -12,6 +14,7 @@ const UserModal: React.FC = () => {
     currentUser,
     newUser,
     onEdition,
+    loggedUser,
     setUserModalOpen,
     setcurrentUser,
     setOnEdition
@@ -22,11 +25,70 @@ const UserModal: React.FC = () => {
     setcurrentUser(newUser)
     setOnEdition(true)
   }
-  const handleSubmit = (formData: FormData) => {
-    'use client'
-    const data = Object.fromEntries(formData.entries())
-    console.log(data)
-    toast.success('sucessfully submitted')
+  const handleSubmit = async (formData: FormData) => {
+    const name = formData.get('name')
+    const email = formData.get('email')
+    const role = formData.get('role')
+    const password = formData.get('password')
+
+    if (!name || !email || !role) {
+      return
+    }
+    if (currentUser.id === loggedUser?.id && role != loggedUser.role) {
+      toast.error('Você não pode alterar o seu próprio tipo de usuário!')
+      setOnEdition(true)
+      return
+    }
+
+    if (currentUser.id) {
+      try {
+        const data = {
+          name: name,
+          email: email,
+          role: role as UserRole
+        }
+        const res = await serviceConsumer('').executePut(
+          'users',
+          { user_id: currentUser.id },
+          data
+        )
+        if (res.isOk) {
+          toast.success('Usuário editado com sucesso!')
+        }
+      } catch (err) {
+        console.log(err)
+        toast.error('Erro ao editar')
+        setOnEdition(true)
+        return
+      }
+    } else {
+      if (!password) {
+        return
+      }
+      try {
+        const data = {
+          name: name,
+          email: email,
+          role: role as UserRole,
+          password: password
+        }
+        const res = await serviceConsumer('').executePost('users', data)
+        if (res.isOk) {
+          toast.success('Usuário criado com sucesso!')
+          setUserModalOpen(false)
+        }
+        if (res.status === 409) {
+          toast.error('E-mail já cadastrado!')
+          return
+        }
+      } catch (err) {
+        console.log(err)
+        toast.error('Erro ao cadastrar')
+        setUserModalOpen(false)
+        setOnEdition(true)
+        return
+      }
+    }
   }
 
   const handleEditi = () => {
@@ -48,27 +110,36 @@ const UserModal: React.FC = () => {
               name="name"
               disabled={onEdition}
               defaultValue={currentUser.name}
-              placeholder="Digite seu email..."
+              placeholder="Digite seu nome..."
               className={styles.input}
             />
             <input
               type="email"
               required
-              aria-disabled={true}
               disabled={onEdition}
               name="email"
               defaultValue={currentUser.email}
               placeholder="Digite seu email..."
               className={styles.input}
             />
+            {!currentUser.id && (
+              <input
+                type="password"
+                required
+                disabled={onEdition}
+                name="password"
+                placeholder="Digite a senha..."
+                className={styles.input}
+              />
+            )}
 
             <Dropdown
               disabled={onEdition}
               defaultValue={currentUser.role}
               name="role"
               options={[
-                { label: 'User', value: 'user' },
-                { label: 'Admin', value: 'admin' }
+                { label: 'User', value: UserRole.USER },
+                { label: 'Admin', value: UserRole.ADMIN }
               ]}
               width="50%"
             />

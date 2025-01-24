@@ -1,6 +1,4 @@
-'use client'
-
-import { UserProps } from '@/types/user'
+import { UserProps, UserRole } from '@/types/user'
 import styles from './table.module.css'
 import { Trash2, UserRoundPen, Eye } from 'lucide-react'
 import { use } from 'react'
@@ -10,7 +8,7 @@ interface TableProps {
   users: UserProps[]
 }
 export default function Table({ users }: TableProps) {
-  const { setcurrentUser, setUserModalOpen, setOnEdition } = use(UserContext)
+  const { setcurrentUser, setUserModalOpen } = use(UserContext)
 
   const handleUser = (user: UserProps) => {
     setcurrentUser(user)
@@ -40,9 +38,9 @@ export default function Table({ users }: TableProps) {
                 <td className={styles.tableCell}>
                   <p
                     className={`${styles.role} ${
-                      user.role === 'admin'
+                      user.role === UserRole.ADMIN
                         ? styles.admin
-                        : user.role === 'user'
+                        : user.role === UserRole.USER
                         ? styles.user
                         : styles.pending
                     }`}
@@ -58,7 +56,6 @@ export default function Table({ users }: TableProps) {
                     <button>
                       <Trash2 />
                     </button>
-                    
                   </div>
                 </td>
               </tr>

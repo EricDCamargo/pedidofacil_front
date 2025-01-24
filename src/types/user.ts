@@ -3,6 +3,7 @@ export interface UserProps {
   name: string
   email: string
   role: UserRole
+  password?: string
   created_at: string
   updated_at: string
 }

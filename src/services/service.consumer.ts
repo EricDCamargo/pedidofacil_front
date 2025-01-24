@@ -27,8 +27,12 @@ export const serviceConsumer = (
   },
 
   //Put Method
-  executePut: async function (url: string, body: any | Array<any>) {
-    return await this.executeService(token, 'PUT', url, '', body)
+  executePut: async function (
+    url: string,
+    params: any,
+    body: any | Array<any>
+  ) {
+    return await this.executeService(token, 'PUT', url, params, body)
   },
 
   //Delete
