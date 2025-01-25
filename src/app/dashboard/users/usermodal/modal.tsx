@@ -97,52 +97,58 @@ const UserModal: React.FC = () => {
   return (
     <AddEditModal
       isOpen={isUserModalOpen}
-      modalTitle="Usuario"
+      modalTitle={
+        currentUser.id ? `Editar ${currentUser.name}` : 'Adicionar Usuario'
+      }
       onCancel={handleClose}
       enableEdition={handleEditi}
     >
       <section className={styles.formulary}>
         <form action={handleSubmit}>
           <div className={styles.inputsConteiner}>
-            <input
-              type="name"
-              required
-              name="name"
-              disabled={onEdition}
-              defaultValue={currentUser.name}
-              placeholder="Digite seu nome..."
-              className={styles.input}
-            />
-            <input
-              type="email"
-              required
-              disabled={onEdition}
-              name="email"
-              defaultValue={currentUser.email}
-              placeholder="Digite seu email..."
-              className={styles.input}
-            />
-            {!currentUser.id && (
+            <div>
               <input
-                type="password"
+                type="name"
                 required
+                name="name"
                 disabled={onEdition}
-                name="password"
-                placeholder="Digite a senha..."
+                defaultValue={currentUser.name}
+                placeholder="Digite seu nome..."
                 className={styles.input}
               />
-            )}
+              <input
+                type="email"
+                required
+                disabled={onEdition}
+                name="email"
+                defaultValue={currentUser.email}
+                placeholder="Digite seu email..."
+                className={styles.input}
+              />
+            </div>
+            <div>
+              {!currentUser.id && (
+                <input
+                  type="password"
+                  required
+                  disabled={onEdition}
+                  name="password"
+                  placeholder="Digite a senha..."
+                  className={styles.input}
+                />
+              )}
 
-            <Dropdown
-              disabled={onEdition}
-              defaultValue={currentUser.role}
-              name="role"
-              options={[
-                { label: 'User', value: UserRole.USER },
-                { label: 'Admin', value: UserRole.ADMIN }
-              ]}
-              width="50%"
-            />
+              <Dropdown
+                disabled={onEdition}
+                defaultValue={currentUser.role}
+                name="role"
+                options={[
+                  { label: 'User', value: UserRole.USER },
+                  { label: 'Admin', value: UserRole.ADMIN }
+                ]}
+                width="100%"
+              />
+            </div>
           </div>
 
           <div className={styles.modalFooter}>

@@ -25,16 +25,13 @@ const AddEditModal: React.FC<AddEditModalProps> = ({
             <h1>{modalTitle}</h1>
             <div className={styled.icons}>
               {enableEdition && (
-                <button
-                  className={styled.closeConteiner}
-                  onClick={enableEdition}
-                >
+                <button className={styled.icon} onClick={enableEdition}>
                   <Pencil />
                 </button>
               )}
-              <div className={styled.closeConteiner} onClick={onCancel}>
+              <button className={styled.icon} onClick={onCancel}>
                 <X size={20} />
-              </div>
+              </button>
             </div>
           </div>
           <div className={styled.body}>{children}</div>

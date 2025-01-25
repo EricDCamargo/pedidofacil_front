@@ -1,6 +1,6 @@
 .input {
   height: 40px;
-  width: 50%;
+  width: 100%;
   border: 1px solid var(--gray-100);
   padding: 0 16px;
   border-radius: 8px;
@@ -43,8 +43,13 @@
 }
 .formulary .inputsConteiner {
   display: flex;
-  flex-wrap: wrap;
-  padding: 0 20px;
+  flex-direction: column;
+
+  row-gap: 10px;
+  div {
+    display: flex;
+    gap: 10px;
+  }
 }
 .formulary .modalFooter .date {
   display: flex;

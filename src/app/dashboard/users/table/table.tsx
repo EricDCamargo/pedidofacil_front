@@ -1,6 +1,6 @@
 import { UserProps, UserRole } from '@/types/user'
 import styles from './table.module.css'
-import { Trash2, UserRoundPen, Eye } from 'lucide-react'
+import { Trash2, Eye } from 'lucide-react'
 import { use } from 'react'
 import { UserContext } from '@/providers/user'
 
@@ -20,10 +20,10 @@ export default function Table({ users }: TableProps) {
         <table className={styles.table}>
           <thead>
             <tr className={styles.tableHeader}>
-              <th className={styles.tableCell}>Name</th>
+              <th className={styles.tableCell}>Nome</th>
               <th className={styles.tableCell}>Email</th>
-              <th className={styles.tableCell}>Role</th>
-              <th className={styles.tableCell}>Actions</th>
+              <th className={styles.tableCell}>Permissão</th>
+              <th className={styles.tableCell}>Ações</th>
             </tr>
           </thead>
           <tbody>
