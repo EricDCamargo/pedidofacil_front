@@ -1,6 +1,5 @@
-import { Children, ReactNode } from 'react'
+import { ReactNode } from 'react'
 import styled from './modal.module.css'
-import { Button } from '../button'
 import { Pencil, X } from 'lucide-react'
 
 interface AddEditModalProps {

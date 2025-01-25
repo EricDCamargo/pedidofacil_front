@@ -3,17 +3,25 @@
 import Link from 'next/link'
 import styles from './styles.module.css'
 import Image from 'next/image'
-
-import { LogOutIcon } from 'lucide-react'
 import { deleteCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { UserContext } from '@/providers/user'
-import { use } from 'react'
+import { useContext } from 'react'
+import { LogOutIcon } from 'lucide-react'
 
 export function Header() {
   const router = useRouter()
-  const { loggedUser } = use(UserContext)
+  const { loggedUser } = useContext(UserContext)
+
+  // const pathname = usePathname()
+
+  // const filteredMenuItems =
+  //   loggedUser?.role === UserRole.USER
+  //     ? menuItems.filter(({ href }) =>
+  //         ['/dashboard', '/dashboard/order'].includes(href)
+  //       )
+  //     : menuItems
 
   async function handleLogout() {
     deleteCookie('session', { path: '/' })
@@ -36,12 +44,15 @@ export function Header() {
           />
         </Link>
         {/* <nav>
-          <Link href="/dashboard/category">Categoria</Link>
-          <Link href="/dashboard/product">Produto</Link>
-          <Link href="/dashboard/category">Categoria</Link>
-          <Link href="/dashboard/product">Produto</Link>
-          <Link href="/dashboard/category">Categoria</Link>
-          <Link href="/dashboard/product">Produto</Link>
+          {filteredMenuItems.map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className={pathname === href ? styles.active : ''}
+            >
+              {label}
+            </Link>
+          ))}
         </nav> */}
         <nav>
           <form action={handleLogout}>
