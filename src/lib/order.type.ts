@@ -1,10 +1,5 @@
-export interface TableProps {
-  id: string
-  number: number
-  status: string
-  created_at: string
-  updated_at: string
-}
+import { TableProps } from "@/providers/order"
+
 
 export interface ItemProps {
   id: string
