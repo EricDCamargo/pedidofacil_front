@@ -1,5 +1,7 @@
 import axios, { AxiosError } from 'axios'
 import { AuthTokenError } from './errors/AuthTokenErorr'
+import { getReasonPhrase, StatusCodes } from 'http-status-codes'
+import { toast } from 'sonner'
 
 const HTTTP_STATUS = Object.freeze({
   PENDING: 'PENDING',
@@ -25,20 +27,24 @@ const setupAPIClient = () => {
     baseURL: baseURL
   })
   api.interceptors.response.use(
-    response => {
-      return response
-    },
+    response => response,
     (error: AxiosError) => {
-      if (error.response?.status === 401) {
-        //not authorized user shoud be logged off
-        if (typeof window !== undefined) {
+      const status = error.response?.status
+
+      if (status === StatusCodes.UNAUTHORIZED) {
+        // Usuário não autorizado
+        toast.error('Sessão expirada. Faça login novamente.')
+        if (typeof window !== 'undefined') {
+          // Deslogar usuário aqui se necessário
         } else {
           return Promise.reject(new AuthTokenError())
         }
       }
+
       return Promise.reject(error)
     }
   )
+
   return api
 }
 

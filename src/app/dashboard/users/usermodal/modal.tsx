@@ -1,5 +1,5 @@
 import { use } from 'react'
-import AddEditModal from '../../components/modal'
+import AddEditModal from '../../components/modals/addEdit'
 import { UserContext } from '@/providers/user'
 import styles from './modal.module.css'
 import Dropdown from '../../components/dropDown'
@@ -7,8 +7,11 @@ import { toast } from 'sonner'
 import moment from 'moment'
 import { UserRole } from '@/types/user'
 import { serviceConsumer } from '@/services/service.consumer'
+import { useRouter } from 'next/navigation'
+import { StatusCodes } from 'http-status-codes'
 
 const UserModal: React.FC = () => {
+  const router = useRouter()
   const {
     isUserModalOpen,
     currentUser,
@@ -28,66 +31,71 @@ const UserModal: React.FC = () => {
   const handleSubmit = async (formData: FormData) => {
     const name = formData.get('name')
     const email = formData.get('email')
-    const role = formData.get('role')
+    const role = formData.get('role') as UserRole
     const password = formData.get('password')
 
-    if (!name || !email || !role) {
-      return
-    }
-    if (currentUser.id === loggedUser?.id && role != loggedUser.role) {
+    if (currentUser.id === loggedUser?.id && role !== loggedUser.role) {
       toast.error('Você não pode alterar o seu próprio tipo de usuário!')
       setOnEdition(true)
       return
     }
 
-    if (currentUser.id) {
+    const updateUser = async () => {
       try {
-        const data = {
-          name: name,
-          email: email,
-          role: role as UserRole
-        }
         const res = await serviceConsumer('').executePut(
-          'users',
+          '/users',
           { user_id: currentUser.id },
-          data
+          { name, email, role }
         )
-        if (res.isOk) {
+        if (res.isOk && res.status === StatusCodes.OK) {
           toast.success('Usuário editado com sucesso!')
+          setUserModalOpen(false)
+          router.refresh()
+        } else {
+          toast.error('Erro ao editar')
+          setOnEdition(true)
         }
       } catch (err) {
-        console.log(err)
+        console.error(err)
         toast.error('Erro ao editar')
         setOnEdition(true)
-        return
       }
-    } else {
+    }
+
+    const createUser = async () => {
       if (!password) {
+        toast.error('A senha é obrigatória para cadastro')
         return
       }
+
       try {
-        const data = {
-          name: name,
-          email: email,
-          role: role as UserRole,
-          password: password
-        }
-        const res = await serviceConsumer('').executePost('users', data)
-        if (res.isOk) {
-          toast.success('Usuário criado com sucesso!')
+        const res = await serviceConsumer('').executePost('users', {
+          name,
+          email,
+          role,
+          password
+        })
+
+        if (res.isOk && res.status === StatusCodes.OK) {
+          toast.success(res.message)
           setUserModalOpen(false)
-        }
-        if (res.status === 409) {
-          toast.error('E-mail já cadastrado!')
-          return
+          router.refresh()
+        } else if (res.status === StatusCodes.CONFLICT) {
+          toast.error('Email já cadastrado!')
         }
       } catch (err) {
-        console.log(err)
+        console.error(err)
         toast.error('Erro ao cadastrar')
         setUserModalOpen(false)
         setOnEdition(true)
-        return
       }
+    }
+
+    // DETERMINATE FORM ACTION
+    if (currentUser.id) {
+      await updateUser()
+    } else {
+      await createUser()
     }
   }
 

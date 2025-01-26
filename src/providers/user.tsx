@@ -18,11 +18,13 @@ type UserContextData = {
   loggedUser: UserProps | undefined
   currentUser: UserProps
   isUserModalOpen: boolean
+  isConfirmModalOpen: boolean
   onEdition: boolean
   setOnEdition: Dispatch<SetStateAction<boolean>>
   setLoggedUser: Dispatch<SetStateAction<UserProps | undefined>>
   setcurrentUser: Dispatch<SetStateAction<UserProps>>
   setUserModalOpen: Dispatch<SetStateAction<boolean>>
+  setConfirmModalOpen: Dispatch<SetStateAction<boolean>>
   verifyUser: () => Promise<void>
 }
 
@@ -30,7 +32,7 @@ type UserProviderProps = {
   children: ReactNode
   initialUser?: UserProps | null
 }
-const newUser: UserProps = {
+export const newUser: UserProps = {
   id: '',
   name: '',
   email: '',
@@ -43,7 +45,9 @@ export const UserContext = createContext({} as UserContextData)
 
 export function UserProvider({ children, initialUser }: UserProviderProps) {
   const [isUserModalOpen, setUserModalOpen] = useState<boolean>(false)
+  const [isConfirmModalOpen, setConfirmModalOpen] = useState<boolean>(false)
   const [onEdition, setOnEdition] = useState<boolean>(true)
+
   const [loggedUser, setLoggedUser] = useState<UserProps | undefined>(
     initialUser || undefined
   )
@@ -70,6 +74,8 @@ export function UserProvider({ children, initialUser }: UserProviderProps) {
         loggedUser,
         isUserModalOpen,
         onEdition,
+        isConfirmModalOpen,
+        setConfirmModalOpen,
         setOnEdition,
         setUserModalOpen,
         setcurrentUser,

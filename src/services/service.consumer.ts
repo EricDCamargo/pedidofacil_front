@@ -36,8 +36,8 @@ export const serviceConsumer = (
   },
 
   //Delete
-  executeDelete: async function (url: string) {
-    return await this.executeService(token, 'DELETE', url)
+  executeDelete: async function (url: string, params?: any) {
+    return await this.executeService(token, 'DELETE', url, params)
   },
 
   executeService: async function (

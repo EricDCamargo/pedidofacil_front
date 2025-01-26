@@ -8,11 +8,16 @@ interface TableProps {
   users: UserProps[]
 }
 export default function Table({ users }: TableProps) {
-  const { setcurrentUser, setUserModalOpen } = use(UserContext)
+  const { setcurrentUser, setUserModalOpen, setConfirmModalOpen } =
+    use(UserContext)
 
-  const handleUser = (user: UserProps) => {
+  const handleViewUser = (user: UserProps) => {
     setcurrentUser(user)
     setUserModalOpen(true)
+  }
+  const handleDeleteUser = (user: UserProps) => {
+    setcurrentUser(user)
+    setConfirmModalOpen(true)
   }
   return (
     <div className={styles.tableContainer}>
@@ -50,10 +55,10 @@ export default function Table({ users }: TableProps) {
                 </td>
                 <td className={styles.tableCell}>
                   <div className={styles.actions}>
-                    <button onClick={() => handleUser(user)}>
+                    <button onClick={() => handleViewUser(user)}>
                       <Eye />
                     </button>
-                    <button>
+                    <button onClick={() => handleDeleteUser(user)}>
                       <Trash2 />
                     </button>
                   </div>
