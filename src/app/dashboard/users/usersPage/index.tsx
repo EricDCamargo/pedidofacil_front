@@ -11,7 +11,6 @@ import ConfirmModal from '../../components/modals/confirm'
 import { serviceConsumer } from '@/services/service.consumer'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
-import { StatusCodes } from 'http-status-codes'
 
 interface UsersPageProps {
   users: UserProps[] | []
@@ -36,8 +35,8 @@ export default function UsersPage({ users }: UsersPageProps) {
       const res = await serviceConsumer('').executeDelete('/users', {
         user_id: currentUser.id
       })
-      if (res.isOk && res.status === StatusCodes.OK) {
-        toast.success('Usuario removido com sucesso!')
+      if (res.isOk) {
+        toast.success(res.message)
         setConfirmModalOpen(false)
         setcurrentUser(newUser)
         router.refresh()

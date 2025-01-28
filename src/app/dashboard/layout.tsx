@@ -3,7 +3,8 @@ import { OrderProvider } from '@/providers/order'
 import { PagesMenu } from './components/menu'
 import styles from './layout.module.css'
 import { UserProvider } from '@/providers/user'
-import { getUserServer } from '@/services/retriveUserData'
+import { getUserServer } from '@/services/retriveSSRData/retriveUserData'
+import { TableProvider } from '@/providers/table'
 
 export default async function DashboardLayout({
   children
@@ -15,11 +16,13 @@ export default async function DashboardLayout({
     <div className={styles.grid}>
       <OrderProvider>
         <UserProvider initialUser={user}>
-          <Header />
-          <div className={styles.content}>
-            <PagesMenu />
-            {children}
-          </div>
+          <TableProvider>
+            <Header />
+            <div className={styles.content}>
+              <PagesMenu />
+              {children}
+            </div>
+          </TableProvider>
         </UserProvider>
       </OrderProvider>
     </div>

@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import styled from './modal.module.css'
-import { Pencil, X } from 'lucide-react'
+import { Pencil, Trash, X } from 'lucide-react'
 
 interface AddEditModalProps {
   isOpen: boolean
@@ -8,6 +8,7 @@ interface AddEditModalProps {
   modalTitle: string
   onCancel: () => void
   enableEdition?: VoidFunction
+  onDelete?: () => void
 }
 
 const AddEditModal: React.FC<AddEditModalProps> = ({
@@ -15,7 +16,8 @@ const AddEditModal: React.FC<AddEditModalProps> = ({
   isOpen,
   modalTitle,
   onCancel,
-  enableEdition
+  enableEdition,
+  onDelete
 }: AddEditModalProps) => {
   if (isOpen) {
     return (
@@ -24,6 +26,11 @@ const AddEditModal: React.FC<AddEditModalProps> = ({
           <div className={styled.header}>
             <h1>{modalTitle}</h1>
             <div className={styled.icons}>
+              {onDelete && (
+                <button className={styled.icon} onClick={onDelete}>
+                  <Trash />
+                </button>
+              )}
               {enableEdition && (
                 <button className={styled.icon} onClick={enableEdition}>
                   <Pencil />

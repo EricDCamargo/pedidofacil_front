@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getCookieServer } from '@/lib/cookieServer'
 import { ErrorMessages, UserRole } from './types/user'
-import { getUserServer } from './services/retriveUserData'
+import { getUserServer } from './services/retriveSSRData/retriveUserData'
 
 const protectedRoutesForUser = [
   '/dashboard/product',

@@ -29,8 +29,8 @@ export const serviceConsumer = (
   //Put Method
   executePut: async function (
     url: string,
-    params: any,
-    body: any | Array<any>
+    params?: any,
+    body?: any | Array<any>
   ) {
     return await this.executeService(token, 'PUT', url, params, body)
   },
@@ -69,11 +69,11 @@ export const serviceConsumer = (
       data
     })
       .then(res => {
-        const { data, status, statusText } = res
+        const { data, status } = res
         const successResponse: ResponsePromise = {
-          data: data,
+          data: data.data,
           status: status,
-          message: statusText,
+          message: data.message,
           isOk: true
         }
         if (environment === 'dev') {
@@ -84,11 +84,11 @@ export const serviceConsumer = (
         return successResponse
       })
       .catch(err => {
-        const { message, status } = err
+        const { response, status } = err
         const errorResponse: ResponsePromise = {
           data: [],
           status: status,
-          message: message,
+          message: response?.data?.error,
           isOk: false
         }
         if (environment === 'dev') {

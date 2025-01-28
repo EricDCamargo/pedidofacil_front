@@ -1,55 +1,53 @@
 import { use } from 'react'
-import AddEditModal from '../../components/modals/addEdit'
 import { UserContext } from '@/providers/user'
 import styles from './modal.module.css'
-import Dropdown from '../../components/dropDown'
 import { toast } from 'sonner'
 import moment from 'moment'
 import { UserRole } from '@/types/user'
 import { serviceConsumer } from '@/services/service.consumer'
 import { useRouter } from 'next/navigation'
 import { StatusCodes } from 'http-status-codes'
+import { TableContext } from '@/providers/table'
+import { TableStatus } from '@/lib/table.type'
+import AddEditModal from '@/app/dashboard/components/modals/addEdit'
+import Dropdown from '@/app/dashboard/components/dropDown'
 
-const UserModal: React.FC = () => {
+const TableModal: React.FC = () => {
   const router = useRouter()
   const {
-    isUserModalOpen,
-    currentUser,
-    newUser,
+    currentTable,
+    isTableModalOpen,
+    newTable,
     onEdition,
-    loggedUser,
-    setUserModalOpen,
-    setcurrentUser,
-    setOnEdition
-  } = use(UserContext)
+    setConfirmModalOpen,
+    setTableModalOpen,
+    setOnEdition,
+    setcurrentTable
+  } = use(TableContext)
 
   const handleClose = () => {
-    setUserModalOpen(false)
-    setcurrentUser(newUser)
+    setTableModalOpen(false)
+    setcurrentTable(newTable)
     setOnEdition(true)
   }
   const handleSubmit = async (formData: FormData) => {
-    const name = formData.get('name')
-    const email = formData.get('email')
-    const role = formData.get('role') as UserRole
-    const password = formData.get('password')
+    const number = formData.get('number') as unknown as number
+    const status = formData.get('status') as TableStatus
 
-    if (currentUser.id === loggedUser?.id && role !== loggedUser.role) {
-      toast.error('Você não pode alterar o seu próprio tipo de usuário!')
-      setOnEdition(true)
-      return
-    }
-
-    const updateUser = async () => {
+    const updateTable = async () => {
       try {
         const res = await serviceConsumer('').executePut(
-          '/users',
-          { user_id: currentUser.id },
-          { name, email, role }
+          '/table/status',
+          {},
+          {
+            table_id: currentTable.id,
+            status
+          }
         )
         if (res.isOk && res.status === StatusCodes.OK) {
           toast.success(res.message)
-          setUserModalOpen(false)
+          setTableModalOpen(false)
+          setcurrentTable(newTable)
           router.refresh()
         } else {
           toast.error(res.message)
@@ -62,111 +60,94 @@ const UserModal: React.FC = () => {
       }
     }
 
-    const createUser = async () => {
-
+    const createTable = async () => {
       try {
-        const res = await serviceConsumer('').executePost('users', {
-          name,
-          email,
-          role,
-          password
+        const res = await serviceConsumer('').executePost('/table', {
+          number: number as number
         })
 
         if (res.isOk && res.status === StatusCodes.CREATED) {
           toast.success(res.message)
-          setUserModalOpen(false)
+          setTableModalOpen(false)
+          setcurrentTable(newTable)
           router.refresh()
         } else {
           toast.error(res.message)
         }
       } catch (err) {
         console.error(err)
-        toast.error('Erro ao cadastrar')
-        setUserModalOpen(false)
+        toast.error('Erro ao cadastrar mesa!')
         setOnEdition(true)
       }
     }
 
     // DETERMINATE FORM ACTION
-    if (currentUser.id) {
-      await updateUser()
+    if (currentTable.id) {
+      await updateTable()
     } else {
-      await createUser()
+      await createTable()
     }
   }
 
   const handleEditi = () => {
     setOnEdition(!onEdition)
   }
+
+  const handleDelete = () => {
+    setConfirmModalOpen(true)
+  }
   return (
     <AddEditModal
-      isOpen={isUserModalOpen}
+      isOpen={isTableModalOpen}
       modalTitle={
-        currentUser.id ? `Editar ${currentUser.name}` : 'Adicionar Usuario'
+        currentTable.id
+          ? `Editar Mesa ${currentTable.number}`
+          : 'Adicionar Mesa'
       }
       onCancel={handleClose}
       enableEdition={handleEditi}
+      onDelete={handleDelete}
     >
       <section className={styles.formulary}>
         <form action={handleSubmit}>
           <div className={styles.inputsConteiner}>
             <div>
               <input
-                type="name"
+                type="number"
                 required
-                name="name"
+                name="number"
                 disabled={onEdition}
-                defaultValue={currentUser.name}
-                placeholder="Digite seu nome..."
+                defaultValue={currentTable.number}
+                placeholder="Digite o numero da mesa..."
                 className={styles.input}
               />
-              <input
-                type="email"
-                required
-                disabled={onEdition}
-                name="email"
-                defaultValue={currentUser.email}
-                placeholder="Digite seu email..."
-                className={styles.input}
-              />
-            </div>
-            <div>
-              {!currentUser.id && (
-                <input
-                  type="password"
-                  required
+              {currentTable.id && (
+                <Dropdown
                   disabled={onEdition}
-                  name="password"
-                  placeholder="Digite a senha..."
-                  className={styles.input}
+                  defaultValue={currentTable.status}
+                  name="status"
+                  options={[
+                    { label: 'Disponvel', value: TableStatus.AVAILABLE },
+                    { label: 'Ocupada', value: TableStatus.OCCUPIED }
+                  ]}
+                  width="100%"
                 />
               )}
-
-              <Dropdown
-                disabled={onEdition}
-                defaultValue={currentUser.role}
-                name="role"
-                options={[
-                  { label: 'User', value: UserRole.USER },
-                  { label: 'Admin', value: UserRole.ADMIN }
-                ]}
-                width="100%"
-              />
             </div>
           </div>
 
           <div className={styles.modalFooter}>
             <div className={styles.date}>
-              {currentUser.created_at && currentUser.created_at && (
+              {currentTable.created_at && currentTable.created_at && (
                 <>
                   Criado em:
                   <p>
-                    {moment(currentUser.created_at).format('DD/MM/YY HH:mm')}
+                    {moment(currentTable.created_at).format('DD/MM/YY HH:mm')}
                   </p>
                   <br />
                   Atualizado em:
                   <p>
-                    {moment(currentUser.updated_at).format('DD/MM/YY HH:mm')}
+                    {moment(currentTable.updated_at).format('DD/MM/YY HH:mm')}
                   </p>
                 </>
               )}
@@ -194,4 +175,4 @@ const UserModal: React.FC = () => {
     </AddEditModal>
   )
 }
-export default UserModal
+export default TableModal

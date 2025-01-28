@@ -1,51 +1,25 @@
+'use client'
+
 import Image from 'next/image'
 import styles from './page.module.css'
 import Link from 'next/link'
-import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { serviceConsumer } from '@/services/service.consumer'
 import ToastHandler from '@/lib/toastHandler'
+import { toast } from 'sonner'
+import { useApi } from '@/services/api'
+import { handleLogin } from '@/services/retriveSSRData/retriveUserData'
 
 export default function Home() {
-  async function handleLogin(formData: FormData) {
-    'use server'
+  async function handleClientAction(formData: FormData) {
+    const result = await handleLogin(formData)
 
-    const email = formData.get('email')
-    const password = formData.get('password')
-
-    if (email === '' || password === '') {
-      return
+    if (result.error) {
+      toast.error(result.error)
+    } else if (result.success) {
+      toast.success(result.success)
+      redirect('/dashboard')
     }
-
-    try {
-      const response = await serviceConsumer('').executePost('/session', {
-        email,
-        password
-      })
-
-      if (!response.data.token) {
-        return
-      }
-
-      console.log(response.data)
-
-      const expressTime = 60 * 60 * 24 * 30 * 1000
-
-      const cookieStore = await cookies()
-      cookieStore.set('session', response.data.token, {
-        maxAge: expressTime,
-        path: '/',
-        httpOnly: false,
-        secure: process.env.NODE_ENV === 'production'
-      })
-    } catch (err) {
-      console.log(err)
-      return
-    }
-
-    redirect('/dashboard')
   }
-
   return (
     <>
       <ToastHandler />
@@ -53,7 +27,7 @@ export default function Home() {
         <Image src="/logo.svg" alt="Pedido Facil" width={180} height={38} />
 
         <section className={styles.login}>
-          <form action={handleLogin}>
+          <form action={handleClientAction}>
             <input
               type="email"
               required
