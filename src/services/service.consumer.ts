@@ -22,7 +22,7 @@ export const serviceConsumer = (
   },
 
   //Post Method
-  executePost: async function (url: string, body: any | Array<any>) {
+  executePost: async function (url: string, body: FormData | any | Array<any>) {
     return await this.executeService(token, 'POST', url, '', body)
   },
 
@@ -30,7 +30,7 @@ export const serviceConsumer = (
   executePut: async function (
     url: string,
     params?: any,
-    body?: any | Array<any>
+    body?: FormData | any | Array<any>
   ) {
     return await this.executeService(token, 'PUT', url, params, body)
   },
@@ -45,7 +45,7 @@ export const serviceConsumer = (
     method: 'GET' | 'POST' | 'DELETE' | 'PUT',
     url: string,
     params?: any,
-    data?: any | Array<any>
+    data?: FormData | any | Array<any>
   ): Promise<ResponsePromise> {
     const getToken = () => {
       if (token) {
@@ -54,9 +54,11 @@ export const serviceConsumer = (
         return getCookieClient()
       }
     }
-    let headers = {
-      Authorization: `Bearer ${getToken()}`,
-      'Content-Type': 'application/json'
+    let headers: Record<string, string> = {
+      Authorization: `Bearer ${getToken()}`
+    }
+    if (!(data instanceof FormData)) {
+      headers['Content-Type'] = 'application/json'
     }
 
     let response

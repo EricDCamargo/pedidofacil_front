@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import { toast } from 'sonner'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { ErrorMessages } from '@/types/user'
+import { ErrorMessages } from '@/types/user.type'
 
 export default function ToastHandler() {
   const searchParams = useSearchParams()

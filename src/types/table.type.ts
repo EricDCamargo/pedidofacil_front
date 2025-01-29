@@ -10,9 +10,3 @@ export enum TableStatus {
   OCCUPIED = 'OCCUPIED',
   RESERVED = 'RESERVED'
 }
-enum OrderStatus {
-  DRAFT = 'DRAFT',
-  IN_PROGRESS = 'IN_PROGRESS',
-  COMPLETED = 'COMPLETED',
-  CLOSED = 'CLOSED'
-}

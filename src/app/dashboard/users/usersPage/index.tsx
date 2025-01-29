@@ -2,11 +2,11 @@
 
 import styles from './styles.module.css'
 import { UserRoundPlus } from 'lucide-react'
-import { UserProps } from '@/types/user'
+import { UserProps } from '@/types/user.type'
 import { newUser, UserContext } from '@/providers/user'
 import { useContext } from 'react'
-import UserModal from '../usermodal/modal'
-import Table from '../table/table'
+import UserModal from '../userModal/modal'
+import UserTable from '../table/table'
 import ConfirmModal from '../../components/modals/confirm'
 import { serviceConsumer } from '@/services/service.consumer'
 import { toast } from 'sonner'
@@ -65,7 +65,7 @@ export default function UsersPage({ users }: UsersPageProps) {
           <UserRoundPlus />
         </button>
       </div>
-      <Table users={users} />
+      <UserTable users={users} />
       <UserModal />
       <ConfirmModal
         modalText={{

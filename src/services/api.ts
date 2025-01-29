@@ -49,6 +49,10 @@ const setupAPIClient = () => {
 }
 
 const api = setupAPIClient()
-const useApi = () => ({})
+const useApi = () => ({
+  a: ()=>{
+    
+  }
+})
 
 export { api, HTTTP_STATUS, debug, useApi }

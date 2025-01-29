@@ -5,7 +5,7 @@ import Link from 'next/link'
 import styles from './styles.module.css'
 import { UserContext } from '@/providers/user'
 import { useContext } from 'react'
-import { UserRole } from '@/types/user'
+import { UserRole } from '@/types/user.type'
 import { menuItems } from '@/utils/paths'
 
 export const PagesMenu = () => {

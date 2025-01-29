@@ -1,6 +1,6 @@
 import { Orders } from './components/orders'
 import { getCookieServer } from '@/lib/cookieServer'
-import { OrderProps } from '@/lib/order.type'
+import { OrderProps } from '@/types/order.type'
 import { serviceConsumer } from '@/services/service.consumer'
 import ToastHandler from '@/lib/toastHandler'
 

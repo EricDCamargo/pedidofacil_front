@@ -1,16 +1,14 @@
 import { getCookieServer } from '@/lib/cookieServer'
-import { Table } from '@/types/table.type'
 import { serviceConsumer } from '../service.consumer'
+import { CategoryProps } from '@/types/category.type'
 
-async function getTables(): Promise<Table[] | []> {
+export async function getCategories(): Promise<CategoryProps[] | []> {
   try {
     const token = await getCookieServer()
-    const response = await serviceConsumer(token).executeGet('/tables')
+    const response = await serviceConsumer(token).executeGet('/category')
     return response.data || []
   } catch (err) {
     console.log(err)
     return []
   }
 }
-
-export { getTables }

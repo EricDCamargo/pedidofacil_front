@@ -5,7 +5,7 @@ import styles from './modal.module.css'
 import Dropdown from '../../components/dropDown'
 import { toast } from 'sonner'
 import moment from 'moment'
-import { UserRole } from '@/types/user'
+import { UserRole } from '@/types/user.type'
 import { serviceConsumer } from '@/services/service.consumer'
 import { useRouter } from 'next/navigation'
 import { StatusCodes } from 'http-status-codes'
@@ -63,7 +63,6 @@ const UserModal: React.FC = () => {
     }
 
     const createUser = async () => {
-
       try {
         const res = await serviceConsumer('').executePost('users', {
           name,

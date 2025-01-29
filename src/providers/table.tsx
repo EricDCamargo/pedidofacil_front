@@ -7,7 +7,7 @@ import {
   Dispatch,
   SetStateAction
 } from 'react'
-import { Table, TableStatus } from '@/lib/table.type'
+import { Table, TableStatus } from '@/types/table.type'
 
 type TableContextData = {
   newTable: Table

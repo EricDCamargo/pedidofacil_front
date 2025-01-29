@@ -1,4 +1,4 @@
-import { UserProps, UserRole } from '@/types/user'
+import { UserProps, UserRole } from '@/types/user.type'
 import styles from './table.module.css'
 import { Trash2, Eye } from 'lucide-react'
 import { use } from 'react'
@@ -7,7 +7,7 @@ import { UserContext } from '@/providers/user'
 interface TableProps {
   users: UserProps[]
 }
-export default function Table({ users }: TableProps) {
+export default function UserTable({ users }: TableProps) {
   const { setcurrentUser, setUserModalOpen, setConfirmModalOpen } =
     use(UserContext)
 

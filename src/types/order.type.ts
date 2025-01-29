@@ -1,5 +1,4 @@
-import { TableProps } from "@/providers/order"
-
+import { TableProps } from '@/providers/order'
 
 export interface ItemProps {
   id: string
@@ -31,4 +30,11 @@ export interface OrderProps {
   items: ItemProps[]
   table: TableProps
   payments: any[]
+}
+
+enum OrderStatus {
+  DRAFT = 'DRAFT',
+  IN_PROGRESS = 'IN_PROGRESS',
+  COMPLETED = 'COMPLETED',
+  CLOSED = 'CLOSED'
 }

@@ -1,7 +1,7 @@
 'use server'
 
 import { serviceConsumer } from '@/services/service.consumer'
-import { UserProps } from '@/types/user'
+import { UserProps } from '@/types/user.type'
 import { getCookieServer } from '@/lib/cookieServer'
 import { StatusCodes } from 'http-status-codes'
 import { cookies } from 'next/headers'

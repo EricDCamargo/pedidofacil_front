@@ -9,7 +9,7 @@ import {
   SetStateAction
 } from 'react'
 import { toast } from 'sonner'
-import { UserProps, UserRole } from '@/types/user'
+import { UserProps, UserRole } from '@/types/user.type'
 import { serviceConsumer } from '@/services/service.consumer'
 import { getCookieClient } from '@/lib/cookieClient'
 

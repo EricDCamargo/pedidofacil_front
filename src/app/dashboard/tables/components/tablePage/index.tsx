@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import styles from './styles.module.css'
-import { Table, TableStatus } from '@/lib/table.type'
+import { Table, TableStatus } from '@/types/table.type'
 import { LayoutGrid } from 'lucide-react'
 import { TableContext } from '@/providers/table'
 import { useContext } from 'react'
