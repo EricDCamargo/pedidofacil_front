@@ -2,18 +2,14 @@
 
 import { ChangeEvent, useContext, useEffect, useState } from 'react'
 import styles from './styles.module.css'
-import { ArrowBigLeft, UploadCloud } from 'lucide-react'
+import { ArrowBigLeft, Pencil, UploadCloud } from 'lucide-react'
 import Image from 'next/image'
 import { Button } from '@/app/dashboard/components/button'
 import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
 import { ProductContext } from '@/providers/product'
 import { CategoryProps } from '@/types/category.type'
-import { serviceConsumer } from '@/services/service.consumer'
-import { StatusCodes } from 'http-status-codes'
 import Dropdown from '@/app/dashboard/components/dropDown'
-import { getCookieClient } from '@/lib/cookieClient'
-import { api } from '@/services/api'
+import { formatCurrency } from '@/utils'
 
 interface Props {
   categories: CategoryProps[]
@@ -25,98 +21,48 @@ export function AddProduct({ isOpen, categories }: Props) {
     setProductModalOpen,
     setCurrentProduct,
     setOnEdition,
+    createProcuct,
+    updateProcuct,
     newProduct,
     currentProduct,
     onEdition
   } = useContext(ProductContext)
-  const router = useRouter()
   const [image, setImage] = useState<File>()
   const [previewImage, setPreviewImage] = useState(currentProduct.banner)
+  const [price, setPrice] = useState<string>('')
 
   useEffect(() => {
     setPreviewImage(currentProduct.banner)
+    setPrice(currentProduct.price.toString())
   }, [currentProduct])
+
+  const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value.replace(/\D/g, '')
+    setPrice(rawValue)
+  }
 
   async function handleSubmit(formData: FormData) {
     const name = formData.get('name')
-    const price = formData.get('price')
     const category_id = formData.get('category')
     const description = formData.get('description')
 
-    if (!name || !category_id || !price || !description || !image) {
+    if (!name || !category_id || !price || !description || !previewImage) {
       toast.warning('Preencha todos os campos!')
       return
     }
-    const getFormData = (): FormData => {
-      const data = new FormData()
 
-      data.append('name', name)
-      data.append('price', price)
-      data.append('description', description)
-      data.append('category_id', category_id)
-      data.append('file', image)
+    const data = new FormData()
 
-      return data
-    }
+    data.append('name', name)
+    data.append('price', price)
+    data.append('description', description)
+    data.append('category_id', category_id)
+    data.append('file', image!)
 
-    const createProcuct = async () => {
-      try {
-        const data = new FormData()
-
-        data.append('name', name)
-        data.append('price', price)
-        data.append('description', description)
-        data.append('category_id', category_id)
-        data.append('file', image)
-
-        const res = await serviceConsumer('').executePost(
-          '/product',
-          getFormData()
-        )
-        if (res.isOk && res.status === StatusCodes.CREATED) {
-          toast.success(res.message)
-          setProductModalOpen(false)
-          setCurrentProduct(newProduct)
-          router.refresh()
-        } else {
-          toast.error(res.message)
-          setOnEdition(true)
-        }
-      } catch (err) {
-        console.error(err)
-        toast.error('Erro ao cadastrar produto!')
-        setOnEdition(true)
-      }
-    }
-    const updateProcuct = async () => {
-      try {
-        const res = await serviceConsumer('').executePut(
-          '/product',
-          { product_id: currentProduct.id },
-
-          getFormData()
-        )
-        if (res.isOk && res.status === StatusCodes.OK) {
-          toast.success(res.message)
-          setProductModalOpen(false)
-          setCurrentProduct(newProduct)
-          router.refresh()
-        } else {
-          toast.error(res.message)
-          setOnEdition(true)
-        }
-      } catch (err) {
-        console.error(err)
-        toast.error('Erro ao editar produto!')
-        setOnEdition(true)
-      }
-    }
-
-    // DETERMINATE FORM ACTION
     if (currentProduct.id) {
-      await updateProcuct()
+      await updateProcuct(data)
     } else {
-      await createProcuct()
+      await createProcuct(data)
     }
   }
 
@@ -137,6 +83,8 @@ export function AddProduct({ isOpen, categories }: Props) {
   const handlePreviousPage = () => {
     setProductModalOpen(false)
     setCurrentProduct(newProduct)
+    setPreviewImage('')
+    setPrice('')
   }
 
   const categoryOptions = categories.map(category => ({
@@ -148,26 +96,40 @@ export function AddProduct({ isOpen, categories }: Props) {
       <main className={styles.backgroundModal}>
         <div className={styles.container}>
           <div className={styles.header}>
-            <button onClick={handlePreviousPage}>
-              <ArrowBigLeft size={40} />
-            </button>
+            <div className={styles.title}>
+              <button onClick={handlePreviousPage}>
+                <ArrowBigLeft size={40} />
+              </button>
 
-            <h1>
-              {currentProduct.id
-                ? `Editar produto ${currentProduct.name}`
-                : 'Novo produto'}
-            </h1>
+              <h1>
+                {currentProduct.id
+                  ? `Editar produto ${currentProduct.name}`
+                  : 'Novo produto'}
+              </h1>
+            </div>
+
+            <div style={{ display: 'flex', gap: 10 }}>
+              <h2>Editar</h2>
+              <button onClick={() => setOnEdition(!onEdition)}>
+                <Pencil />
+              </button>
+            </div>
           </div>
           <form className={styles.form} action={handleSubmit}>
-            <label className={styles.labelImage}>
-              <span>
-                <UploadCloud size={30} color="#FFF" />
+            <label
+              className={`${styles.labelImage}  ${
+                previewImage ? styles.previewActive : ''
+              }`}
+            >
+              <span className={`${!onEdition && styles.spanIcon}`}>
+                <UploadCloud size={30} />
               </span>
 
               <input
                 type="file"
                 accept="image/png, image/jpeg"
-                required
+                required={!previewImage && true}
+                disabled={onEdition}
                 onChange={handleFile}
               />
 
@@ -183,6 +145,7 @@ export function AddProduct({ isOpen, categories }: Props) {
               )}
             </label>
             <Dropdown
+              disabled={onEdition}
               defaultValue={currentProduct.category.name}
               name="category"
               options={categoryOptions}
@@ -192,6 +155,7 @@ export function AddProduct({ isOpen, categories }: Props) {
             <input
               type="text"
               name="name"
+              disabled={onEdition}
               defaultValue={currentProduct.name}
               placeholder="Digite o nome do produto..."
               required
@@ -199,17 +163,20 @@ export function AddProduct({ isOpen, categories }: Props) {
             />
 
             <input
-              type="number"
+              type="text"
               name="price"
-              defaultValue={currentProduct.price}
-              placeholder="Preço do produto..."
+              value={formatCurrency(price)}
+              onChange={handlePriceChange}
+              disabled={onEdition}
               required
               className={styles.input}
+              placeholder="Preço do produto..."
             />
 
             <textarea
               className={styles.input}
               placeholder="Digite a descrição do produto..."
+              disabled={onEdition}
               required
               defaultValue={currentProduct.description}
               name="description"

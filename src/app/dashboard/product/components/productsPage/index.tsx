@@ -17,15 +17,18 @@ export default function ProductsPage({
   products,
   categories
 }: PrductsPageProps) {
-  const { isProductModalOpen, setProductModalOpen } = useContext(ProductContext)
+  const { isProductModalOpen, setProductModalOpen, setOnEdition } =
+    useContext(ProductContext)
+
+  const handleAddProduct = () => {
+    setProductModalOpen(true)
+    setOnEdition(false)
+  }
   return (
     <div className={styles.container}>
       <div className={styles.productHeader}>
         <h1>Lista de produtos</h1>
-        <button
-          className={styles.addProduct}
-          onClick={() => setProductModalOpen(true)}
-        >
+        <button className={styles.addProduct} onClick={handleAddProduct}>
           <p>Adicionar Produto</p>
           <UserRoundPlus />
         </button>

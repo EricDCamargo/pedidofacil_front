@@ -1,16 +1,15 @@
-import { UserProps, UserRole } from '@/types/user.type'
 import styles from './product.module.css'
 import { Trash2, Eye } from 'lucide-react'
-import { use, useContext } from 'react'
-import { UserContext } from '@/providers/user'
-import { ProductProps } from '@/providers/order'
+import { useContext } from 'react'
 import Image from 'next/image'
 import { ProductContext } from '@/providers/product'
+import { ProductProps } from '@/types/product.type'
+import { formatCurrency } from '@/utils'
 
-interface TableProps {
+interface ProductTableProps {
   products: ProductProps[]
 }
-export default function ProductTable({ products }: TableProps) {
+export default function ProductTable({ products }: ProductTableProps) {
   const { setProductModalOpen, setCurrentProduct } = useContext(ProductContext)
   const handleViewProduct = (product: ProductProps) => {
     setCurrentProduct(product)
@@ -45,7 +44,7 @@ export default function ProductTable({ products }: TableProps) {
                   <p>{product.name}</p>
                 </td>
                 <td className={styles.tableCell}>
-                  <p>R$ {product.price}</p>
+                  <p>{formatCurrency(product.price.toString())}</p>
                 </td>
                 <td className={styles.tableCell}>
                   <p>{product.description}</p>

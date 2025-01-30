@@ -1,6 +1,9 @@
 'use client'
 
-import { NewProductProps, ProductProps } from '@/types/product.type'
+import { serviceConsumer } from '@/services/service.consumer'
+import { ProductProps } from '@/types/product.type'
+import { StatusCodes } from 'http-status-codes'
+import { useRouter } from 'next/navigation'
 import {
   createContext,
   Dispatch,
@@ -8,6 +11,7 @@ import {
   SetStateAction,
   useState
 } from 'react'
+import { toast } from 'sonner'
 
 type ProductContextData = {
   isProductModalOpen: boolean
@@ -17,6 +21,8 @@ type ProductContextData = {
   setOnEdition: Dispatch<SetStateAction<boolean>>
   setProductModalOpen: Dispatch<SetStateAction<boolean>>
   setCurrentProduct: Dispatch<SetStateAction<ProductProps>>
+  createProcuct: (DATA: FormData) => Promise<void>
+  updateProcuct: (DATA: FormData) => Promise<void>
 }
 
 type ProductProviderProps = {
@@ -43,9 +49,51 @@ const newProduct: ProductProps = {
 }
 
 export function ProductProvider({ children }: ProductProviderProps) {
+  const router = useRouter()
   const [onEdition, setOnEdition] = useState<boolean>(true)
   const [isProductModalOpen, setProductModalOpen] = useState(false)
   const [currentProduct, setCurrentProduct] = useState<ProductProps>(newProduct)
+
+  const createProcuct = async (DATA: FormData) => {
+    try {
+      const res = await serviceConsumer('').executePost('/product', DATA)
+      if (res.isOk && res.status === StatusCodes.CREATED) {
+        toast.success(res.message)
+        setProductModalOpen(false)
+        setCurrentProduct(newProduct)
+        router.refresh()
+      } else {
+        toast.error(res.message)
+        setOnEdition(true)
+      }
+    } catch (err) {
+      console.error(err)
+      toast.error('Erro ao cadastrar produto!')
+      setOnEdition(true)
+    }
+  }
+  const updateProcuct = async (DATA: FormData) => {
+    try {
+      const res = await serviceConsumer('').executePut(
+        '/product',
+        { product_id: currentProduct.id },
+        DATA
+      )
+      if (res.isOk && res.status === StatusCodes.OK) {
+        toast.success(res.message)
+        setProductModalOpen(false)
+        setCurrentProduct(newProduct)
+        router.refresh()
+      } else {
+        toast.error(res.message)
+        setOnEdition(true)
+      }
+    } catch (err) {
+      console.error(err)
+      toast.error('Erro ao editar produto!')
+      setOnEdition(true)
+    }
+  }
 
   return (
     <ProductContext.Provider
@@ -56,7 +104,9 @@ export function ProductProvider({ children }: ProductProviderProps) {
         onEdition,
         setOnEdition,
         setProductModalOpen,
-        setCurrentProduct
+        setCurrentProduct,
+        createProcuct,
+        updateProcuct
       }}
     >
       {children}
