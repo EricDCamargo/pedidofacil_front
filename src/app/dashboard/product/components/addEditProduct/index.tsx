@@ -16,7 +16,7 @@ interface Props {
   isOpen: boolean
 }
 
-export function AddProduct({ isOpen, categories }: Props) {
+export function AddEditProduct({ isOpen, categories }: Props) {
   const {
     setProductModalOpen,
     setCurrentProduct,
@@ -190,7 +190,11 @@ export function AddProduct({ isOpen, categories }: Props) {
               name="description"
             />
 
-            <Button name="Cadastrar produto" type="submit" />
+            <Button
+              style={{ width: '100%' }}
+              name="Salvar produto"
+              type="submit"
+            />
           </form>
         </div>
       </main>

@@ -8,7 +8,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   type: 'button' | 'submit' | 'reset' | undefined
 }
 
-export function Button({ name, onClick, type }: ButtonProps) {
+export function Button({ name, onClick, type, ...rest }: ButtonProps) {
   const { pending } = useFormStatus()
 
   return (
@@ -17,6 +17,7 @@ export function Button({ name, onClick, type }: ButtonProps) {
       disabled={pending}
       className={styles.button}
       onClick={onClick}
+      {...rest}
     >
       {pending ? 'Carregando...' : name}
     </button>

@@ -7,7 +7,7 @@ import styles from './styles.module.css'
 import ProductTable from '../table/product.table'
 import { useContext } from 'react'
 import { ProductContext } from '@/providers/product'
-import { AddProduct } from '../addproduct'
+import { AddEditProduct } from '../addEditProduct'
 import ConfirmModal from '@/app/dashboard/components/modals/confirm'
 
 interface PrductsPageProps {
@@ -48,7 +48,7 @@ export default function ProductsPage({
         </button>
       </div>
       <ProductTable products={products} />
-      <AddProduct isOpen={isProductModalOpen} categories={categories} />
+      <AddEditProduct isOpen={isProductModalOpen} categories={categories} />
       <ConfirmModal
         modalText={{
           title: 'Remover Produto',
