@@ -1,7 +1,8 @@
 'use client'
 
+import { toast } from 'sonner'
 import { serviceConsumer } from '@/services/service.consumer'
-import { ProductProps } from '@/types/product.type'
+import { CurrentProductProps } from '@/types/product.type'
 import { StatusCodes } from 'http-status-codes'
 import { useRouter } from 'next/navigation'
 import {
@@ -9,22 +10,22 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
+  useEffect,
   useState
 } from 'react'
-import { toast } from 'sonner'
 
 type ProductContextData = {
   isProductModalOpen: boolean
-  newProduct: ProductProps
-  currentProduct: ProductProps
+  INITIAL_PRODUCT: CurrentProductProps
+  currentProduct: CurrentProductProps
   onEdition: boolean
   isConfirmModalOpen: boolean
   setOnEdition: Dispatch<SetStateAction<boolean>>
   setConfirmModalOpen: Dispatch<SetStateAction<boolean>>
   setProductModalOpen: Dispatch<SetStateAction<boolean>>
-  setCurrentProduct: Dispatch<SetStateAction<ProductProps>>
-  createProcuct: (DATA: FormData) => Promise<void>
-  updateProcuct: (DATA: FormData) => Promise<void>
+  setCurrentProduct: Dispatch<SetStateAction<CurrentProductProps>>
+  handleProductSubmit: (DATA: FormData) => Promise<void>
+  handleDelete: () => Promise<void>
 }
 
 type ProductProviderProps = {
@@ -33,21 +34,12 @@ type ProductProviderProps = {
 
 export const ProductContext = createContext({} as ProductContextData)
 
-const newProduct: ProductProps = {
-  id: '',
+const INITIAL_PRODUCT: CurrentProductProps = {
   name: '',
   price: 0,
   description: '',
   banner: '',
-  category_id: '',
-  created_at: '',
-  updated_at: '',
-  category: {
-    id: '',
-    name: '',
-    created_at: '',
-    updated_at: ''
-  }
+  category_id: ''
 }
 
 export function ProductProvider({ children }: ProductProviderProps) {
@@ -55,46 +47,60 @@ export function ProductProvider({ children }: ProductProviderProps) {
   const [onEdition, setOnEdition] = useState<boolean>(true)
   const [isProductModalOpen, setProductModalOpen] = useState(false)
   const [isConfirmModalOpen, setConfirmModalOpen] = useState<boolean>(false)
-  const [currentProduct, setCurrentProduct] = useState<ProductProps>(newProduct)
+  const [currentProduct, setCurrentProduct] =
+    useState<CurrentProductProps>(INITIAL_PRODUCT)
 
-  const createProcuct = async (DATA: FormData) => {
+  useEffect(() => {
+    console.log(currentProduct)
+  }, [currentProduct])
+
+  const handleProductSubmit = async (DATA: FormData) => {
+    const isUpdate = !!currentProduct.id
     try {
-      const res = await serviceConsumer('').executePost('/product', DATA)
-      if (res.isOk && res.status === StatusCodes.CREATED) {
+      const res = isUpdate
+        ? await serviceConsumer('').executePut(
+            '/product',
+            { product_id: currentProduct.id },
+            DATA
+          )
+        : await serviceConsumer('').executePost('/product', DATA)
+
+      if (
+        res.isOk &&
+        (res.status === StatusCodes.CREATED || res.status === StatusCodes.OK)
+      ) {
         toast.success(res.message)
         setProductModalOpen(false)
-        setCurrentProduct(newProduct)
+        setCurrentProduct(INITIAL_PRODUCT)
+        setOnEdition(true)
         router.refresh()
       } else {
         toast.error(res.message)
-        setOnEdition(true)
       }
     } catch (err) {
       console.error(err)
-      toast.error('Erro ao cadastrar produto!')
+      toast.error(`Erro ao ${isUpdate ? 'editar' : 'cadastrar'} produto!`)
       setOnEdition(true)
     }
   }
-  const updateProcuct = async (DATA: FormData) => {
+
+  const handleDelete = async () => {
+    if (!currentProduct.id) {
+      return
+    }
     try {
-      const res = await serviceConsumer('').executePut(
-        '/product',
-        { product_id: currentProduct.id },
-        DATA
-      )
-      if (res.isOk && res.status === StatusCodes.OK) {
+      const res = await serviceConsumer('').executeDelete('/product', {
+        product_id: currentProduct.id
+      })
+      if (res.isOk) {
         toast.success(res.message)
-        setProductModalOpen(false)
-        setCurrentProduct(newProduct)
+        setConfirmModalOpen(false)
+        setCurrentProduct(INITIAL_PRODUCT)
         router.refresh()
-      } else {
-        toast.error(res.message)
-        setOnEdition(true)
       }
     } catch (err) {
-      console.error(err)
-      toast.error('Erro ao editar produto!')
-      setOnEdition(true)
+      console.log(err)
+      toast.error('Erro ao remover produto!')
     }
   }
 
@@ -103,15 +109,15 @@ export function ProductProvider({ children }: ProductProviderProps) {
       value={{
         currentProduct,
         isProductModalOpen,
-        newProduct,
+        INITIAL_PRODUCT,
         onEdition,
         isConfirmModalOpen,
         setConfirmModalOpen,
         setOnEdition,
         setProductModalOpen,
         setCurrentProduct,
-        createProcuct,
-        updateProcuct
+        handleProductSubmit,
+        handleDelete
       }}
     >
       {children}

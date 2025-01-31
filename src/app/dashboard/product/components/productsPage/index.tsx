@@ -2,16 +2,13 @@
 
 import { CategoryProps } from '@/types/category.type'
 import { ProductProps } from '@/types/product.type'
-import { UserRoundPlus } from 'lucide-react'
+import { CirclePlus } from 'lucide-react'
 import styles from './styles.module.css'
 import ProductTable from '../table/product.table'
 import { useContext } from 'react'
 import { ProductContext } from '@/providers/product'
 import { AddProduct } from '../addproduct'
 import ConfirmModal from '@/app/dashboard/components/modals/confirm'
-import { serviceConsumer } from '@/services/service.consumer'
-import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
 
 interface PrductsPageProps {
   products: ProductProps[]
@@ -21,37 +18,17 @@ export default function ProductsPage({
   products,
   categories
 }: PrductsPageProps) {
-  const router = useRouter()
   const {
-    newProduct,
+    INITIAL_PRODUCT,
     currentProduct,
     isConfirmModalOpen,
     isProductModalOpen,
     setProductModalOpen,
     setOnEdition,
     setConfirmModalOpen,
-    setCurrentProduct
+    setCurrentProduct,
+    handleDelete
   } = useContext(ProductContext)
-
-  const handleDelete = async () => {
-    if (!currentProduct.id) {
-      return
-    }
-    try {
-      const res = await serviceConsumer('').executeDelete('/product', {
-        product_id: currentProduct.id
-      })
-      if (res.isOk) {
-        toast.success(res.message)
-        setConfirmModalOpen(false)
-        setCurrentProduct(newProduct)
-        router.refresh()
-      }
-    } catch (err) {
-      console.log(err)
-      toast.error('Erro ao remover produto!')
-    }
-  }
 
   const handleAddProduct = () => {
     setProductModalOpen(true)
@@ -59,7 +36,7 @@ export default function ProductsPage({
   }
   const handleCancel = () => {
     setConfirmModalOpen(false)
-    setCurrentProduct(newProduct)
+    setCurrentProduct(INITIAL_PRODUCT)
   }
   return (
     <div className={styles.container}>
@@ -67,7 +44,7 @@ export default function ProductsPage({
         <h1>Lista de produtos</h1>
         <button className={styles.addProduct} onClick={handleAddProduct}>
           <p>Adicionar Produto</p>
-          <UserRoundPlus />
+          <CirclePlus />
         </button>
       </div>
       <ProductTable products={products} />

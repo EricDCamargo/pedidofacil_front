@@ -3,7 +3,7 @@ import { Trash2, Eye } from 'lucide-react'
 import { useContext } from 'react'
 import Image from 'next/image'
 import { ProductContext } from '@/providers/product'
-import { ProductProps } from '@/types/product.type'
+import { formatProduct, ProductProps } from '@/types/product.type'
 import { formatCurrency } from '@/utils'
 
 interface ProductTableProps {
@@ -13,11 +13,11 @@ export default function ProductTable({ products }: ProductTableProps) {
   const { setProductModalOpen, setCurrentProduct, setConfirmModalOpen } =
     useContext(ProductContext)
   const handleViewProduct = (product: ProductProps) => {
-    setCurrentProduct(product)
+    setCurrentProduct(formatProduct(product))
     setProductModalOpen(true)
   }
   const handleDeleteProduct = (product: ProductProps) => {
-    setCurrentProduct(product)
+    setCurrentProduct(formatProduct(product))
     setConfirmModalOpen(true)
   }
   return (

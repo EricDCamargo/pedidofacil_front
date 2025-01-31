@@ -21,14 +21,13 @@ export function AddProduct({ isOpen, categories }: Props) {
     setProductModalOpen,
     setCurrentProduct,
     setOnEdition,
-    createProcuct,
-    updateProcuct,
-    newProduct,
+    handleProductSubmit,
+    INITIAL_PRODUCT,
     currentProduct,
     onEdition
   } = useContext(ProductContext)
   const [image, setImage] = useState<File>()
-  const [previewImage, setPreviewImage] = useState(currentProduct.banner)
+  const [previewImage, setPreviewImage] = useState<string>('')
   const [price, setPrice] = useState<string>('')
 
   useEffect(() => {
@@ -49,7 +48,10 @@ export function AddProduct({ isOpen, categories }: Props) {
     setPrice(floatValue)
   }
 
-  async function handleSubmit(formData: FormData) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+
+    const formData = new FormData(event.currentTarget)
     const name = formData.get('name')
     const category_id = formData.get('category')
     const description = formData.get('description')
@@ -67,11 +69,7 @@ export function AddProduct({ isOpen, categories }: Props) {
     data.append('category_id', category_id)
     data.append('file', image!)
 
-    if (currentProduct.id) {
-      await updateProcuct(data)
-    } else {
-      await createProcuct(data)
-    }
+    await handleProductSubmit(data)
   }
 
   function handleFile(e: ChangeEvent<HTMLInputElement>) {
@@ -90,7 +88,7 @@ export function AddProduct({ isOpen, categories }: Props) {
 
   const handlePreviousPage = () => {
     setProductModalOpen(false)
-    setCurrentProduct(newProduct)
+    setCurrentProduct(INITIAL_PRODUCT)
     setPreviewImage('')
     setPrice('')
   }
@@ -116,14 +114,16 @@ export function AddProduct({ isOpen, categories }: Props) {
               </h1>
             </div>
 
-            <div style={{ display: 'flex', gap: 10 }}>
-              <h2>Editar</h2>
-              <button onClick={() => setOnEdition(!onEdition)}>
-                <Pencil />
-              </button>
-            </div>
+            {currentProduct.id && (
+              <div style={{ display: 'flex', gap: 10 }}>
+                <h2>Editar</h2>
+                <button onClick={() => setOnEdition(!onEdition)}>
+                  <Pencil />
+                </button>
+              </div>
+            )}
           </div>
-          <form className={styles.form} action={handleSubmit}>
+          <form className={styles.form} onSubmit={handleSubmit}>
             <label
               className={`${styles.labelImage}  ${
                 previewImage ? styles.previewActive : ''
@@ -136,7 +136,7 @@ export function AddProduct({ isOpen, categories }: Props) {
               <input
                 type="file"
                 accept="image/png, image/jpeg"
-                required={!previewImage && true}
+                required={!previewImage}
                 disabled={onEdition}
                 onChange={handleFile}
               />
@@ -154,7 +154,7 @@ export function AddProduct({ isOpen, categories }: Props) {
             </label>
             <Dropdown
               disabled={onEdition}
-              defaultValue={currentProduct.category.name}
+              defaultValue={currentProduct.category_id}
               name="category"
               options={categoryOptions}
               width="100%"
