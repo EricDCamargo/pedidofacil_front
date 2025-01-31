@@ -10,12 +10,16 @@ interface ProductTableProps {
   products: ProductProps[]
 }
 export default function ProductTable({ products }: ProductTableProps) {
-  const { setProductModalOpen, setCurrentProduct } = useContext(ProductContext)
+  const { setProductModalOpen, setCurrentProduct, setConfirmModalOpen } =
+    useContext(ProductContext)
   const handleViewProduct = (product: ProductProps) => {
     setCurrentProduct(product)
     setProductModalOpen(true)
   }
-  const handleDeleteProduct = (product: ProductProps) => {}
+  const handleDeleteProduct = (product: ProductProps) => {
+    setCurrentProduct(product)
+    setConfirmModalOpen(true)
+  }
   return (
     <div className={styles.tableContainer}>
       <div className={styles.tableWrapper}>

@@ -37,8 +37,16 @@ export function AddProduct({ isOpen, categories }: Props) {
   }, [currentProduct])
 
   const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const rawValue = e.target.value.replace(/\D/g, '')
-    setPrice(rawValue)
+    let rawValue = e.target.value.replace(/\D/g, '')
+
+    if (rawValue === '') {
+      setPrice('0')
+      return
+    }
+    const paddedValue = rawValue.padStart(3, '0')
+    const floatValue = paddedValue.slice(0, -2) + '.' + paddedValue.slice(-2)
+
+    setPrice(floatValue)
   }
 
   async function handleSubmit(formData: FormData) {

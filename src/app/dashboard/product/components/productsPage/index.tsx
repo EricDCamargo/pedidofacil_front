@@ -8,6 +8,10 @@ import ProductTable from '../table/product.table'
 import { useContext } from 'react'
 import { ProductContext } from '@/providers/product'
 import { AddProduct } from '../addproduct'
+import ConfirmModal from '@/app/dashboard/components/modals/confirm'
+import { serviceConsumer } from '@/services/service.consumer'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 interface PrductsPageProps {
   products: ProductProps[]
@@ -17,12 +21,45 @@ export default function ProductsPage({
   products,
   categories
 }: PrductsPageProps) {
-  const { isProductModalOpen, setProductModalOpen, setOnEdition } =
-    useContext(ProductContext)
+  const router = useRouter()
+  const {
+    newProduct,
+    currentProduct,
+    isConfirmModalOpen,
+    isProductModalOpen,
+    setProductModalOpen,
+    setOnEdition,
+    setConfirmModalOpen,
+    setCurrentProduct
+  } = useContext(ProductContext)
+
+  const handleDelete = async () => {
+    if (!currentProduct.id) {
+      return
+    }
+    try {
+      const res = await serviceConsumer('').executeDelete('/product', {
+        product_id: currentProduct.id
+      })
+      if (res.isOk) {
+        toast.success(res.message)
+        setConfirmModalOpen(false)
+        setCurrentProduct(newProduct)
+        router.refresh()
+      }
+    } catch (err) {
+      console.log(err)
+      toast.error('Erro ao remover produto!')
+    }
+  }
 
   const handleAddProduct = () => {
     setProductModalOpen(true)
     setOnEdition(false)
+  }
+  const handleCancel = () => {
+    setConfirmModalOpen(false)
+    setCurrentProduct(newProduct)
   }
   return (
     <div className={styles.container}>
@@ -35,6 +72,25 @@ export default function ProductsPage({
       </div>
       <ProductTable products={products} />
       <AddProduct isOpen={isProductModalOpen} categories={categories} />
+      <ConfirmModal
+        modalText={{
+          title: 'Remover Produto',
+          message: (
+            <>
+              Tem certeza quer remover esse produto? <br />
+              <br />
+              {
+                <strong>
+                  {currentProduct.name} <br />
+                </strong>
+              }
+            </>
+          )
+        }}
+        isOpen={isConfirmModalOpen}
+        onCancel={handleCancel}
+        onConfirm={handleDelete}
+      />
     </div>
   )
 }

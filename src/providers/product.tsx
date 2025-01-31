@@ -18,7 +18,9 @@ type ProductContextData = {
   newProduct: ProductProps
   currentProduct: ProductProps
   onEdition: boolean
+  isConfirmModalOpen: boolean
   setOnEdition: Dispatch<SetStateAction<boolean>>
+  setConfirmModalOpen: Dispatch<SetStateAction<boolean>>
   setProductModalOpen: Dispatch<SetStateAction<boolean>>
   setCurrentProduct: Dispatch<SetStateAction<ProductProps>>
   createProcuct: (DATA: FormData) => Promise<void>
@@ -52,6 +54,7 @@ export function ProductProvider({ children }: ProductProviderProps) {
   const router = useRouter()
   const [onEdition, setOnEdition] = useState<boolean>(true)
   const [isProductModalOpen, setProductModalOpen] = useState(false)
+  const [isConfirmModalOpen, setConfirmModalOpen] = useState<boolean>(false)
   const [currentProduct, setCurrentProduct] = useState<ProductProps>(newProduct)
 
   const createProcuct = async (DATA: FormData) => {
@@ -102,6 +105,8 @@ export function ProductProvider({ children }: ProductProviderProps) {
         isProductModalOpen,
         newProduct,
         onEdition,
+        isConfirmModalOpen,
+        setConfirmModalOpen,
         setOnEdition,
         setProductModalOpen,
         setCurrentProduct,
