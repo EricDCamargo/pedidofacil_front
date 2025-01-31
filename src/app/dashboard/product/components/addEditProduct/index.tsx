@@ -9,7 +9,7 @@ import { toast } from 'sonner'
 import { ProductContext } from '@/providers/product'
 import { CategoryProps } from '@/types/category.type'
 import Dropdown from '@/app/dashboard/components/dropDown'
-import { formatCurrency } from '@/utils'
+import { formatCurrency, getCategoryOptions } from '@/utils'
 
 interface Props {
   categories: CategoryProps[]
@@ -93,10 +93,6 @@ export function AddEditProduct({ isOpen, categories }: Props) {
     setPrice('')
   }
 
-  const categoryOptions = categories.map(category => ({
-    label: category.name,
-    value: category.id
-  }))
   if (isOpen) {
     return (
       <main className={styles.backgroundModal}>
@@ -156,7 +152,7 @@ export function AddEditProduct({ isOpen, categories }: Props) {
               disabled={onEdition}
               defaultValue={currentProduct.category_id}
               name="category"
-              options={categoryOptions}
+              options={getCategoryOptions(categories)}
               width="100%"
             />
 

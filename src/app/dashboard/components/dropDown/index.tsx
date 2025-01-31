@@ -13,6 +13,7 @@ interface SelectProps {
   options: Array<OptionsType>
   name: string
   disabled?: boolean
+  onChange?: (value: string) => void
 }
 
 const Dropdown = ({
@@ -21,7 +22,8 @@ const Dropdown = ({
   defaultValue,
   name,
   options,
-  disabled
+  disabled,
+  onChange
 }: SelectProps) => {
   return (
     <div className={styles.dropDownContainer} style={{ width }}>
@@ -32,6 +34,7 @@ const Dropdown = ({
         defaultValue={defaultValue}
         disabled={disabled}
         required
+        onChange={e => onChange && onChange(e.target.value)}
       >
         {options.map(item => (
           <option key={item.value} value={item.value}>

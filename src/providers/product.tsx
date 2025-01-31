@@ -2,7 +2,7 @@
 
 import { toast } from 'sonner'
 import { serviceConsumer } from '@/services/service.consumer'
-import { CurrentProductProps } from '@/types/product.type'
+import { CurrentProductProps, ProductProps } from '@/types/product.type'
 import { StatusCodes } from 'http-status-codes'
 import { useRouter } from 'next/navigation'
 import {
@@ -10,7 +10,6 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
-  useEffect,
   useState
 } from 'react'
 
@@ -20,12 +19,14 @@ type ProductContextData = {
   currentProduct: CurrentProductProps
   onEdition: boolean
   isConfirmModalOpen: boolean
+  selectedCategory: string
   setOnEdition: Dispatch<SetStateAction<boolean>>
   setConfirmModalOpen: Dispatch<SetStateAction<boolean>>
   setProductModalOpen: Dispatch<SetStateAction<boolean>>
   setCurrentProduct: Dispatch<SetStateAction<CurrentProductProps>>
   handleProductSubmit: (DATA: FormData) => Promise<void>
   handleDelete: () => Promise<void>
+  setSelectedCategory: Dispatch<SetStateAction<string>>
 }
 
 type ProductProviderProps = {
@@ -50,9 +51,7 @@ export function ProductProvider({ children }: ProductProviderProps) {
   const [currentProduct, setCurrentProduct] =
     useState<CurrentProductProps>(INITIAL_PRODUCT)
 
-  useEffect(() => {
-    console.log(currentProduct)
-  }, [currentProduct])
+  const [selectedCategory, setSelectedCategory] = useState<string>('')
 
   const handleProductSubmit = async (DATA: FormData) => {
     const isUpdate = !!currentProduct.id
@@ -112,6 +111,8 @@ export function ProductProvider({ children }: ProductProviderProps) {
         INITIAL_PRODUCT,
         onEdition,
         isConfirmModalOpen,
+        selectedCategory,
+        setSelectedCategory,
         setConfirmModalOpen,
         setOnEdition,
         setProductModalOpen,

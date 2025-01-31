@@ -1,3 +1,4 @@
+import { CategoryProps } from '@/types/category.type'
 import { ChangeEvent } from 'react'
 
 const handleChange = <T extends Record<string, any>>(
@@ -11,6 +12,14 @@ const handleChange = <T extends Record<string, any>>(
     ...prev,
     [name]: processedValue
   }))
+}
+
+const getCategoryOptions = (categories: CategoryProps[]) => {
+  const categoryOptions = categories.map(category => ({
+    label: category.name,
+    value: category.id
+  }))
+  return categoryOptions
 }
 
 const formatPrice = (value: FormDataEntryValue | null | number) => {
@@ -31,4 +40,4 @@ const formatCurrency = (value: string) => {
   })
 }
 
-export { handleChange, formatPrice, formatCurrency }
+export { handleChange, formatPrice, formatCurrency, getCategoryOptions }

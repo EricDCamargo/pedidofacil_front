@@ -17,6 +17,12 @@
   justify-content: space-between;
   padding: 10px 0 20px 0;
 }
+.productHeader .filterContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .productHeader .addProduct {
   display: flex;
   align-items: center;
