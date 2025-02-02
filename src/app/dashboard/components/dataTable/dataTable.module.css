@@ -26,7 +26,7 @@
 
 .tableCell {
   min-width: 220px;
-  padding: 0.2rem;
+  padding: 0.8rem;
   font-weight: 500;
   color: var(--white);
 }
@@ -35,24 +35,7 @@
   border-bottom: 1px solid #eee;
 }
 
-.tableRow p {
+.tableRow span {
   font-weight: 500;
   color: var(--white);
-}
-
-.actions {
-  display: flex;
-  align-items: center;
-  gap: 0.875rem;
-}
-
-.actions button {
-  border: 0;
-  background: transparent;
-  transition: transform 0.7s;
-  color: var(--white);
-  &:hover {
-    color: var(--red-900);
-    transform: scale(1.2);
-  }
 }

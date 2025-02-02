@@ -63,3 +63,22 @@ textarea {
     -moz-appearance: textfield;
   }
 }
+
+/*dataTable actions field, this styling requires adding clasName='actions' to cell field in colums data*/
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.actions button {
+  border: 0;
+  background: transparent;
+  transition: transform 0.7s;
+  color: var(--white);
+  &:hover {
+    color: var(--red-900);
+    transform: scale(1.2);
+  }
+}

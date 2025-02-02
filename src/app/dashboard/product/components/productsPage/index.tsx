@@ -1,18 +1,20 @@
 'use client'
 
 import { CategoryProps } from '@/types/category.type'
-import { ProductProps } from '@/types/product.type'
-import { CirclePlus } from 'lucide-react'
+import { formatProduct, ProductProps } from '@/types/product.type'
+import { CirclePlus, Eye, Trash2 } from 'lucide-react'
 import styles from './styles.module.css'
-import ProductTable from '../table/product.table'
 import { useContext, useEffect, useState } from 'react'
 import { ProductContext } from '@/providers/product'
 import { AddEditProduct } from '../addEditProduct'
 import ConfirmModal from '@/app/dashboard/components/modals/confirm'
 import Dropdown from '@/app/dashboard/components/dropDown'
-import { getCategoryOptions } from '@/utils'
+import { formatCurrency, getCategoryOptions } from '@/utils'
 import { getProducts } from '@/services/retriveSSRData/retriveProductData'
 import { SearchInput } from '@/app/dashboard/components/searchInput'
+import DataTable from '@/app/dashboard/components/dataTable/dataTable'
+import { TableColumn } from '@/types/dataTable.type'
+import Image from 'next/image'
 
 interface PrductsPageProps {
   products: ProductProps[]
@@ -64,6 +66,43 @@ export default function ProductsPage({
     ...getCategoryOptions(categories)
   ]
 
+  const handleViewProduct = (product: ProductProps) => {
+    setCurrentProduct(formatProduct(product))
+    setProductModalOpen(true)
+  }
+  const handleDeleteProduct = (product: ProductProps) => {
+    setCurrentProduct(formatProduct(product))
+    setConfirmModalOpen(true)
+  }
+
+  const columns: TableColumn<ProductProps>[] = [
+    {
+      name: 'Imagem',
+      cell: row => (
+        <Image width={70} height={70} src={row.banner} alt="Foto do produto" />
+      )
+    },
+    { name: 'Nome', selector: row => row.name },
+    {
+      name: '	Preço',
+      selector: row => formatCurrency(row.price.toString())
+    },
+    { name: 'Descrição', selector: row => row.description },
+    {
+      name: 'Ações',
+      cell: row => (
+        <div className={'actions'}>
+          <button onClick={() => handleViewProduct(row)}>
+            <Eye />
+          </button>
+          <button onClick={() => handleDeleteProduct(row)}>
+            <Trash2 />
+          </button>
+        </div>
+      )
+    }
+  ]
+
   return (
     <div className={styles.container}>
       <div className={styles.productHeader}>
@@ -86,7 +125,8 @@ export default function ProductsPage({
           <CirclePlus />
         </button>
       </div>
-      <ProductTable products={searchValue} />
+
+      <DataTable columns={columns} data={searchValue} />
       <AddEditProduct isOpen={isProductModalOpen} categories={categories} />
       <ConfirmModal
         modalText={{

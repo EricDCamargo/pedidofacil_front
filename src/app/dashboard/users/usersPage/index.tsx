@@ -1,16 +1,17 @@
 'use client'
 
 import styles from './styles.module.css'
-import { UserRoundPlus } from 'lucide-react'
-import { UserProps } from '@/types/user.type'
+import { Eye, Trash2, UserRoundPlus } from 'lucide-react'
+import { UserProps, UserRole } from '@/types/user.type'
 import { newUser, UserContext } from '@/providers/user'
 import { useContext } from 'react'
 import UserModal from '../userModal/modal'
-import UserTable from '../table/table'
 import ConfirmModal from '../../components/modals/confirm'
 import { serviceConsumer } from '@/services/service.consumer'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import DataTable from '../../components/dataTable/dataTable'
+import { TableColumn } from '@/types/dataTable.type'
 
 interface UsersPageProps {
   users: UserProps[] | []
@@ -56,6 +57,47 @@ export default function UsersPage({ users }: UsersPageProps) {
     setOnEdition(false)
   }
 
+  const handleViewUser = (user: UserProps) => {
+    setcurrentUser(user)
+    setUserModalOpen(true)
+  }
+  const handleDeleteUser = (user: UserProps) => {
+    setcurrentUser(user)
+    setConfirmModalOpen(true)
+  }
+
+  const columns: TableColumn<UserProps>[] = [
+    { name: 'Nome', selector: row => row.name },
+    { name: 'Email', selector: row => row.email },
+    {
+      name: 'Permissão',
+      selector: row => (
+        <p
+          className={`${styles.role} ${
+            row.role === UserRole.ADMIN
+              ? styles.admin
+              : row.role === UserRole.USER && styles.user
+          }`}
+        >
+          {row.role}
+        </p>
+      )
+    },
+    {
+      name: 'Ações',
+      cell: row => (
+        <div className={'actions'}>
+          <button onClick={() => handleViewUser(row)}>
+            <Eye />
+          </button>
+          <button onClick={() => handleDeleteUser(row)}>
+            <Trash2 />
+          </button>
+        </div>
+      )
+    }
+  ]
+
   return (
     <div className={styles.container}>
       <div className={styles.userHeader}>
@@ -65,7 +107,7 @@ export default function UsersPage({ users }: UsersPageProps) {
           <UserRoundPlus />
         </button>
       </div>
-      <UserTable users={users} />
+      <DataTable columns={columns} data={users} />
       <UserModal />
       <ConfirmModal
         modalText={{

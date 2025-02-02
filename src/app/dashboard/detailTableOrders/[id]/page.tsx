@@ -3,10 +3,13 @@
 import styles from './styles.module.css'
 import { useContext, useEffect } from 'react'
 import { OrderContext } from '@/providers/order'
-import { ArrowBigLeft } from 'lucide-react'
+import { ArrowBigLeft, Eye, Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import OrderTable from '../components/table/product.table'
 import OrderModal from '../../components/modalOrder'
+import DataTable from '../../components/dataTable/dataTable'
+import { OrderProps } from '@/types/order.type'
+import { formatCurrency } from '@/utils'
+import { TableColumn } from '@/types/dataTable.type'
 
 export default function DetailTableOrders() {
   const router = useRouter()
@@ -15,12 +18,39 @@ export default function DetailTableOrders() {
     setOrderModalOpen,
     currentOrders,
     selectedOrder,
-    setCurrentOrders
+    setSelectedOrder
   } = useContext(OrderContext)
 
   const handlePreviousPage = () => {
     router.push('/dashboard')
   }
+
+  const handleViewOrder = (order: OrderProps) => {
+    setSelectedOrder(order)
+    setOrderModalOpen(true)
+  }
+  const handleDeleteOrder = (order: OrderProps) => {}
+
+  const columns: TableColumn<OrderProps>[] = [
+    { name: 'Pedido N°', selector: row => row.number },
+    { name: 'Status', selector: row => row.status },
+    { name: 'Cliente', selector: row => row.name },
+    { name: 'Total', selector: row => formatCurrency(row.total.toString()) },
+    {
+      name: 'Ações',
+      cell: row => (
+        <div className={'actions'}>
+          <button onClick={() => handleViewOrder(row)}>
+            <Eye />
+          </button>
+          <button onClick={() => handleDeleteOrder(row)}>
+            <Trash2 />
+          </button>
+        </div>
+      )
+    }
+  ]
+
   return (
     <main className={styles.container}>
       <header className={styles.header}>
@@ -39,8 +69,7 @@ export default function DetailTableOrders() {
           </span>
         )}
       </section>
-
-      <OrderTable orders={currentOrders} />
+      <DataTable columns={columns} data={currentOrders} />
       <OrderModal
         isOpen={isOrderModalOpen}
         order={selectedOrder!}

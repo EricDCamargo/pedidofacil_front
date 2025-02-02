@@ -35,3 +35,21 @@
     transform: scale(1.05);
   }
 }
+
+.role {
+  display: inline-flex;
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.role.admin {
+  background-color: rgba(211, 64, 83, 0.1);
+  color: #d34053;
+}
+
+.role.user {
+  background-color: rgba(255, 167, 11, 0.1);
+  color: #ffa70b;
+}
