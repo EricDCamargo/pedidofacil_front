@@ -1,0 +1,73 @@
+.container {
+  width: 100%;
+  margin: 20px auto;
+  padding: 0 36px;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  h1 {
+    color: var(--white);
+  }
+}
+
+.containerHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  margin-top: 24px;
+  gap: 14px;
+
+  button {
+    background: transparent;
+    border: 0;
+  }
+}
+
+.tableList {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 10px;
+}
+
+.tableItem {
+  padding: 15px;
+  border-radius: 8px;
+  min-width: 200px;
+  min-height: 100px;
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  color: var(--white);
+}
+.tableItem.available {
+  background: rgb(16, 150, 86);
+  background: linear-gradient(
+    190deg,
+    rgba(16, 150, 86, 1) 0%,
+    rgba(63, 255, 163, 1) 14%,
+    rgba(37, 172, 107, 1) 27%,
+    rgba(63, 255, 163, 1) 35%,
+    rgb(56, 223, 142) 44%,
+    rgba(63, 255, 163, 1) 58%,
+    rgba(19, 179, 102, 1) 66%,
+    rgba(63, 255, 163, 1) 75%,
+    rgba(31, 176, 106, 1) 100%
+  );
+}
+.tableItem.occupied {
+  background: rgb(140, 15, 22);
+  background: linear-gradient(
+    190deg,
+    rgba(140, 15, 22, 1) 0%,
+    rgba(255, 63, 75, 1) 14%,
+    rgba(208, 0, 36, 1) 27%,
+    rgba(218, 28, 40, 1) 35%,
+    rgba(255, 63, 75, 1) 44%,
+    rgba(209, 27, 38, 1) 58%,
+    rgba(255, 63, 75, 1) 66%,
+    rgba(255, 63, 75, 1) 75%,
+    rgba(126, 14, 14, 1) 100%
+  );
+}

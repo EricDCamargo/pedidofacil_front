@@ -1,4 +1,4 @@
-import { TableProps } from '@/providers/order'
+import { ProductProps } from './product.type'
 
 export interface ItemProps {
   id: string
@@ -7,29 +7,29 @@ export interface ItemProps {
   updated_at: string
   order_id: string
   product_id: string
-  product: {
-    id: string
-    name: string
-    price: number
-    description: string
-    banner: string
-    created_at: string
-    updated_at: string
-    category_id: string
-  }
+  product: ProductProps
 }
 
 export interface OrderProps {
   id: string
+  number: number
   table_id: string
   status: string
   name: string
-  total: number | null
+  total: number
   created_at: string
   updated_at: string
   items: ItemProps[]
-  table: TableProps
-  payments: any[]
+  payments: PaymentProps[]
+}
+
+interface PaymentProps {
+  id: string
+  order_id: string
+  value: number
+  payment_method: string
+  created_at: string
+  updated_at: string
 }
 
 enum OrderStatus {

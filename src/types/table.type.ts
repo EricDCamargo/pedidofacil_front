@@ -1,5 +1,5 @@
-export interface Table {
-  id?: string
+export interface TableProps {
+  id: string
   number: string
   status: TableStatus.AVAILABLE | TableStatus.OCCUPIED
   created_at: string

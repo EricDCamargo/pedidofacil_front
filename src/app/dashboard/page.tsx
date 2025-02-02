@@ -1,13 +1,13 @@
-import { Orders } from './components/orders'
+import { TableOrders } from './tableOrders'
 import { getCookieServer } from '@/lib/cookieServer'
-import { OrderProps } from '@/types/order.type'
 import { serviceConsumer } from '@/services/service.consumer'
 import ToastHandler from '@/lib/toastHandler'
+import { TableProps } from '@/types/table.type'
 
-async function getOrders(): Promise<OrderProps[] | []> {
+async function getTables(): Promise<TableProps[] | []> {
   try {
     const token = await getCookieServer()
-    const response = await serviceConsumer(token).executeGet('/orders')
+    const response = await serviceConsumer(token).executeGet('/tables')
     return response.data || []
   } catch (err) {
     console.log(err)
@@ -16,11 +16,11 @@ async function getOrders(): Promise<OrderProps[] | []> {
 }
 
 export default async function Dashboard() {
-  const orders = await getOrders()
+  const tables = await getTables()
   return (
     <>
       <ToastHandler />
-      <Orders orders={orders} />
+      <TableOrders tables={tables} />
     </>
   )
 }

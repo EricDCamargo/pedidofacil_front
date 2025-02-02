@@ -11,23 +11,20 @@
   }
 }
 
-.containerHeader {
+.container .header .title {
   display: flex;
   align-items: center;
-  margin-bottom: 16px;
-  margin-top: 24px;
-  gap: 14px;
-
-  button {
-    background: transparent;
-    border: 0;
-  }
+  gap: 0.5em;
 }
-
-.listOrders {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.container .header button {
+  border: 0;
+  color: var(--white);
+  background: transparent;
+  transition: transform 0.2s;
+  &:hover {
+    color: var(--red-900);
+    transform: scale(1.05);
+  }
 }
 
 .orderItem {
@@ -51,6 +48,12 @@
   background-color: var(--green-900);
   border-radius: 6px 0 0 6px;
   margin-right: 16px;
+}
+
+.listOrders {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .emptyItem {
