@@ -1,25 +1,30 @@
 'use client'
 
 import styles from './styles.module.css'
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { OrderContext } from '@/providers/order'
 import { ArrowBigLeft, Eye, Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import OrderModal from '../../components/modalOrder'
-import DataTable from '../../components/dataTable/dataTable'
+import OrderModal from '../../../components/modalOrder'
+import DataTable from '../../../components/dataTable/dataTable'
 import { OrderProps } from '@/types/order.type'
 import { formatCurrency } from '@/utils'
 import { TableColumn } from '@/types/dataTable.type'
 
-export default function DetailTableOrders() {
-  const router = useRouter()
+interface DetailTableOrdersPage {
+  currentOrders: OrderProps[]
+}
+
+export default function DetailTableOrdersPage({
+  currentOrders
+}: DetailTableOrdersPage) {
   const {
     isOrderModalOpen,
-    setOrderModalOpen,
-    currentOrders,
     selectedOrder,
+    setOrderModalOpen,
     setSelectedOrder
   } = useContext(OrderContext)
+  const router = useRouter()
 
   const handlePreviousPage = () => {
     router.push('/dashboard')
@@ -63,13 +68,15 @@ export default function DetailTableOrders() {
       </header>
 
       <section className={styles.listOrders}>
-        {currentOrders.length === 0 && (
+        {currentOrders.length === 0 ? (
           <span className={styles.emptyItem}>
             Nenhum pedido aberto no momento...
           </span>
+        ) : (
+          <DataTable columns={columns} data={currentOrders} />
         )}
       </section>
-      <DataTable columns={columns} data={currentOrders} />
+
       <OrderModal
         isOpen={isOrderModalOpen}
         order={selectedOrder!}

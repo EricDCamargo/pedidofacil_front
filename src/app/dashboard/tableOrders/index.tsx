@@ -1,25 +1,19 @@
 'use client'
 
-import { use, useEffect } from 'react'
 import styles from './styles.module.css'
 import { LayoutGrid, RefreshCw } from 'lucide-react'
-import { OrderContext } from '@/providers/order'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { TableProps, TableStatus } from '@/types/table.type'
-import { serviceConsumer } from '@/services/service.consumer'
-import { StatusCodes } from 'http-status-codes'
 
 interface Props {
   tables: TableProps[]
 }
 
 export function TableOrders({ tables }: Props) {
-  const { setCurrentTable } = use(OrderContext)
   const router = useRouter()
 
   const handleDetailTableOrders = (table_id: string) => {
-    setCurrentTable(table_id)
     router.push(`/dashboard/detailTableOrders/${table_id}`)
   }
 
