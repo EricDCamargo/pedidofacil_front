@@ -15,30 +15,12 @@ interface Props {
 }
 
 export function TableOrders({ tables }: Props) {
-  const { setCurrentOrders, currentOrders } = use(OrderContext)
+  const { setCurrentTable } = use(OrderContext)
   const router = useRouter()
 
-  useEffect(() => {
-    console.log(currentOrders)
-  }, [])
-
-  async function handleDetailTableOrders(table_id: string) {
-    //should fetch '/orders?table_id=id' to return the oders related to this table
-    try {
-      const res = await serviceConsumer('').executeGet('/orders', { table_id })
-
-      if (res.isOk && res.status === StatusCodes.OK) {
-        setCurrentOrders(res.data)
-        toast.success(res.message)
-        router.push(`/dashboard/detailTableOrders/${table_id}`)
-      } else {
-        toast.error(res.message)
-      }
-    } catch (err) {
-      console.log(err)
-      toast.error('Falha ao carregar os pedidos!')
-      return
-    }
+  const handleDetailTableOrders = (table_id: string) => {
+    setCurrentTable(table_id)
+    router.push(`/dashboard/detailTableOrders/${table_id}`)
   }
 
   function handleRefresh() {
@@ -56,11 +38,9 @@ export function TableOrders({ tables }: Props) {
           </button>
         </section>
 
-        <section className={styles.listOrders}>
+        <section className={styles.listTables}>
           {tables.length === 0 && (
-            <span className={styles.emptyItem}>
-              Nenhum pedido aberto no momento...
-            </span>
+            <span className={styles.emptyItem}>Nenhuma mesa disponivel...</span>
           )}
           <div className={styles.tableList}>
             {tables.map(table => (

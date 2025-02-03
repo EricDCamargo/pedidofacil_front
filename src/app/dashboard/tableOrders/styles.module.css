@@ -24,14 +24,24 @@
   }
 }
 
-.tableList {
+.container .listTables {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.container .listTables .emptyItem {
+  color: var(--gray-100);
+}
+
+.container .listTables .tableList {
   display: flex;
   flex-wrap: wrap;
 
   gap: 10px;
 }
 
-.tableItem {
+.container .listTables .tableList .tableItem {
   padding: 15px;
   border-radius: 8px;
   min-width: 200px;
