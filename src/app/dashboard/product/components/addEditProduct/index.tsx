@@ -38,12 +38,11 @@ export function AddEditProduct({ isOpen, categories }: Props) {
   const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
     let rawValue = e.target.value.replace(/\D/g, '')
 
-    if (rawValue === '') {
-      setPrice('0')
+    if (!rawValue) {
+      setPrice('0.00')
       return
     }
-    const paddedValue = rawValue.padStart(3, '0')
-    const floatValue = paddedValue.slice(0, -2) + '.' + paddedValue.slice(-2)
+    const floatValue = (parseInt(rawValue) / 100).toFixed(2)
 
     setPrice(floatValue)
   }

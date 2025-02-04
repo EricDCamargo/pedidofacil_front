@@ -31,12 +31,15 @@ const formatPrice = (value: FormDataEntryValue | null | number) => {
 }
 
 const formatCurrency = (value: string) => {
-  if (!value) return ''
-  const rawValue = value.replace(/\D/g, '')
-  const floatValue = parseFloat(rawValue) / 100
+  const floatValue = parseFloat(value)
+
+  if (isNaN(floatValue)) return ''
+
+  if (isNaN(floatValue)) return ''
   return floatValue.toLocaleString('pt-BR', {
     style: 'currency',
-    currency: 'BRL'
+    currency: 'BRL',
+    minimumFractionDigits: 2
   })
 }
 

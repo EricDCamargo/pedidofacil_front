@@ -1,42 +1,42 @@
+'use client'
+
 import styles from './styles.module.css'
 import { Button } from '@/app/dashboard/components/button'
-import { api } from '@/services/api'
-import { redirect } from 'next/navigation'
 import { getCookieServer } from '@/lib/cookieServer'
+import { serviceConsumer } from '@/services/service.consumer'
+import { toast } from 'sonner'
+import { StatusCodes } from 'http-status-codes'
 
 export default function Category() {
-  async function handleRegisterCategory(formData: FormData) {
-    'use server'
-
+  const submitCategory = async (formData: FormData) => {
     const name = formData.get('name')
 
     if (name === '') return
 
-    const data = {
-      name: name
-    }
-
-    const token = getCookieServer()
-
-    await api
-      .post('/category', data, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    try {
+      const token = await getCookieServer()
+      const res = await serviceConsumer(token).executePost('/category', {
+        name
       })
-      .catch(err => {
-        console.log(err)
+
+      if (res.isOk && res.status === StatusCodes.CREATED) {
+        toast.success(res.message)
+      } else {
+        toast.error(res.message)
         return
-      })
-
-    redirect('/dashboard')
+      }
+    } catch (err) {
+      console.error(err)
+      toast.error('Não foi possivel cadastrar categoria!')
+      return
+    }
   }
 
   return (
     <main className={styles.container}>
       <h1>Nova Categoria</h1>
 
-      <form className={styles.form} action={handleRegisterCategory}>
+      <form className={styles.form} action={submitCategory}>
         <input
           type="text"
           name="name"
@@ -45,7 +45,7 @@ export default function Category() {
           className={styles.input}
         />
 
-        <Button name="Cadastrar" />
+        <Button type="submit" name="Cadastrar" />
       </form>
     </main>
   )
