@@ -19,14 +19,14 @@ export function TableOrders({ tables }: Props) {
 
   function handleRefresh() {
     router.refresh()
-    toast.success('Mesas atualizados com sucesso!')
+    toast.success('Mesas atualizadas com sucesso!')
   }
 
   return (
     <>
       <main className={styles.container}>
         <section className={styles.containerHeader}>
-          <h1>Últimos pedidos</h1>
+          <h1>Messas pedidos</h1>
           <button onClick={handleRefresh}>
             <RefreshCw size={24} color="#3fffa3" />
           </button>

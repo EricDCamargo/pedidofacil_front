@@ -35,7 +35,8 @@ export default function ProductsPage({
     setOnEdition,
     setConfirmModalOpen,
     setCurrentProduct,
-    handleDelete
+    handleDelete,
+    handleProductSubmit
   } = useContext(ProductContext)
 
   const [currentProducts, setCurrentProducts] =
@@ -43,14 +44,6 @@ export default function ProductsPage({
 
   const [searchValue, setSearchValue] =
     useState<ProductProps[]>(currentProducts)
-
-  useEffect(() => {
-    const fetchedProducts = async () => {
-      const NewProductList = await getProducts(selectedCategory)
-      setCurrentProducts(NewProductList)
-    }
-    fetchedProducts()
-  }, [selectedCategory])
 
   const handleAddProduct = () => {
     setProductModalOpen(true)
@@ -73,6 +66,15 @@ export default function ProductsPage({
   const handleDeleteProduct = (product: ProductProps) => {
     setCurrentProduct(formatProduct(product))
     setConfirmModalOpen(true)
+  }
+
+  useEffect(() => {
+    fetchProducts()
+  }, [handleDelete, handleProductSubmit])
+
+  const fetchProducts = async () => {
+    const NewProductList = await getProducts(selectedCategory)
+    setCurrentProducts(NewProductList)
   }
 
   const columns: TableColumn<ProductProps>[] = [

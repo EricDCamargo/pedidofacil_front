@@ -2,7 +2,7 @@
 
 import { toast } from 'sonner'
 import { serviceConsumer } from '@/services/service.consumer'
-import { CurrentProductProps, ProductProps } from '@/types/product.type'
+import { CurrentProductProps } from '@/types/product.type'
 import { StatusCodes } from 'http-status-codes'
 import { useRouter } from 'next/navigation'
 import {
@@ -10,6 +10,7 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
+  useCallback,
   useState
 } from 'react'
 
@@ -24,7 +25,7 @@ type ProductContextData = {
   setConfirmModalOpen: Dispatch<SetStateAction<boolean>>
   setProductModalOpen: Dispatch<SetStateAction<boolean>>
   setCurrentProduct: Dispatch<SetStateAction<CurrentProductProps>>
-  handleProductSubmit: (DATA: FormData) => Promise<void>
+  handleProductSubmit: (DATA: any) => Promise<void>
   handleDelete: () => Promise<void>
   setSelectedCategory: Dispatch<SetStateAction<string>>
 }
@@ -53,35 +54,38 @@ export function ProductProvider({ children }: ProductProviderProps) {
 
   const [selectedCategory, setSelectedCategory] = useState<string>('')
 
-  const handleProductSubmit = async (DATA: FormData) => {
-    const isUpdate = !!currentProduct.id
-    try {
-      const res = isUpdate
-        ? await serviceConsumer('').executePut(
-            '/product',
-            { product_id: currentProduct.id },
-            DATA
-          )
-        : await serviceConsumer('').executePost('/product', DATA)
+  const handleProductSubmit = useCallback(
+    async (DATA: any) => {
+      const isUpdate = !!currentProduct.id
+      try {
+        const res = isUpdate
+          ? await serviceConsumer('').executePut(
+              '/product',
+              { product_id: currentProduct.id },
+              DATA
+            )
+          : await serviceConsumer('').executePost('/product', DATA)
 
-      if (
-        res.isOk &&
-        (res.status === StatusCodes.CREATED || res.status === StatusCodes.OK)
-      ) {
-        toast.success(res.message)
-        setProductModalOpen(false)
-        setCurrentProduct(INITIAL_PRODUCT)
+        if (
+          res.isOk &&
+          (res.status === StatusCodes.CREATED || res.status === StatusCodes.OK)
+        ) {
+          toast.success(res.message)
+          setProductModalOpen(false)
+          setCurrentProduct(INITIAL_PRODUCT)
+          setOnEdition(true)
+          router.refresh()
+        } else {
+          toast.error(res.message)
+        }
+      } catch (err) {
+        console.error(err)
+        toast.error(`Erro ao ${isUpdate ? 'editar' : 'cadastrar'} produto!`)
         setOnEdition(true)
-        router.refresh()
-      } else {
-        toast.error(res.message)
       }
-    } catch (err) {
-      console.error(err)
-      toast.error(`Erro ao ${isUpdate ? 'editar' : 'cadastrar'} produto!`)
-      setOnEdition(true)
-    }
-  }
+    },
+    [currentProduct]
+  )
 
   const handleDelete = async () => {
     if (!currentProduct.id) {
