@@ -4,7 +4,8 @@ import styles from './styles.module.css'
 import { LayoutGrid, RefreshCw } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { TableProps, TableStatus } from '@/types/table.type'
+import { TableProps } from '@/types/table.type'
+import { getLabel, TableStatus } from '@/utils/recordStatus'
 
 interface Props {
   tables: TableProps[]
@@ -50,7 +51,7 @@ export function TableOrders({ tables }: Props) {
                 <LayoutGrid />
                 <div>
                   <h2>Mesa {table.number}</h2>
-                  <p>Status: {table.status}</p>
+                  <p>Status: {getLabel(table.status)}</p>
                 </div>
               </div>
             ))}

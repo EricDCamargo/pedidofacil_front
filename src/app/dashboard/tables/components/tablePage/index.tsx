@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import styles from './styles.module.css'
-import { Table, TableStatus } from '@/types/table.type'
+import { TableProps } from '@/types/table.type'
 import { LayoutGrid } from 'lucide-react'
 import { TableContext } from '@/providers/table'
 import { useContext } from 'react'
@@ -11,9 +11,10 @@ import { StatusCodes } from 'http-status-codes'
 import { toast } from 'sonner'
 import ConfirmModal from '@/app/dashboard/components/modals/confirm'
 import TableModal from '../tableModal/modal'
+import { getLabel, TableStatus } from '@/utils/recordStatus'
 
 interface TablesPageProps {
-  tables: Table[] | []
+  tables: TableProps[] | []
 }
 
 export default function TablesPage({ tables }: TablesPageProps) {
@@ -60,7 +61,7 @@ export default function TablesPage({ tables }: TablesPageProps) {
   const handleCancel = () => {
     setConfirmModalOpen(false)
   }
-  const handleEdit = (table: Table) => {
+  const handleEdit = (table: TableProps) => {
     setcurrentTable(table)
     setTableModalOpen(true)
   }
@@ -88,7 +89,7 @@ export default function TablesPage({ tables }: TablesPageProps) {
             <LayoutGrid />
             <div>
               <h2>Mesa {table.number}</h2>
-              <p>Status: {table.status}</p>
+              <p>Status: {getLabel(table.status)}</p>
             </div>
           </div>
         ))}

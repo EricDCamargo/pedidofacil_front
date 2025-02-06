@@ -7,17 +7,18 @@ import {
   Dispatch,
   SetStateAction
 } from 'react'
-import { Table, TableStatus } from '@/types/table.type'
+import { TableProps } from '@/types/table.type'
+import { TableStatus } from '@/utils/recordStatus'
 
 type TableContextData = {
-  newTable: Table
+  newTable: TableProps
   isTableModalOpen: boolean
   isConfirmModalOpen: boolean
   onEdition: boolean
-  currentTable: Table
+  currentTable: TableProps
 
   setOnEdition: Dispatch<SetStateAction<boolean>>
-  setcurrentTable: Dispatch<SetStateAction<Table>>
+  setcurrentTable: Dispatch<SetStateAction<TableProps>>
   setTableModalOpen: Dispatch<SetStateAction<boolean>>
   setConfirmModalOpen: Dispatch<SetStateAction<boolean>>
 }
@@ -25,7 +26,7 @@ type TableContextData = {
 type TableProviderProps = {
   children: ReactNode
 }
-export const newTable: Table = {
+export const newTable: TableProps = {
   id: '',
   number: '',
   status: TableStatus.AVAILABLE,
@@ -39,7 +40,7 @@ export function TableProvider({ children }: TableProviderProps) {
   const [isConfirmModalOpen, setConfirmModalOpen] = useState<boolean>(false)
 
   const [onEdition, setOnEdition] = useState<boolean>(true)
-  const [currentTable, setcurrentTable] = useState<Table>(newTable)
+  const [currentTable, setcurrentTable] = useState<TableProps>(newTable)
 
   return (
     <TableContext.Provider

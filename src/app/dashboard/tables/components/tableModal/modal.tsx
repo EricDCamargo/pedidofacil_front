@@ -6,9 +6,9 @@ import { serviceConsumer } from '@/services/service.consumer'
 import { useRouter } from 'next/navigation'
 import { StatusCodes } from 'http-status-codes'
 import { TableContext } from '@/providers/table'
-import { TableStatus } from '@/types/table.type'
 import AddEditModal from '@/app/dashboard/components/modals/addEdit'
 import Dropdown from '@/app/dashboard/components/dropDown'
+import { TableStatus } from '@/utils/recordStatus'
 
 const TableModal: React.FC = () => {
   const router = useRouter()

@@ -23,6 +23,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
         <div className={styles.modalHeader}>
           <h2>{modalText.title}</h2>
         </div>
+
         <div className={styles.modalBody}>{modalText.message}</div>
         <div className={styles.modalFooter}>
           <Button name="Cancelar" type="button" onClick={onCancel} />

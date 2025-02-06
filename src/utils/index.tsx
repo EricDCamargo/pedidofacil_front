@@ -30,8 +30,8 @@ const formatPrice = (value: FormDataEntryValue | null | number) => {
   return retorno
 }
 
-const formatCurrency = (value: string) => {
-  const floatValue = parseFloat(value)
+const formatCurrency = (value: string | number) => {
+  const floatValue = parseFloat(value.toString())
 
   if (isNaN(floatValue)) return ''
 

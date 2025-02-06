@@ -12,6 +12,7 @@ import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import DataTable from '../../components/dataTable/dataTable'
 import { TableColumn } from '@/types/dataTable.type'
+import { getLabel } from '@/utils/recordStatus'
 
 interface UsersPageProps {
   users: UserProps[] | []
@@ -79,7 +80,7 @@ export default function UsersPage({ users }: UsersPageProps) {
               : row.role === UserRole.USER && styles.user
           }`}
         >
-          {row.role}
+          {getLabel(row.role)}
         </p>
       )
     },

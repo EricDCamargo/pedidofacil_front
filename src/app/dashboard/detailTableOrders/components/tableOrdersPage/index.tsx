@@ -10,6 +10,7 @@ import DataTable from '../../../components/dataTable/dataTable'
 import { OrderProps } from '@/types/order.type'
 import { formatCurrency } from '@/utils'
 import { TableColumn } from '@/types/dataTable.type'
+import { getLabel } from '@/utils/recordStatus'
 
 interface DetailTableOrdersPage {
   currentOrders: OrderProps[]
@@ -38,7 +39,10 @@ export default function DetailTableOrdersPage({
 
   const columns: TableColumn<OrderProps>[] = [
     { name: 'Pedido N°', selector: row => row.number },
-    { name: 'Status', selector: row => row.status },
+    {
+      name: 'Status',
+      selector: row => getLabel(row.status)
+    },
     { name: 'Cliente', selector: row => row.name },
     { name: 'Total', selector: row => formatCurrency(row.total.toString()) },
     {
