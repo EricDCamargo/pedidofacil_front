@@ -23,7 +23,8 @@ export default function DetailTableOrdersPage({
     isOrderModalOpen,
     selectedOrder,
     setOrderModalOpen,
-    setSelectedOrder
+    setSelectedOrder,
+    handleDeleteOrder
   } = useContext(OrderContext)
   const router = useRouter()
 
@@ -35,7 +36,6 @@ export default function DetailTableOrdersPage({
     setSelectedOrder(order)
     setOrderModalOpen(true)
   }
-  const handleDeleteOrder = (order: OrderProps) => {}
 
   const columns: TableColumn<OrderProps>[] = [
     { name: 'Pedido N°', selector: row => row.number },
