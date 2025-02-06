@@ -16,6 +16,14 @@ enum Role {
   ADMIN = 'ADMIN',
   USER = 'USER'
 }
+
+enum PaymentMethod {
+  CREDIT_CARD = 'credit_card',
+  DEBIT_CARD = 'debit_card',
+  CASH = 'cash',
+  PIX = 'pix'
+}
+
 const orderStatusLabels: Record<string, string> = {
   [OrderStatus.DRAFT]: 'Rascunho',
   [OrderStatus.IN_PROGRESS]: 'Em andamento',
@@ -35,6 +43,13 @@ const roleLabels: Record<string, string> = {
   [Role.USER]: 'Usuário'
 }
 
+const paymentMethodsLabels: Record<string, string> = {
+  [PaymentMethod.CREDIT_CARD]: 'Cartão de Crédito',
+  [PaymentMethod.DEBIT_CARD]: 'Cartão de Débito',
+  [PaymentMethod.CASH]: 'Dinheiro',
+  [PaymentMethod.PIX]: 'Pix'
+}
+
 const getLabel = (key: string): string => {
   if (Object.values(OrderStatus).includes(key as OrderStatus)) {
     return orderStatusLabels[key] ?? 'Status desconhecido'
@@ -46,6 +61,9 @@ const getLabel = (key: string): string => {
 
   if (Object.values(Role).includes(key as Role)) {
     return roleLabels[key] ?? 'Função desconhecida'
+  }
+  if (Object.values(PaymentMethod).includes(key as PaymentMethod)) {
+    return paymentMethodsLabels[key] ?? 'Forma de pagamento desconhecida'
   }
 
   return 'Valor desconhecido'

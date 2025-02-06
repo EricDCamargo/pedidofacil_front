@@ -169,11 +169,11 @@ const OrderModal = ({ isOpen, order, onClose }: OrderModalProps) => {
                 Valor total: R$ {formatCurrency(order.total)}
               </h3>
             </article>
-            <article className={styles.container}>
+            <article className={styles.paymentContainer}>
               <h4>Pagamentos</h4>
               {order.paymentOrders.map(paymentOrder => (
-                <section className={styles.item} key={paymentOrder.id}>
-                  <span className={styles.paymentInfo}>
+                <section className={styles.paymentItens} key={paymentOrder.id}>
+                  <div className={styles.paymentInfo}>
                     <button
                       onClick={() =>
                         handleDeletePayment(paymentOrder.payment.id)
@@ -181,11 +181,21 @@ const OrderModal = ({ isOpen, order, onClose }: OrderModalProps) => {
                     >
                       <Trash2 />
                     </button>
-                    Valor: {formatCurrency(paymentOrder.value)} - Troco:{' '}
-                    <b>{formatCurrency(paymentOrder.payment.change)}</b>
-                  </span>
+                    Valor: {formatCurrency(paymentOrder.value)} -{' '}
+                    {getLabel(paymentOrder.payment.payment_method)}
+                  </div>
                 </section>
               ))}
+
+              <b>
+                Troco:{' '}
+                {formatCurrency(
+                  order.paymentOrders?.reduce(
+                    (acc, payment) => acc + (payment.payment.change || 0),
+                    0
+                  )
+                )}
+              </b>
 
               {order.status !== OrderStatus.PAID && (
                 <button
