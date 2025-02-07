@@ -17,4 +17,15 @@ async function handleDetailTableOrders(
     return []
   }
 }
-export { handleDetailTableOrders }
+
+async function getOrders(): Promise<OrderProps[] | []> {
+  try {
+    const token = await getCookieServer()
+    const response = await serviceConsumer(token).executeGet('/orders')
+    return response.data || []
+  } catch (err) {
+    console.log(err)
+    return []
+  }
+}
+export { handleDetailTableOrders, getOrders }

@@ -1,25 +1,23 @@
 'use client'
 
-import styles from './styles.module.css'
-import { useContext, useEffect, useState } from 'react'
-import { OrderContext } from '@/providers/order'
-import { ArrowBigLeft, Eye, Trash2 } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import OrderModal from '../../../components/modalOrder'
-import DataTable from '../../../components/dataTable/dataTable'
+import DataTable from '@/app/dashboard/components/dataTable/dataTable'
+import Dropdown from '@/app/dashboard/components/dropDown'
+import OrderModal from '@/app/dashboard/components/modalOrder'
+import { TableColumn } from '@/types/dataTable.type'
 import { OrderProps } from '@/types/order.type'
 import { formatCurrency } from '@/utils'
-import { TableColumn } from '@/types/dataTable.type'
 import { getLabel } from '@/utils/recordStatus'
-import Dropdown from '@/app/dashboard/components/dropDown'
+import { Eye, Trash2 } from 'lucide-react'
+import { useContext, useEffect, useState } from 'react'
+import styles from './styles.module.css'
+import { useRouter } from 'next/navigation'
+import { OrderContext } from '@/providers/order'
 
-interface DetailTableOrdersPage {
+interface OrdersPageProps {
   orders: OrderProps[]
 }
 
-export default function DetailTableOrdersPage({
-  orders
-}: DetailTableOrdersPage) {
+export default function OrdersPage({ orders }: OrdersPageProps) {
   const {
     isOrderModalOpen,
     selectedOrder,
@@ -28,10 +26,6 @@ export default function DetailTableOrdersPage({
     handleDeleteOrder
   } = useContext(OrderContext)
   const router = useRouter()
-
-  const handlePreviousPage = () => {
-    router.push('/dashboard')
-  }
   const [clientName, setClientName] = useState<string>('')
   const [filteredOrders, setFilteredOrders] = useState<OrderProps[]>(orders)
 
@@ -77,15 +71,11 @@ export default function DetailTableOrdersPage({
       )
     }
   ]
-
   return (
     <main className={styles.container}>
       <header className={styles.header}>
         <div className={styles.title}>
-          <button onClick={handlePreviousPage}>
-            <ArrowBigLeft size={40} />
-          </button>
-          <h1>Detalhes da Mesa</h1>
+          <h1>Todos os pedidos</h1>
         </div>
 
         <Dropdown

@@ -2,7 +2,7 @@
 
 import styles from './styles.module.css'
 import { Trash2, X } from 'lucide-react'
-import { ChangeEvent, useContext, useState } from 'react'
+import { ChangeEvent, useContext, useMemo, useState } from 'react'
 import { OrderProps } from '@/types/order.type'
 import { formatCurrency } from '@/utils'
 import ConfirmModal from '../modals/confirm'
@@ -22,8 +22,6 @@ interface OrderModalProps {
 
 const OrderModal = ({ isOpen, order, onClose }: OrderModalProps) => {
   const [isPaymentModalOpen, setPaymentModalOpen] = useState<boolean>(false)
-  const [isDeletePaymentModalOpen, setDeletePaymentModalOpen] =
-    useState<boolean>(false)
   const [paymentMethod, setPaymentMethod] = useState<string>('')
   const [paymentValue, setPaymentValue] = useState<string>('')
 
@@ -126,6 +124,29 @@ const OrderModal = ({ isOpen, order, onClose }: OrderModalProps) => {
     { value: 'pix', label: 'Pix' }
   ]
 
+  const calculateOrderValues = useMemo(() => {
+    if (!order)
+      return { totalPaid: 0, totalValue: 0, remainingValue: 0, changeValue: 0 }
+
+    const totalPaid =
+      order.paymentOrders?.reduce(
+        (acc, payment) => acc + (payment.value || 0),
+        0
+      ) || 0
+    const totalValue = order.total || 0
+    const remainingValue =
+      totalValue - totalPaid > 0 ? totalValue - totalPaid : 0
+    const changeValue = order.paymentOrders?.reduce(
+      (acc, payment) => acc + (payment.payment.change || 0),
+      0
+    )
+
+    return { totalPaid, totalValue, remainingValue, changeValue }
+  }, [order])
+
+  const { totalPaid, totalValue, remainingValue, changeValue } =
+    calculateOrderValues
+
   if (isOpen) {
     return (
       <dialog className={styles.dialogContainer}>
@@ -152,60 +173,77 @@ const OrderModal = ({ isOpen, order, onClose }: OrderModalProps) => {
                   </span>
                 )}
               </div>
-
-              {order.items.map(item => (
-                <section className={styles.item} key={item.id}>
-                  <span>
-                    Qtd: {item.amount} - <b>{item.product.name}</b> - R${' '}
-                    {item.product.price * item.amount}
-                  </span>
-                  <span className={styles.description}>
-                    {item.product.description}
-                  </span>
-                </section>
-              ))}
-
-              <h3 className={styles.total}>
-                Valor total: R$ {formatCurrency(order.total)}
-              </h3>
-            </article>
-            <article className={styles.paymentContainer}>
-              <h4>Pagamentos</h4>
-              {order.paymentOrders.map(paymentOrder => (
-                <section className={styles.paymentItens} key={paymentOrder.id}>
-                  <div className={styles.paymentInfo}>
-                    <button
-                      onClick={() =>
-                        handleDeletePayment(paymentOrder.payment.id)
-                      }
-                    >
-                      <Trash2 />
-                    </button>
-                    Valor: {formatCurrency(paymentOrder.value)} -{' '}
-                    {getLabel(paymentOrder.payment.payment_method)}
-                  </div>
-                </section>
-              ))}
-
-              <b>
-                Troco:{' '}
-                {formatCurrency(
-                  order.paymentOrders?.reduce(
-                    (acc, payment) => acc + (payment.payment.change || 0),
-                    0
-                  )
-                )}
-              </b>
-
-              {order.status !== OrderStatus.PAID && (
-                <button
-                  className={styles.buttonOrder}
-                  onClick={() => setPaymentModalOpen(true)}
-                >
-                  Registrar pagamento
-                </button>
+              {order.items.length > 0 ? (
+                order.items.map(item => (
+                  <section className={styles.item} key={item.id}>
+                    <span>
+                      Qtd: {item.amount} - <b>{item.product.name}</b> - R${' '}
+                      {item.product.price * item.amount}
+                    </span>
+                    <span className={styles.description}>
+                      {item.product.description}
+                    </span>
+                  </section>
+                ))
+              ) : (
+                <h1>Nenhum item adicionado ao pedido!</h1>
+              )}
+              {order.status !== OrderStatus.DRAFT && (
+                <div>
+                  <h3 className={styles.total}>
+                    Valor total: {formatCurrency(totalValue)}
+                  </h3>
+                  <h3 className={styles.total}>
+                    Valor pago: {formatCurrency(totalPaid)}
+                  </h3>
+                  <h3 className={styles.total}>
+                    Valor restante: {formatCurrency(remainingValue)}
+                  </h3>
+                  {changeValue > 0 && (
+                    <h3 className={`${styles.total} ${styles.change}`}>
+                      Troco: {formatCurrency(changeValue)}
+                    </h3>
+                  )}
+                </div>
               )}
             </article>
+            {order.status !== OrderStatus.DRAFT && (
+              <article className={styles.paymentContainer}>
+                <h4>Pagamentos</h4>
+                {order.paymentOrders.length > 0 ? (
+                  order.paymentOrders.map(paymentOrder => (
+                    <section
+                      className={styles.paymentItens}
+                      key={paymentOrder.id}
+                    >
+                      <div className={styles.paymentInfo}>
+                        <button
+                          onClick={() =>
+                            handleDeletePayment(paymentOrder.payment.id)
+                          }
+                        >
+                          <Trash2 />
+                        </button>
+                        Valor: {formatCurrency(paymentOrder.value)} -{' '}
+                        {getLabel(paymentOrder.payment.payment_method)}
+                      </div>
+                    </section>
+                  ))
+                ) : (
+                  <h1>Nenhum pagamento realizado</h1>
+                )}
+
+                {order.status !== OrderStatus.PAID &&
+                  order.status !== OrderStatus.CLOSED && (
+                    <button
+                      className={styles.buttonOrder}
+                      onClick={() => setPaymentModalOpen(true)}
+                    >
+                      Registrar pagamento
+                    </button>
+                  )}
+              </article>
+            )}
           </section>
         </section>
         <ConfirmModal

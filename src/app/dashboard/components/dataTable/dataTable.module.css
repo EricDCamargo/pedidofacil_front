@@ -25,17 +25,20 @@
 }
 
 .tableCell {
-  min-width: 220px;
   padding: 0.8rem;
   font-weight: 500;
   color: var(--white);
+  width: fit-content;
 }
 
 .tableRow {
   border-bottom: 1px solid #eee;
+  width: fit-content;
 }
 
 .tableRow span {
   font-weight: 500;
   color: var(--white);
+  width: fit-content;
+  word-break: break-word;
 }
