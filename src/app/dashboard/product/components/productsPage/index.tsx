@@ -107,7 +107,7 @@ export default function ProductsPage({
 
   return (
     <div className={styles.container}>
-      <div className={styles.productHeader}>
+      <header className={styles.productHeader}>
         <h1>Lista de produtos</h1>
         <div className={styles.filterContainer}>
           <Dropdown
@@ -126,7 +126,7 @@ export default function ProductsPage({
           <p>Adicionar Produto</p>
           <CirclePlus />
         </button>
-      </div>
+      </header>
 
       <DataTable columns={columns} data={searchValue} />
       <AddEditProduct isOpen={isProductModalOpen} categories={categories} />

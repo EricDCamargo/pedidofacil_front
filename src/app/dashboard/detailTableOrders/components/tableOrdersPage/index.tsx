@@ -1,7 +1,7 @@
 'use client'
 
 import styles from './styles.module.css'
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { OrderContext } from '@/providers/order'
 import { ArrowBigLeft, Eye, Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -11,13 +11,14 @@ import { OrderProps } from '@/types/order.type'
 import { formatCurrency } from '@/utils'
 import { TableColumn } from '@/types/dataTable.type'
 import { getLabel } from '@/utils/recordStatus'
+import Dropdown from '@/app/dashboard/components/dropDown'
 
 interface DetailTableOrdersPage {
-  currentOrders: OrderProps[]
+  orders: OrderProps[]
 }
 
 export default function DetailTableOrdersPage({
-  currentOrders
+  orders
 }: DetailTableOrdersPage) {
   const {
     isOrderModalOpen,
@@ -31,6 +32,21 @@ export default function DetailTableOrdersPage({
   const handlePreviousPage = () => {
     router.push('/dashboard')
   }
+  const [clientName, setClientName] = useState<string>('')
+  const [filteredOrders, setFilteredOrders] = useState<OrderProps[]>(orders)
+
+  const optionsWithAll = [
+    { label: 'Todos', value: '' },
+    ...orders.map(order => ({ label: order.name, value: order.name }))
+  ]
+
+  useEffect(() => {
+    const newOrders =
+      clientName === ''
+        ? orders
+        : orders.filter(order => order.name.includes(clientName))
+    setFilteredOrders(newOrders)
+  }, [clientName])
 
   const handleViewOrder = (order: OrderProps) => {
     setSelectedOrder(order)
@@ -69,15 +85,22 @@ export default function DetailTableOrdersPage({
           </button>
           <h1>Detalhes da Mesa</h1>
         </div>
+
+        <Dropdown
+          defaultValue={clientName}
+          options={optionsWithAll}
+          name={'clientName'}
+          onChange={setClientName}
+        />
       </header>
 
       <section className={styles.listOrders}>
-        {currentOrders.length === 0 ? (
+        {orders.length === 0 ? (
           <span className={styles.emptyItem}>
             Nenhum pedido aberto no momento...
           </span>
         ) : (
-          <DataTable columns={columns} data={currentOrders} />
+          <DataTable columns={columns} data={filteredOrders} />
         )}
       </section>
 

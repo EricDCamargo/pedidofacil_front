@@ -5,7 +5,8 @@ export default async function DetailTableOrders({
 }: {
   params: { table_id: string }
 }) {
-  const currentOrders = await handleDetailTableOrders(params.table_id)
+  const { table_id } = await params
+  const currentOrders = await handleDetailTableOrders(table_id)
 
-  return <DetailTableOrdersPage currentOrders={currentOrders} />
+  return <DetailTableOrdersPage orders={currentOrders} />
 }

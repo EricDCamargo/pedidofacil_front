@@ -11,6 +11,16 @@
   }
 }
 
+.container .header {
+  display: flex;
+  align-items: center;
+  padding: 10px 0 20px 0;
+  gap: 4rem;
+}
+
+.header .filterContainer {
+}
+
 .container .header .title {
   display: flex;
   align-items: center;
