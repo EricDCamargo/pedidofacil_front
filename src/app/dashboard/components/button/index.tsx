@@ -15,7 +15,7 @@ export function Button({ name, onClick, type, ...rest }: ButtonProps) {
     <button
       type={type}
       disabled={pending}
-      className={styles.button}
+      className={`${styles.button} ${styles.rest}`}
       onClick={onClick}
       {...rest}
     >

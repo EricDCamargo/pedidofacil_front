@@ -31,6 +31,13 @@ const orderStatusLabels: Record<string, string> = {
   [OrderStatus.PAID]: 'Pago',
   [OrderStatus.CLOSED]: 'Fechado'
 }
+const orderStatusColors: Record<OrderStatus, { background: string; color: string }> = {
+  [OrderStatus.DRAFT]: { background: 'rgba(211, 211, 211, 0.1)', color: '#6c757d' }, // Cinza
+  [OrderStatus.IN_PROGRESS]: { background: 'rgba(255, 167, 11, 0.1)', color: '#ffa70b' }, // Laranja
+  [OrderStatus.COMPLETED]: { background: 'rgba(40, 167, 69, 0.1)', color: '#28a745' }, // Verde
+  [OrderStatus.PAID]: { background: 'rgba(23, 162, 184, 0.1)', color: '#17a2b8' }, // Azul
+  [OrderStatus.CLOSED]: { background: 'rgba(211, 64, 83, 0.1)', color: '#d34053' } // Vermelho
+};
 
 const tableStatusLabels: Record<string, string> = {
   [TableStatus.AVAILABLE]: 'Disponível',
@@ -69,4 +76,4 @@ const getLabel = (key: string): string => {
   return 'Valor desconhecido'
 }
 
-export { getLabel, OrderStatus, Role, TableStatus }
+export { getLabel, OrderStatus, Role, TableStatus, orderStatusColors }

@@ -188,21 +188,25 @@ const OrderModal = ({ isOpen, order, onClose }: OrderModalProps) => {
               ) : (
                 <h1>Nenhum item adicionado ao pedido!</h1>
               )}
-              {order.status !== OrderStatus.DRAFT && (
+              {order.items[0] && (
                 <div>
                   <h3 className={styles.total}>
                     Valor total: {formatCurrency(totalValue)}
                   </h3>
-                  <h3 className={styles.total}>
-                    Valor pago: {formatCurrency(totalPaid)}
-                  </h3>
-                  <h3 className={styles.total}>
-                    Valor restante: {formatCurrency(remainingValue)}
-                  </h3>
-                  {changeValue > 0 && (
-                    <h3 className={`${styles.total} ${styles.change}`}>
-                      Troco: {formatCurrency(changeValue)}
-                    </h3>
+                  {order.status !== OrderStatus.DRAFT && (
+                    <>
+                      <h3 className={styles.total}>
+                        Valor pago: {formatCurrency(totalPaid)}
+                      </h3>
+                      <h3 className={styles.total}>
+                        Valor restante: {formatCurrency(remainingValue)}
+                      </h3>
+                      {changeValue > 0 && (
+                        <h3 className={`${styles.total} ${styles.change}`}>
+                          Troco: {formatCurrency(changeValue)}
+                        </h3>
+                      )}
+                    </>
                   )}
                 </div>
               )}

@@ -10,22 +10,26 @@ import DataTable from '../../../components/dataTable/dataTable'
 import { OrderProps } from '@/types/order.type'
 import { formatCurrency } from '@/utils'
 import { TableColumn } from '@/types/dataTable.type'
-import { getLabel } from '@/utils/recordStatus'
+import { getLabel, OrderStatus } from '@/utils/recordStatus'
 import Dropdown from '@/app/dashboard/components/dropDown'
+import { Button } from '@/app/dashboard/components/button'
 
 interface DetailTableOrdersPage {
   orders: OrderProps[]
+  currentTableId: string
 }
 
 export default function DetailTableOrdersPage({
-  orders
+  orders,
+  currentTableId
 }: DetailTableOrdersPage) {
   const {
     isOrderModalOpen,
     selectedOrder,
     setOrderModalOpen,
     setSelectedOrder,
-    handleDeleteOrder
+    handleDeleteOrder,
+    handleCloseBill
   } = useContext(OrderContext)
   const router = useRouter()
 
@@ -59,7 +63,21 @@ export default function DetailTableOrdersPage({
     { name: 'Pedido N°', selector: row => row.number },
     {
       name: 'Status',
-      selector: row => getLabel(row.status)
+      cell: row => {
+        const statusClass = {
+          [OrderStatus.DRAFT]: styles.draft,
+          [OrderStatus.IN_PROGRESS]: styles.inProgress,
+          [OrderStatus.COMPLETED]: styles.completed,
+          [OrderStatus.PAID]: styles.paid,
+          [OrderStatus.CLOSED]: styles.closed
+        }[row.status]
+
+        return (
+          <p className={`${styles.status} ${statusClass || ''}`}>
+            {getLabel(row.status)}
+          </p>
+        )
+      }
     },
     { name: 'Cliente', selector: row => row.name },
     { name: 'Total', selector: row => formatCurrency(row.total.toString()) },
@@ -82,27 +100,41 @@ export default function DetailTableOrdersPage({
     <main className={styles.container}>
       <header className={styles.header}>
         <div className={styles.title}>
-          <button onClick={handlePreviousPage}>
+          <button
+            className={styles.prevPageButton}
+            onClick={handlePreviousPage}
+          >
             <ArrowBigLeft size={40} />
           </button>
           <h1>Detalhes da Mesa</h1>
         </div>
 
-        <Dropdown
-          defaultValue={clientName}
-          options={optionsWithAll}
-          name={'clientName'}
-          onChange={setClientName}
-        />
+        {orders[0] && (
+          <>
+            <Dropdown
+              defaultValue={clientName}
+              options={optionsWithAll}
+              name={'clientName'}
+              onChange={setClientName}
+            />
+
+            <Button
+              type="button"
+              name="Fechar mesa"
+              style={{ padding: '10px' }}
+              onClick={() => handleCloseBill(currentTableId)}
+            />
+          </>
+        )}
       </header>
 
       <section className={styles.listOrders}>
-        {orders.length === 0 ? (
+        {orders[0] ? (
+          <DataTable columns={columns} data={filteredOrders} />
+        ) : (
           <span className={styles.emptyItem}>
             Nenhum pedido aberto no momento...
           </span>
-        ) : (
-          <DataTable columns={columns} data={filteredOrders} />
         )}
       </section>
 

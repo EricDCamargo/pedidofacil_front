@@ -6,7 +6,7 @@ import OrderModal from '@/app/dashboard/components/modalOrder'
 import { TableColumn } from '@/types/dataTable.type'
 import { OrderProps } from '@/types/order.type'
 import { formatCurrency } from '@/utils'
-import { getLabel } from '@/utils/recordStatus'
+import { getLabel, OrderStatus } from '@/utils/recordStatus'
 import { Eye, Trash2 } from 'lucide-react'
 import { useContext, useEffect, useState } from 'react'
 import styles from './styles.module.css'
@@ -53,7 +53,21 @@ export default function OrdersPage({ orders }: OrdersPageProps) {
     { name: 'Pedido N°', selector: row => row.number },
     {
       name: 'Status',
-      selector: row => getLabel(row.status)
+      cell: row => {
+        const statusClass = {
+          [OrderStatus.DRAFT]: styles.draft,
+          [OrderStatus.IN_PROGRESS]: styles.inProgress,
+          [OrderStatus.COMPLETED]: styles.completed,
+          [OrderStatus.PAID]: styles.paid,
+          [OrderStatus.CLOSED]: styles.closed
+        }[row.status] // Obtém a classe correspondente ao status
+
+        return (
+          <p className={`${styles.status} ${statusClass || ''}`}>
+            {getLabel(row.status)}
+          </p>
+        )
+      }
     },
     { name: 'Cliente', selector: row => row.name },
     { name: 'Total', selector: row => formatCurrency(row.total.toString()) },

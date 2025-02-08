@@ -20,6 +20,7 @@ type OrderContextData = {
   setSelectedOrder: Dispatch<SetStateAction<OrderProps | undefined>>
   setOrderModalOpen: Dispatch<SetStateAction<boolean>>
   handleDeleteOrder: (order: OrderProps) => Promise<void>
+  handleCloseBill: (table_id: string) => Promise<void>
 }
 
 type OrderProviderProps = {
@@ -32,6 +33,27 @@ export function OrderProvider({ children }: OrderProviderProps) {
   const [selectedOrder, setSelectedOrder] = useState<OrderProps>() // selected order by current table
   const [isOrderModalOpen, setOrderModalOpen] = useState(false)
   const router = useRouter()
+
+  const handleCloseBill = async (table_id: string) => {
+    try {
+      const token = await getCookieServer()
+      const res = await serviceConsumer(token).executePut('/table/close', {
+        table_id
+      })
+      console.log(res)
+
+      if (res.isOk && res.status === StatusCodes.OK) {
+        toast.success(res.message)
+        router.push('/dashboard')
+      } else {
+        toast.error(res.message)
+        return
+      }
+    } catch (error) {
+      console.error('Error closing bill:', error)
+      return
+    }
+  }
 
   const handleDeleteOrder = async (order: OrderProps) => {
     try {
@@ -60,7 +82,8 @@ export function OrderProvider({ children }: OrderProviderProps) {
         selectedOrder,
         setSelectedOrder,
         setOrderModalOpen,
-        handleDeleteOrder
+        handleDeleteOrder,
+        handleCloseBill
       }}
     >
       {children}

@@ -14,6 +14,7 @@
 .container .header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 10px 0 20px 0;
   gap: 4rem;
 }
@@ -26,7 +27,7 @@
   align-items: center;
   gap: 0.5em;
 }
-.container .header button {
+.container .header .prevPageButton {
   border: 0;
   color: var(--white);
   background: transparent;
@@ -68,4 +69,37 @@
 
 .emptyItem {
   color: var(--gray-100);
+}
+
+.status {
+  display: inline-flex;
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.status.draft {
+  background-color: rgba(211, 211, 211, 0.1); /* Cinza */
+  color: #6c757d;
+}
+
+.status.inProgress {
+  background-color: rgba(255, 167, 11, 0.1); /* Laranja */
+  color: #ffa70b;
+}
+
+.status.completed {
+  background-color: rgba(40, 167, 69, 0.1); /* Verde */
+  color: #28a745;
+}
+
+.status.paid {
+  background-color: rgba(23, 162, 184, 0.1); /* Azul */
+  color: #17a2b8;
+}
+
+.status.closed {
+  background-color: rgba(211, 64, 83, 0.1); /* Vermelho */
+  color: #d34053;
 }
