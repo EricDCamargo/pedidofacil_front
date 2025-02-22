@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios'
 import { AuthTokenError } from './errors/AuthTokenErorr'
-import { getReasonPhrase, StatusCodes } from 'http-status-codes'
+import { StatusCodes } from 'http-status-codes'
 import { toast } from 'sonner'
 
 const HTTTP_STATUS = Object.freeze({
@@ -50,9 +50,7 @@ const setupAPIClient = () => {
 
 const api = setupAPIClient()
 const useApi = () => ({
-  a: ()=>{
-    
-  }
+  a: () => {}
 })
 
 export { api, HTTTP_STATUS, debug, useApi }

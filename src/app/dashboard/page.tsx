@@ -4,10 +4,11 @@ import { getTables } from '@/services/retriveSSRData/retriveTableData'
 
 export default async function Dashboard() {
   const tables = await getTables()
+
   return (
     <>
       <ToastHandler />
-      <TableOrders tables={tables} />
+      <TableOrders tablesData={tables} />
     </>
   )
 }
