@@ -6,6 +6,7 @@ import { UserProvider } from '@/providers/user'
 import { getUserServer } from '@/services/retriveSSRData/retriveUserData'
 import { TableProvider } from '@/providers/table'
 import { ProductProvider } from '@/providers/product'
+import { CategoryProvider } from '@/providers/category'
 
 export default async function DashboardLayout({
   children
@@ -19,11 +20,13 @@ export default async function DashboardLayout({
         <UserProvider initialUser={user}>
           <TableProvider>
             <ProductProvider>
-              <Header />
-              <div className={styles.content}>
-                <PagesMenu />
-                {children}
-              </div>
+              <CategoryProvider>
+                <Header />
+                <div className={styles.content}>
+                  <PagesMenu />
+                  {children}
+                </div>
+              </CategoryProvider>
             </ProductProvider>
           </TableProvider>
         </UserProvider>

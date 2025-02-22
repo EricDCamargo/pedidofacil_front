@@ -6,8 +6,33 @@
   flex-direction: column;
   overflow-x: hidden;
   overflow-y: scroll;
+  position: relative;
   h1 {
     color: var(--white);
+  }
+}
+.categoryHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0 20px 0;
+}
+.categoryHeader .addCategory {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 0.2s;
+  cursor: pointer;
+  border: 0;
+  color: var(--white);
+  background: transparent;
+  p {
+    font-size: 1.2rem;
+  }
+
+  &:hover {
+    color: var(--red-900);
+    transform: scale(1.05);
   }
 }
 

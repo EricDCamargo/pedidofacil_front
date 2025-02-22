@@ -26,7 +26,6 @@ export async function middleware(req: NextRequest) {
     }
 
     const user = await getUserServer()
-    console.log(user)
 
     if (!user || !user.id) {
       return NextResponse.redirect(

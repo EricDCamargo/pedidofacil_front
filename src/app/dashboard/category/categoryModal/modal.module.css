@@ -1,6 +1,5 @@
 .input {
   height: 40px;
-  width: 100%;
   border: 1px solid var(--gray-100);
   padding: 0 16px;
   border-radius: 8px;
@@ -52,19 +51,13 @@
     gap: 10px;
   }
 }
-.formulary .modalFooter .date {
-  display: flex;
-  flex-direction: column;
-
-  color: var(--white);
-}
 
 .modalFooter {
   display: flex;
   justify-content: space-between;
+  align-items: flex-end;
 }
 .formulary .modalFooter .buttonsContainer {
   display: flex;
   gap: 10px;
-  align-items: flex-end;
 }
