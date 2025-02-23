@@ -15,11 +15,7 @@
   gap: 16px;
   width: 600px;
 
-  h1 {
-    color: var(--white);
-  }
-
-  form {
+  .form {
     color: var(--white);
     padding-bottom: 16px;
     font-size: 18px;
@@ -29,7 +25,7 @@
     gap: 16px;
   }
 
-  form button {
+  .button {
     height: 40px;
     font-size: 16px;
     background-color: var(--red-900);
@@ -42,7 +38,7 @@
     transition: all 0.5s;
   }
 
-  form button:hover {
+  .form .button:hover {
     transform: scale(1.05);
   }
 }

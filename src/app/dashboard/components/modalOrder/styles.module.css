@@ -25,7 +25,7 @@
   position: relative;
   color: var(--white);
 
-  h2 {
+  .title {
     margin-bottom: 16px;
     margin-top: 8px;
   }
@@ -71,7 +71,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  button {
+  .paymentbutton {
     border: 0;
     color: var(--white);
     background: transparent;

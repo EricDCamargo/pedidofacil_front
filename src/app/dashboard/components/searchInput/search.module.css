@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: flex-start;
 
-  svg {
+  .ico {
     color: var(--white);
   }
 
@@ -33,7 +33,7 @@
 
 .searchContainer .clearContainer {
   width: 20px;
-  button {
+  .clearButton {
     border: 0;
     background: transparent;
   }

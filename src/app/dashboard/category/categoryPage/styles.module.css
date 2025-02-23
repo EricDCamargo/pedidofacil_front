@@ -7,7 +7,7 @@
   overflow-x: hidden;
   overflow-y: scroll;
   position: relative;
-  h1 {
+  .title {
     color: var(--white);
   }
 }
@@ -26,7 +26,7 @@
   border: 0;
   color: var(--white);
   background: transparent;
-  p {
+  .buttonText {
     font-size: 1.2rem;
   }
 

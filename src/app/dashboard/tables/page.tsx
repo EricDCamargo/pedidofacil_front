@@ -1,4 +1,3 @@
-import ToastHandler from '@/lib/toastHandler'
 import TablesPage from './components/tablePage'
 import { getTables } from '@/services/retriveSSRData/retriveTableData'
 

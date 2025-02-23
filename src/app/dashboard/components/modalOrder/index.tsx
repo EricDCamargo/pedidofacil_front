@@ -28,7 +28,7 @@ const OrderModal = ({ isOpen, order, onClose }: OrderModalProps) => {
   const { setSelectedOrder } = useContext(OrderContext)
 
   const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
-    let rawValue = e.target.value.replace(/\D/g, '')
+    const rawValue = e.target.value.replace(/\D/g, '')
 
     if (!rawValue) {
       setPaymentValue('0.00')
@@ -153,7 +153,8 @@ const OrderModal = ({ isOpen, order, onClose }: OrderModalProps) => {
         <section className={styles.dialogContent}>
           <header className={styles.header}>
             <div className={styles.title}>
-              <h2>Detalhes do pedido</h2> - {getLabel(order.status)}
+              <h2 className={styles.title}>Detalhes do pedido</h2> -{' '}
+              {getLabel(order.status)}
             </div>
 
             <button className={styles.dialogBack} onClick={onClose}>
@@ -222,6 +223,7 @@ const OrderModal = ({ isOpen, order, onClose }: OrderModalProps) => {
                     >
                       <div className={styles.paymentInfo}>
                         <button
+                          className={styles.paymentbutton}
                           onClick={() =>
                             handleDeletePayment(paymentOrder.payment.id)
                           }

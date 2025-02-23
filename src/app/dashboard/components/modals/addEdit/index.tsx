@@ -24,7 +24,7 @@ const AddEditModal: React.FC<AddEditModalProps> = ({
       <div className={styled.backgroundModal}>
         <div className={styled.content}>
           <div className={styled.header}>
-            <h1>{modalTitle}</h1>
+            <h1 className={styled.title}>{modalTitle}</h1>
             <div className={styled.icons}>
               {onDelete && (
                 <button className={styled.icon} onClick={onDelete}>

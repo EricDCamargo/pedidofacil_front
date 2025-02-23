@@ -108,7 +108,7 @@ export default function ProductsPage({
   return (
     <div className={styles.container}>
       <header className={styles.productHeader}>
-        <h1>Lista de produtos</h1>
+        <h1 className={styles.title}>Lista de produtos</h1>
         <div className={styles.filterContainer}>
           <Dropdown
             defaultValue={selectedCategory}
@@ -123,7 +123,7 @@ export default function ProductsPage({
           />
         </div>
         <button className={styles.addProduct} onClick={handleAddProduct}>
-          <p>Adicionar Produto</p>
+          <p className={styles.text}>Adicionar Produto</p>
           <CirclePlus />
         </button>
       </header>

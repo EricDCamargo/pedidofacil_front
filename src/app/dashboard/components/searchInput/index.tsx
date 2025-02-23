@@ -31,7 +31,7 @@ export const SearchInput = ({
 
   return (
     <div className={styles.searchContainer}>
-      <Search />
+      <Search className={styles.ico} />
       <input
         placeholder={'Buscar'}
         value={search}
@@ -40,8 +40,8 @@ export const SearchInput = ({
       />
       <div className={styles.clearContainer}>
         {search ? (
-          <button onClick={() => setSearch('')}>
-            <X />
+          <button className={styles.clearButton} onClick={() => setSearch('')}>
+            <X className={styles.ico} />
           </button>
         ) : null}
       </div>

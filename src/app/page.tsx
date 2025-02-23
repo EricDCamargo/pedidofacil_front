@@ -6,7 +6,6 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import ToastHandler from '@/lib/toastHandler'
 import { toast } from 'sonner'
-import { useApi } from '@/services/api'
 import { handleLogin } from '@/services/retriveSSRData/retriveUserData'
 
 export default function Home() {
@@ -27,7 +26,7 @@ export default function Home() {
         <Image src="/logo.svg" alt="Pedido Facil" width={180} height={38} />
 
         <section className={styles.login}>
-          <form action={handleClientAction}>
+          <form className={styles.form} action={handleClientAction}>
             <input
               type="email"
               required

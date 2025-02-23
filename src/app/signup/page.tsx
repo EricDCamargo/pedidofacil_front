@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from '../page.module.css'
-import { api } from '@/services/api'
 import { redirect } from 'next/navigation'
 import { serviceConsumer } from '@/services/service.consumer'
 

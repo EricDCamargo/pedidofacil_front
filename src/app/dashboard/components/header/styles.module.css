@@ -15,21 +15,21 @@
   justify-content: space-between;
   width: 100%;
 
-  nav {
+  .nav {
     display: flex;
     align-items: center;
     gap: 14px;
 
-    form {
+    .form {
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      p {
+      .text {
         font-size: 1.2rem;
         color: var(--white);
       }
     }
-    a {
+    .link {
       color: var(--white);
       text-decoration: none;
       transition: 0.2s;
@@ -44,7 +44,7 @@
       color: var(--red-900);
     }
 
-    button {
+    .button {
       border: 0;
       background: transparent;
       transition: transform 0.2s;

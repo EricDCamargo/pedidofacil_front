@@ -29,7 +29,7 @@
   border-bottom: 1px solid var(--black);
   padding: 32px 36px;
 
-  h1 {
+  .title {
     color: var(--white);
   }
 }

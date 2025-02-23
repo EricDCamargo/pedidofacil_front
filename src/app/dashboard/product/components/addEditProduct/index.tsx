@@ -102,7 +102,7 @@ export function AddEditProduct({ isOpen, categories }: Props) {
                 <ArrowBigLeft size={40} />
               </button>
 
-              <h1>
+              <h1 className={styles.title}>
                 {currentProduct.id
                   ? `Editar produto ${currentProduct.name}`
                   : 'Novo produto'}
@@ -124,7 +124,9 @@ export function AddEditProduct({ isOpen, categories }: Props) {
                 previewImage ? styles.previewActive : ''
               }`}
             >
-              <span className={`${!onEdition && styles.spanIcon}`}>
+              <span
+                className={`${styles.spanF} ${!onEdition && styles.spanIcon}`}
+              >
                 <UploadCloud size={30} />
               </span>
 
@@ -134,6 +136,7 @@ export function AddEditProduct({ isOpen, categories }: Props) {
                 required={!previewImage}
                 disabled={onEdition}
                 onChange={handleFile}
+                className={styles.inputF}
               />
 
               {previewImage && (
@@ -177,7 +180,7 @@ export function AddEditProduct({ isOpen, categories }: Props) {
             />
 
             <textarea
-              className={styles.input}
+              className={`${styles.input} ${styles.textarea}`}
               placeholder="Digite a descrição do produto..."
               disabled={onEdition}
               required

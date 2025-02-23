@@ -102,9 +102,9 @@ export default function UsersPage({ users }: UsersPageProps) {
   return (
     <div className={styles.container}>
       <div className={styles.userHeader}>
-        <h1>Usuários</h1>
+        <h1 className={styles.title}>Usuários</h1>
         <button className={styles.addUser} onClick={handleAddUser}>
-          <p> Adicionar usuario</p>
+          <p className={styles.text}>Adicionar usuario</p>
           <UserRoundPlus />
         </button>
       </div>

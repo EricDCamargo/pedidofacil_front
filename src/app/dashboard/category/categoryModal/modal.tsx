@@ -96,9 +96,8 @@ const CategoryModal: React.FC = () => {
       enableEdition={handleEditi}
     >
       <section className={styles.formulary}>
-        <form action={handleSubmit}>
+        <form className={styles.form} action={handleSubmit}>
           <div className={styles.inputsConteiner}>
-            <div>
               <input
                 type="name"
                 required
@@ -108,7 +107,6 @@ const CategoryModal: React.FC = () => {
                 placeholder="Nome da categoria..."
                 className={styles.input}
               />
-            </div>
           </div>
 
           <div className={styles.modalFooter}>

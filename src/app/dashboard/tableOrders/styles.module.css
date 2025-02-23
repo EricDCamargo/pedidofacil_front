@@ -6,7 +6,7 @@
   flex-direction: column;
   overflow-x: hidden;
   overflow-y: scroll;
-  h1 {
+  .title {
     color: var(--white);
   }
 }
@@ -18,7 +18,7 @@
   margin-top: 24px;
   gap: 14px;
 
-  button {
+  .button {
     background: transparent;
     border: 0;
   }

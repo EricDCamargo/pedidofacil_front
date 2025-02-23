@@ -33,7 +33,7 @@ export function Header() {
   return (
     <header className={styles.headerContainer}>
       <div className={styles.headerContent}>
-        <Link href="/dashboard">
+        <Link className={styles.link} href="/dashboard">
           <Image
             alt="Pedido Facil"
             src="/logo.svg"
@@ -54,10 +54,10 @@ export function Header() {
             </Link>
           ))}
         </nav> */}
-        <nav>
-          <form action={handleLogout}>
-            <p>{loggedUser?.name} </p>
-            <button type="submit">
+        <nav className={styles.nav}>
+          <form className={styles.form} action={handleLogout}>
+            <p className={styles.text}>{loggedUser?.name} </p>
+            <button className={styles.button} type="submit">
               <LogOutIcon size={24} color="#FFF" />
             </button>
           </form>

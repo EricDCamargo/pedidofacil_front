@@ -3,7 +3,7 @@ import { handleDetailTableOrders } from '@/services/retriveSSRData/retriveTableO
 export default async function DetailTableOrders({
   params
 }: {
-  params: { table_id: string }
+  params: Promise<{ table_id: string }>
 }) {
   const { table_id } = await params
   const currentOrders = await handleDetailTableOrders(table_id)

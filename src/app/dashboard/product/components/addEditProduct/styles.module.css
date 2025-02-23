@@ -21,7 +21,7 @@
   flex-direction: column;
   overflow-x: hidden;
   overflow-y: scroll;
-  h1 {
+  .title {
     color: var(--white);
   }
 }
@@ -53,7 +53,7 @@
   flex-direction: column;
   gap: 16px;
 
-  textarea {
+  .textarea {
     width: 100%;
     min-height: 120px;
     resize: none;
@@ -84,11 +84,11 @@
       color: var(--red-900);
     }
   }
-  input {
+  .inputF {
     display: none;
   }
 
-  span {
+  .spanF {
     opacity: 0.8;
     transition: all 0.6s;
     position: absolute;

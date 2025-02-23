@@ -107,9 +107,9 @@ const UserModal: React.FC = () => {
       enableEdition={handleEditi}
     >
       <section className={styles.formulary}>
-        <form action={handleSubmit}>
+        <form className={styles.form} action={handleSubmit}>
           <div className={styles.inputsConteiner}>
-            <div>
+            <div className={styles.inputRow}>
               <input
                 type="name"
                 required
@@ -129,7 +129,7 @@ const UserModal: React.FC = () => {
                 className={styles.input}
               />
             </div>
-            <div>
+            <div className={styles.inputRow}>
               {!currentUser.id && (
                 <input
                   type="password"

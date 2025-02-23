@@ -107,9 +107,9 @@ const TableModal: React.FC = () => {
       onDelete={handleDelete}
     >
       <section className={styles.formulary}>
-        <form action={handleSubmit}>
+        <form className={styles.form} action={handleSubmit}>
           <div className={styles.inputsConteiner}>
-            <div>
+            <div className={styles.inputRow}>
               <input
                 type="number"
                 required
