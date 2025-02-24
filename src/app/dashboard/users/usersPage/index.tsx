@@ -5,7 +5,6 @@ import { Eye, Trash2, UserRoundPlus } from 'lucide-react'
 import { UserProps, UserRole } from '@/types/user.type'
 import { newUser, UserContext } from '@/providers/user'
 import { useContext } from 'react'
-import UserModal from '../userModal/modal'
 import ConfirmModal from '../../components/modals/confirm'
 import { serviceConsumer } from '@/services/service.consumer'
 import { toast } from 'sonner'
@@ -13,6 +12,7 @@ import { useRouter } from 'next/navigation'
 import DataTable from '../../components/dataTable/dataTable'
 import { TableColumn } from '@/types/dataTable.type'
 import { getLabel } from '@/utils/recordStatus'
+import UserModal from '../userModal/modal'
 
 interface UsersPageProps {
   users: UserProps[] | []
@@ -109,7 +109,6 @@ export default function UsersPage({ users }: UsersPageProps) {
         </button>
       </div>
       <DataTable columns={columns} data={users} />
-      <UserModal />
       <ConfirmModal
         modalText={{
           title: 'Remover Usuario',
@@ -130,6 +129,7 @@ export default function UsersPage({ users }: UsersPageProps) {
         onCancel={handleCancel}
         onConfirm={handleDelete}
       />
+      <UserModal />
     </div>
   )
 }

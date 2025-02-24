@@ -25,9 +25,7 @@ export default async function DashboardLayout({
                 <Header />
                 <div className={styles.content}>
                   <PagesMenu />
-                  <Suspense fallback={<div>Loading...</div>}>
-                    {children}
-                  </Suspense>
+                  {children}
                 </div>
               </CategoryProvider>
             </ProductProvider>
