@@ -1,4 +1,5 @@
-import { OrderProps } from '@/providers/order'
+import { OrderProps } from "@/types/order.type"
+
 
 export function calculateTotalOrder(orders: OrderProps) {
   return orders.items.reduce((total, item) => {

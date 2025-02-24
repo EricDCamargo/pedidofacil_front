@@ -27,7 +27,7 @@ export const SearchInput = ({
       })
       setDateToPage(filteredData)
     }
-  }, [search, data])
+  }, [search, data, searchValue])
 
   return (
     <div className={styles.searchContainer}>

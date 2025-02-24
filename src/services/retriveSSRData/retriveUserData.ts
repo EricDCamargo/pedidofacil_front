@@ -14,6 +14,7 @@ export async function getUserServer(): Promise<UserProps | null> {
     const response = await serviceConsumer(token).executeGet('/me')
     return response.data as UserProps
   } catch (error) {
+    console.log(error)
     return null
   }
 }

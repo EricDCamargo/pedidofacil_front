@@ -1,3 +1,4 @@
+import { OrderStatus } from '@/utils/recordStatus'
 import { ProductProps } from './product.type'
 
 export type ProductWithoutCategory = Omit<ProductProps, 'category'>
@@ -18,7 +19,7 @@ export interface OrderProps {
   id: string
   number: number
   table_id: string
-  status: string
+  status: OrderStatus
   name: string
   total: number
   created_at: string
@@ -45,11 +46,4 @@ interface Payment {
   change: number
   created_at: string
   updated_at: string
-}
-
-enum OrderStatus {
-  DRAFT = 'DRAFT',
-  IN_PROGRESS = 'IN_PROGRESS',
-  COMPLETED = 'COMPLETED',
-  CLOSED = 'CLOSED'
 }

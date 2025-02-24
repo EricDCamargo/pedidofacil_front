@@ -36,7 +36,7 @@ export function AddEditProduct({ isOpen, categories }: Props) {
   }, [currentProduct])
 
   const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
-    let rawValue = e.target.value.replace(/\D/g, '')
+    const rawValue = e.target.value.replace(/\D/g, '')
 
     if (!rawValue) {
       setPrice('0.00')

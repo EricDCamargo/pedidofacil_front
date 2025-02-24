@@ -58,7 +58,8 @@ export function UserProvider({ children, initialUser }: UserProviderProps) {
     try {
       const res = await serviceConsumer(token).executeGet('/me')
       setLoggedUser(res.data)
-    } catch (err) {
+    } catch (error) {
+      console.log(error)
       toast.error('Você precisa estar logado para acessar essa página.')
       setLoggedUser(undefined)
     }

@@ -52,7 +52,7 @@ export default function DetailTableOrdersPage({
         ? orders
         : orders.filter(order => order.name.includes(clientName))
     setFilteredOrders(newOrders)
-  }, [clientName])
+  }, [clientName, orders])
 
   const handleViewOrder = (order: OrderProps) => {
     setSelectedOrder(order)

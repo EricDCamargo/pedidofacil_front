@@ -10,7 +10,6 @@ import { getLabel, OrderStatus } from '@/utils/recordStatus'
 import { Eye, Trash2 } from 'lucide-react'
 import { useContext, useEffect, useState } from 'react'
 import styles from './styles.module.css'
-import { useRouter } from 'next/navigation'
 import { OrderContext } from '@/providers/order'
 
 interface OrdersPageProps {
@@ -25,7 +24,6 @@ export default function OrdersPage({ orders }: OrdersPageProps) {
     setSelectedOrder,
     handleDeleteOrder
   } = useContext(OrderContext)
-  const router = useRouter()
   const [clientName, setClientName] = useState<string>('')
   const [filteredOrders, setFilteredOrders] = useState<OrderProps[]>(orders)
 
@@ -42,7 +40,7 @@ export default function OrdersPage({ orders }: OrdersPageProps) {
         ? orders
         : orders.filter(order => order.name.includes(clientName))
     setFilteredOrders(newOrders)
-  }, [clientName])
+  }, [clientName, orders])
 
   const handleViewOrder = (order: OrderProps) => {
     setSelectedOrder(order)
@@ -89,7 +87,7 @@ export default function OrdersPage({ orders }: OrdersPageProps) {
     <main className={styles.container}>
       <header className={styles.header}>
         <div className={styles.title}>
-          <h1 className={styles.title} >Todos os pedidos</h1>
+          <h1 className={styles.title}>Todos os pedidos</h1>
         </div>
 
         <Dropdown

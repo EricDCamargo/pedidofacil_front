@@ -7,6 +7,7 @@ import { getUserServer } from '@/services/retriveSSRData/retriveUserData'
 import { TableProvider } from '@/providers/table'
 import { ProductProvider } from '@/providers/product'
 import { CategoryProvider } from '@/providers/category'
+import { Suspense } from 'react'
 
 export default async function DashboardLayout({
   children
@@ -24,7 +25,9 @@ export default async function DashboardLayout({
                 <Header />
                 <div className={styles.content}>
                   <PagesMenu />
-                  {children}
+                  <Suspense fallback={<div>Loading...</div>}>
+                    {children}
+                  </Suspense>
                 </div>
               </CategoryProvider>
             </ProductProvider>
@@ -34,3 +37,4 @@ export default async function DashboardLayout({
     </div>
   )
 }
+export const dynamic = 'force-dynamic'
