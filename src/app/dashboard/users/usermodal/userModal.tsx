@@ -10,7 +10,7 @@ import { serviceConsumer } from '@/services/service.consumer'
 import { useRouter } from 'next/navigation'
 import { StatusCodes } from 'http-status-codes'
 
-export default function UserModal() {
+export const UserModal = () => {
   const router = useRouter()
   const {
     isUserModalOpen,
