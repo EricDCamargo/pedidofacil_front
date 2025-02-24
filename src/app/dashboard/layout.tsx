@@ -7,7 +7,6 @@ import { getUserServer } from '@/services/retriveSSRData/retriveUserData'
 import { TableProvider } from '@/providers/table'
 import { ProductProvider } from '@/providers/product'
 import { CategoryProvider } from '@/providers/category'
-import { Suspense } from 'react'
 
 export default async function DashboardLayout({
   children

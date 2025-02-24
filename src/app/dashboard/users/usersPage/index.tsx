@@ -12,7 +12,7 @@ import { useRouter } from 'next/navigation'
 import DataTable from '../../components/dataTable/dataTable'
 import { TableColumn } from '@/types/dataTable.type'
 import { getLabel } from '@/utils/recordStatus'
-import UserModal from '../userModal/modal'
+import UserModal from '@/app/dashboard/users/userModal/modal'
 
 interface UsersPageProps {
   users: UserProps[] | []
