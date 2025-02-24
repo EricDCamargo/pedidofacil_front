@@ -10,7 +10,7 @@ import { serviceConsumer } from '@/services/service.consumer'
 import { useRouter } from 'next/navigation'
 import { StatusCodes } from 'http-status-codes'
 
-const UserModal: React.FC = () => {
+export default function UserModal() {
   const router = useRouter()
   const {
     isUserModalOpen,
@@ -193,4 +193,3 @@ const UserModal: React.FC = () => {
     </AddEditModal>
   )
 }
-export default UserModal
