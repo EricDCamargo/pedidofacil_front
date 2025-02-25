@@ -5,14 +5,14 @@ import { Eye, Trash2, UserRoundPlus } from 'lucide-react'
 import { UserProps, UserRole } from '@/types/user.type'
 import { newUser, UserContext } from '@/providers/user'
 import { useContext } from 'react'
-import ConfirmModal from '../../components/modals/confirm'
 import { serviceConsumer } from '@/services/service.consumer'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
-import DataTable from '../../components/dataTable/dataTable'
 import { TableColumn } from '@/types/dataTable.type'
 import { getLabel } from '@/utils/recordStatus'
-import { UserModal } from '../userModal/modal'
+import DataTable from '@/app/dashboard/components/dataTable/dataTable'
+import ConfirmModal from '@/app/dashboard/components/modals/confirm'
+import UserModal from '../userModal/modal'
 
 interface UsersPageProps {
   users: UserProps[] | []

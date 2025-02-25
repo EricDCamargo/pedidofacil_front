@@ -1,8 +1,8 @@
 import { use } from 'react'
-import AddEditModal from '../../components/modals/addEdit'
+import AddEditModal from '../../../components/modals/addEdit'
 import { UserContext } from '@/providers/user'
 import styles from './modal.module.css'
-import Dropdown from '../../components/dropDown'
+import Dropdown from '../../../components/dropDown'
 import { toast } from 'sonner'
 import moment from 'moment'
 import { UserRole } from '@/types/user.type'
@@ -10,7 +10,7 @@ import { serviceConsumer } from '@/services/service.consumer'
 import { useRouter } from 'next/navigation'
 import { StatusCodes } from 'http-status-codes'
 
-export const UserModal = () => {
+const UserModal: React.FC = () => {
   const router = useRouter()
   const {
     isUserModalOpen,
@@ -193,3 +193,5 @@ export const UserModal = () => {
     </AddEditModal>
   )
 }
+
+export default UserModal
