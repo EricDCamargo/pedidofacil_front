@@ -7,7 +7,6 @@ import { toast } from 'sonner'
 import { TableProps } from '@/types/table.type'
 import { getLabel, TableStatus } from '@/utils/recordStatus'
 import { useState } from 'react'
-import socket from '@/socket'
 import { getTables } from '@/services/retriveSSRData/retriveTableData'
 
 interface Props {
@@ -18,10 +17,6 @@ export function TableOrders({ tablesData }: Props) {
   const router = useRouter()
 
   const [tables, setTables] = useState<TableProps[]>(tablesData)
-
-  socket.on('tableStatusChanged', async () => {
-    setTables(await getTables())
-  })
 
   const handleDetailTableOrders = (table_id: string) => {
     router.push(`/dashboard/detailTableOrders/${table_id}`)
