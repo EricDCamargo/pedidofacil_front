@@ -60,16 +60,6 @@
   margin-right: 16px;
 }
 
-.listOrders {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.emptyItem {
-  color: var(--gray-100);
-}
-
 .status {
   display: inline-flex;
   border-radius: 9999px;

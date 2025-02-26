@@ -29,9 +29,7 @@
   border-bottom: 1px solid var(--black);
   padding: 32px 36px;
 
-  .title {
-    color: var(--white);
-  }
+  color: var(--white);
 }
 .header .icons {
   display: flex;

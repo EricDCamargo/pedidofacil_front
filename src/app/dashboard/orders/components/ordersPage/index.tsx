@@ -87,7 +87,7 @@ export default function OrdersPage({ orders }: OrdersPageProps) {
     <main className={styles.container}>
       <header className={styles.header}>
         <div className={styles.title}>
-          <h1 className={styles.title}>Todos os pedidos</h1>
+          <h1>Todos os pedidos</h1>
         </div>
 
         <Dropdown
@@ -98,15 +98,7 @@ export default function OrdersPage({ orders }: OrdersPageProps) {
         />
       </header>
 
-      <section className={styles.listOrders}>
-        {orders.length === 0 ? (
-          <span className={styles.emptyItem}>
-            Nenhum pedido aberto no momento...
-          </span>
-        ) : (
-          <DataTable columns={columns} data={filteredOrders} />
-        )}
-      </section>
+      <DataTable columns={columns} data={filteredOrders} />
 
       <OrderModal
         isOpen={isOrderModalOpen}

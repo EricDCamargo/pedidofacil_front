@@ -4,10 +4,5 @@ import { getOrders } from '@/services/retriveSSRData/retriveTableOrdersData'
 
 export default async function Orders() {
   const orders = await getOrders()
-  return (
-    <>
-      <ToastHandler />
-      <OrdersPage orders={orders} />
-    </>
-  )
+  return <OrdersPage orders={orders} />
 }

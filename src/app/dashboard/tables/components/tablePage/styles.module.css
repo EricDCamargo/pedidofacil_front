@@ -7,9 +7,7 @@
   overflow-x: hidden;
   overflow-y: scroll;
   position: relative;
-  .title {
-    color: var(--white);
-  }
+  color: var(--white);
 }
 .container .tableHeader {
   display: flex;

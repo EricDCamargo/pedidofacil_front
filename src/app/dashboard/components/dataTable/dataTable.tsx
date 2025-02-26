@@ -11,28 +11,36 @@ export default function DataTable<T>({ columns, data }: DataTableProps<T>) {
   return (
     <div className={styles.tableContainer}>
       <div className={styles.tableWrapper}>
-        <table className={styles.table}>
-          <thead>
-            <tr className={styles.tableHeader}>
-              {columns.map((col, index) => (
-                <th key={index} className={styles.tableCell}>
-                  {col.name}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((item, index) => (
-              <tr key={index} className={styles.tableRow}>
-                {columns.map((col, colIndex) => (
-                  <td key={colIndex} className={styles.tableCell}>
-                    {col.cell ? col.cell(item) : <span>{col.selector(item)}</span>}
-                  </td>
+        {data.length === 0 ? (
+          <div className={styles.noData}>Nenhum registro disponível</div>
+        ) : (
+          <table className={styles.table}>
+            <thead>
+              <tr className={styles.tableHeader}>
+                {columns.map((col, index) => (
+                  <th key={index} className={styles.tableCell}>
+                    {col.name}
+                  </th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {data.map((item, index) => (
+                <tr key={index} className={styles.tableRow}>
+                  {columns.map((col, colIndex) => (
+                    <td key={colIndex} className={styles.tableCell}>
+                      {col.cell ? (
+                        col.cell(item)
+                      ) : (
+                        <span>{col.selector(item)}</span>
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   )

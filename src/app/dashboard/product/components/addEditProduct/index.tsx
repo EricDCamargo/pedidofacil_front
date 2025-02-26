@@ -102,7 +102,7 @@ export function AddEditProduct({ isOpen, categories }: Props) {
                 <ArrowBigLeft size={40} />
               </button>
 
-              <h1 className={styles.title}>
+              <h1>
                 {currentProduct.id
                   ? `Editar produto ${currentProduct.name}`
                   : 'Novo produto'}

@@ -31,7 +31,7 @@ export function TableOrders({ tablesData }: Props) {
     <>
       <main className={styles.container}>
         <section className={styles.containerHeader}>
-          <h1 className={styles.title}>Messas pedidos</h1>
+          <h1>Messas pedidos</h1>
           <button className={styles.button} onClick={handleRefresh}>
             <RefreshCw size={24} color="#3fffa3" />
           </button>

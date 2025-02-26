@@ -69,7 +69,7 @@ export default function TablesPage({ tables }: TablesPageProps) {
   return (
     <div className={styles.container}>
       <div className={styles.tableHeader}>
-        <h1 className={styles.title}>Lista de Mesas</h1>
+        <h1>Lista de Mesas</h1>
         <button className={styles.addTable} onClick={handleAddTable}>
           <p className={styles.text}>Adicionar Mesa</p>
           <LayoutGrid />

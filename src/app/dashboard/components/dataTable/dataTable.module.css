@@ -44,3 +44,10 @@
   width: fit-content;
   word-break: break-word;
 }
+
+.noData {
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+  color: #999;
+}

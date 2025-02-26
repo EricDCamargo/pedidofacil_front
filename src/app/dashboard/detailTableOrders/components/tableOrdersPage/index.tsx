@@ -127,17 +127,7 @@ export default function DetailTableOrdersPage({
           </>
         )}
       </header>
-
-      <section className={styles.listOrders}>
-        {orders[0] ? (
-          <DataTable columns={columns} data={filteredOrders} />
-        ) : (
-          <span className={styles.emptyItem}>
-            Nenhum pedido aberto no momento...
-          </span>
-        )}
-      </section>
-
+      <DataTable columns={columns} data={filteredOrders} />
       <OrderModal
         isOpen={isOrderModalOpen}
         order={selectedOrder!}

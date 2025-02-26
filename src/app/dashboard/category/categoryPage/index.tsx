@@ -96,7 +96,7 @@ export default function CategoryPage({ categories }: CategoryPageProps) {
   return (
     <main className={styles.container}>
       <div className={styles.categoryHeader}>
-        <h1 className={styles.title}>Categorias</h1>
+        <h1>Categorias</h1>
         <button className={styles.addCategory} onClick={handleAddCategory}>
           <p className={styles.buttonText}>Adicionar Gategoria</p>
           <BookPlus />
