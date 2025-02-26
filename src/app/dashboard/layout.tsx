@@ -15,7 +15,7 @@ export default async function DashboardLayout({
 }) {
   const user = await getUserServer()
   return (
-    <div className={styles.grid}>
+    <main className={styles.grid}>
       <OrderProvider>
         <UserProvider initialUser={user}>
           <TableProvider>
@@ -31,7 +31,7 @@ export default async function DashboardLayout({
           </TableProvider>
         </UserProvider>
       </OrderProvider>
-    </div>
+    </main>
   )
 }
 export const dynamic = 'force-dynamic'

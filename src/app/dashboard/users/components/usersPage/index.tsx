@@ -13,6 +13,7 @@ import { getLabel } from '@/utils/recordStatus'
 import DataTable from '@/app/dashboard/components/dataTable/dataTable'
 import ConfirmModal from '@/app/dashboard/components/modals/confirm'
 import UserModal from '../userModal/modal'
+import PageLayout from '@/app/dashboard/components/PageLayout/pageLayout'
 
 interface UsersPageProps {
   users: UserProps[] | []
@@ -100,14 +101,16 @@ export default function UsersPage({ users }: UsersPageProps) {
   ]
 
   return (
-    <div className={styles.container}>
-      <div className={styles.userHeader}>
-        <h1>Usuários</h1>
-        <button className={styles.addUser} onClick={handleAddUser}>
-          <p className={styles.text}>Adicionar usuario</p>
-          <UserRoundPlus />
-        </button>
-      </div>
+    <PageLayout
+      headerProps={{
+        title: 'Usuários',
+        button: {
+          buttonLabel: 'Adicionar usuário',
+          buttonIcon: <UserRoundPlus />,
+          onButtonClick: handleAddUser
+        }
+      }}
+    >
       <DataTable columns={columns} data={users} />
       <ConfirmModal
         modalText={{
@@ -130,6 +133,6 @@ export default function UsersPage({ users }: UsersPageProps) {
         onConfirm={handleDelete}
       />
       <UserModal />
-    </div>
+    </PageLayout>
   )
 }

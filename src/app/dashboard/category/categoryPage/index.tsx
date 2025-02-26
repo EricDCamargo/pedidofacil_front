@@ -13,6 +13,7 @@ import { CategoryContext } from '@/providers/category'
 import ConfirmModal from '../../components/modals/confirm'
 import { useRouter } from 'next/navigation'
 import CategoryModal from '../categoryModal/modal'
+import PageLayout from '../../components/PageLayout/pageLayout'
 
 interface CategoryPageProps {
   categories: CategoryProps[]
@@ -94,15 +95,16 @@ export default function CategoryPage({ categories }: CategoryPageProps) {
   ]
 
   return (
-    <main className={styles.container}>
-      <div className={styles.categoryHeader}>
-        <h1>Categorias</h1>
-        <button className={styles.addCategory} onClick={handleAddCategory}>
-          <p className={styles.buttonText}>Adicionar Gategoria</p>
-          <BookPlus />
-        </button>
-      </div>
-
+    <PageLayout
+      headerProps={{
+        title: 'Categorias',
+        button: {
+          buttonLabel: 'Adicionar Gategoria',
+          buttonIcon: <BookPlus />,
+          onButtonClick: handleAddCategory
+        }
+      }}
+    >
       <DataTable columns={columns} data={categories} />
       <CategoryModal />
       <ConfirmModal
@@ -120,6 +122,6 @@ export default function CategoryPage({ categories }: CategoryPageProps) {
         onCancel={handleCancel}
         onConfirm={handleDelete}
       />
-    </main>
+    </PageLayout>
   )
 }

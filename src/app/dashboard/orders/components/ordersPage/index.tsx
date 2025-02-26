@@ -11,6 +11,7 @@ import { Eye, Trash2 } from 'lucide-react'
 import { useContext, useEffect, useState } from 'react'
 import styles from './styles.module.css'
 import { OrderContext } from '@/providers/order'
+import PageLayout from '@/app/dashboard/components/PageLayout/pageLayout'
 
 interface OrdersPageProps {
   orders: OrderProps[]
@@ -84,20 +85,19 @@ export default function OrdersPage({ orders }: OrdersPageProps) {
     }
   ]
   return (
-    <main className={styles.container}>
-      <header className={styles.header}>
-        <div className={styles.title}>
-          <h1>Todos os pedidos</h1>
-        </div>
-
-        <Dropdown
-          defaultValue={clientName}
-          options={optionsWithAll}
-          name={'clientName'}
-          onChange={setClientName}
-        />
-      </header>
-
+    <PageLayout
+      headerProps={{
+        title: 'Todos os pedidos',
+        children: (
+          <Dropdown
+            defaultValue={clientName}
+            options={optionsWithAll}
+            name={'clientName'}
+            onChange={setClientName}
+          />
+        )
+      }}
+    >
       <DataTable columns={columns} data={filteredOrders} />
 
       <OrderModal
@@ -105,6 +105,6 @@ export default function OrdersPage({ orders }: OrdersPageProps) {
         order={selectedOrder!}
         onClose={() => setOrderModalOpen(false)}
       />
-    </main>
+    </PageLayout>
   )
 }

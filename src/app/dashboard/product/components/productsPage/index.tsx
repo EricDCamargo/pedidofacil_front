@@ -15,6 +15,7 @@ import { SearchInput } from '@/app/dashboard/components/searchInput'
 import DataTable from '@/app/dashboard/components/dataTable/dataTable'
 import { TableColumn } from '@/types/dataTable.type'
 import Image from 'next/image'
+import PageLayout from '@/app/dashboard/components/PageLayout/pageLayout'
 
 interface PrductsPageProps {
   products: ProductProps[]
@@ -106,28 +107,31 @@ export default function ProductsPage({
   ]
 
   return (
-    <div className={styles.container}>
-      <header className={styles.productHeader}>
-        <h1>Lista de produtos</h1>
-        <div className={styles.filterContainer}>
-          <Dropdown
-            defaultValue={selectedCategory}
-            options={optionsWithAll}
-            name={'category_id'}
-            onChange={setSelectedCategory}
-          />
-          <SearchInput
-            data={currentProducts}
-            searchValue="name"
-            setDateToPage={setSearchValue}
-          />
-        </div>
-        <button className={styles.addProduct} onClick={handleAddProduct}>
-          <p className={styles.text}>Adicionar Produto</p>
-          <CirclePlus />
-        </button>
-      </header>
-
+    <PageLayout
+      headerProps={{
+        title: 'Lista de produtos',
+        button: {
+          buttonLabel: 'Adicionar Produto',
+          buttonIcon: <CirclePlus />,
+          onButtonClick: handleAddProduct
+        },
+        children: (
+          <div className={styles.filterContainer}>
+            <Dropdown
+              defaultValue={selectedCategory}
+              options={optionsWithAll}
+              name={'category_id'}
+              onChange={setSelectedCategory}
+            />
+            <SearchInput
+              data={currentProducts}
+              searchValue="name"
+              setDateToPage={setSearchValue}
+            />
+          </div>
+        )
+      }}
+    >
       <DataTable columns={columns} data={searchValue} />
       <AddEditProduct isOpen={isProductModalOpen} categories={categories} />
       <ConfirmModal
@@ -149,6 +153,6 @@ export default function ProductsPage({
         onCancel={handleCancel}
         onConfirm={handleDelete}
       />
-    </div>
+    </PageLayout>
   )
 }

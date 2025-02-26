@@ -7,7 +7,7 @@ import { toast } from 'sonner'
 import { TableProps } from '@/types/table.type'
 import { getLabel, TableStatus } from '@/utils/recordStatus'
 import { useState } from 'react'
-import { getTables } from '@/services/retriveSSRData/retriveTableData'
+import PageLayout from '../components/PageLayout/pageLayout'
 
 interface Props {
   tablesData: TableProps[]
@@ -28,40 +28,39 @@ export function TableOrders({ tablesData }: Props) {
   }
 
   return (
-    <>
-      <main className={styles.container}>
-        <section className={styles.containerHeader}>
-          <h1>Messas pedidos</h1>
-          <button className={styles.button} onClick={handleRefresh}>
-            <RefreshCw size={24} color="#3fffa3" />
-          </button>
-        </section>
-
-        <section className={styles.listTables}>
-          {tables.length === 0 && (
-            <span className={styles.emptyItem}>Nenhuma mesa disponivel...</span>
-          )}
-          <div className={styles.tableList}>
-            {tables.map(table => (
-              <div
-                key={table.id}
-                className={`${styles.tableItem} ${
-                  table.status === TableStatus.AVAILABLE
-                    ? styles.available
-                    : styles.occupied
-                }`}
-                onClick={() => handleDetailTableOrders(table.id)}
-              >
-                <LayoutGrid />
-                <div>
-                  <h2>Mesa {table.number}</h2>
-                  <p>Status: {getLabel(table.status)}</p>
-                </div>
+    <PageLayout
+      headerProps={{
+        title: 'Messas pedidos',
+        button: {
+          buttonLabel: 'Atualizar',
+          buttonIcon: <RefreshCw size={24} color="#3fffa3" />,
+          onButtonClick: handleRefresh
+        }
+      }}
+    >
+      {tables[0] ? (
+        <div className={styles.tableList}>
+          {tables.map(table => (
+            <div
+              key={table.id}
+              className={`${styles.tableItem} ${
+                table.status === TableStatus.AVAILABLE
+                  ? styles.available
+                  : styles.occupied
+              }`}
+              onClick={() => handleDetailTableOrders(table.id)}
+            >
+              <LayoutGrid />
+              <div>
+                <h2>Mesa {table.number}</h2>
+                <p>Status: {getLabel(table.status)}</p>
               </div>
-            ))}
-          </div>
-        </section>
-      </main>
-    </>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <span className={styles.emptyItem}>Nenhuma mesa disponivel...</span>
+      )}
+    </PageLayout>
   )
 }

@@ -98,15 +98,15 @@ const CategoryModal: React.FC = () => {
       <section className={styles.formulary}>
         <form className={styles.form} action={handleSubmit}>
           <div className={styles.inputsConteiner}>
-              <input
-                type="name"
-                required
-                name="name"
-                disabled={onEdition}
-                defaultValue={currentCategory.name}
-                placeholder="Nome da categoria..."
-                className={styles.input}
-              />
+            <input
+              type="name"
+              required
+              name="name"
+              disabled={onEdition}
+              defaultValue={currentCategory.name}
+              placeholder="Nome da categoria..."
+              className={styles.input}
+            />
           </div>
 
           <div className={styles.modalFooter}>

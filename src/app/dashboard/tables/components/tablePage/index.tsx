@@ -12,6 +12,7 @@ import { toast } from 'sonner'
 import ConfirmModal from '@/app/dashboard/components/modals/confirm'
 import TableModal from '../tableModal/modal'
 import { getLabel, TableStatus } from '@/utils/recordStatus'
+import PageLayout from '@/app/dashboard/components/PageLayout/pageLayout'
 
 interface TablesPageProps {
   tables: TableProps[] | []
@@ -67,33 +68,40 @@ export default function TablesPage({ tables }: TablesPageProps) {
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.tableHeader}>
-        <h1>Lista de Mesas</h1>
-        <button className={styles.addTable} onClick={handleAddTable}>
-          <p className={styles.text}>Adicionar Mesa</p>
-          <LayoutGrid />
-        </button>
-      </div>
-      <div className={styles.tableList}>
-        {tables.map(table => (
-          <div
-            key={table.id}
-            className={`${styles.tableItem} ${
-              table.status === TableStatus.AVAILABLE
-                ? styles.available
-                : styles.occupied
-            }`}
-            onClick={() => handleEdit(table)}
-          >
-            <LayoutGrid />
-            <div>
-              <h2>Mesa {table.number}</h2>
-              <p>Status: {getLabel(table.status)}</p>
+    <PageLayout
+      headerProps={{
+        title: 'Lista de Mesas',
+        button: {
+          buttonLabel: 'Adicionar Mesa',
+          buttonIcon: <LayoutGrid />,
+          onButtonClick: handleAddTable
+        }
+      }}
+    >
+      {tables[0] ? (
+        <div className={styles.tableList}>
+          {tables.map(table => (
+            <div
+              key={table.id}
+              className={`${styles.tableItem} ${
+                table.status === TableStatus.AVAILABLE
+                  ? styles.available
+                  : styles.occupied
+              }`}
+              onClick={() => handleEdit(table)}
+            >
+              <LayoutGrid />
+              <div>
+                <h2>Mesa {table.number}</h2>
+                <p>Status: {getLabel(table.status)}</p>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <span className={styles.emptyItem}>Nenhuma mesa cadastrada...</span>
+      )}
+
       <TableModal />
       <ConfirmModal
         modalText={{
@@ -110,6 +118,6 @@ export default function TablesPage({ tables }: TablesPageProps) {
         onCancel={handleCancel}
         onConfirm={handleDelete}
       />
-    </div>
+    </PageLayout>
   )
 }

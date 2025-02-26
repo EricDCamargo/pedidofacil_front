@@ -3,9 +3,5 @@ import { getTables } from '@/services/retriveSSRData/retriveTableData'
 
 export default async function Tables() {
   const tables = await getTables()
-  return (
-    <>
-      <TablesPage tables={tables} />
-    </>
-  )
+  return <TablesPage tables={tables} />
 }

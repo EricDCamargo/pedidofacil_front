@@ -1,41 +1,5 @@
-.container {
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 36px;
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  position: relative;
-  color: var(--white);
-}
-.productHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 0 20px 0;
-}
-.productHeader .filterContainer {
+.filterContainer {
   display: flex;
   align-items: center;
   gap: 1rem;
-}
-
-.productHeader .addProduct {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: transform 0.2s;
-  cursor: pointer;
-  border: 0;
-  color: var(--white);
-  background: transparent;
-  .text {
-    font-size: 1.2rem;
-  }
-
-  &:hover {
-    color: var(--red-900);
-    transform: scale(1.05);
-  }
 }

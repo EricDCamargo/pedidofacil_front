@@ -1,45 +1,14 @@
-.container {
-  width: 100%;
-  margin: 20px auto;
-  padding: 0 36px;
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  color: var(--white);
-}
-
-.containerHeader {
-  display: flex;
-  align-items: center;
-  margin-bottom: 16px;
-  margin-top: 24px;
-  gap: 14px;
-
-  .button {
-    background: transparent;
-    border: 0;
-  }
-}
-
-.container .listTables {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.container .listTables .emptyItem {
+.emptyItem {
   color: var(--gray-100);
 }
 
-.container .listTables .tableList {
+.tableList {
   display: flex;
   flex-wrap: wrap;
-
   gap: 10px;
 }
 
-.container .listTables .tableList .tableItem {
+.tableList .tableItem {
   padding: 15px;
   border-radius: 8px;
   min-width: 200px;
