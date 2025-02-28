@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import styles from './styles.module.css'
-import { Button } from '../../button'
+import { Button } from '../../../../_components/button'
 
 interface ConfirmModalProps {
   isOpen: boolean

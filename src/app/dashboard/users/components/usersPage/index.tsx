@@ -3,17 +3,17 @@
 import styles from './styles.module.css'
 import { Eye, Trash2, UserRoundPlus } from 'lucide-react'
 import { UserProps, UserRole } from '@/types/user.type'
-import { newUser, UserContext } from '@/providers/user'
+import { newUser, UserContext } from '@/contexts/user'
 import { useContext } from 'react'
 import { serviceConsumer } from '@/services/service.consumer'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { TableColumn } from '@/types/dataTable.type'
 import { getLabel } from '@/utils/recordStatus'
-import DataTable from '@/app/dashboard/components/dataTable/dataTable'
-import ConfirmModal from '@/app/dashboard/components/modals/confirm'
+import DataTable from '@/app/dashboard/_components/dataTable/dataTable'
+import ConfirmModal from '@/app/dashboard/_components/modals/confirm'
 import UserModal from '../userModal/modal'
-import PageLayout from '@/app/dashboard/components/PageLayout/pageLayout'
+import PageLayout from '@/app/dashboard/_components/PageLayout/pageLayout'
 
 interface UsersPageProps {
   users: UserProps[] | []
@@ -35,7 +35,7 @@ export default function UsersPage({ users }: UsersPageProps) {
       return
     }
     try {
-      const res = await serviceConsumer('').executeDelete('/users', {
+      const res = await serviceConsumer().executeDelete('/users', {
         user_id: currentUser.id
       })
       if (res.isOk) {

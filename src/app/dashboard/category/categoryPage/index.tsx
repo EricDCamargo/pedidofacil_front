@@ -1,19 +1,18 @@
 'use client'
 
-import styles from './styles.module.css'
 import { serviceConsumer } from '@/services/service.consumer'
 import { toast } from 'sonner'
 import { CategoryProps } from '@/types/category.type'
 import { BookPlus, Eye, Trash2 } from 'lucide-react'
-import DataTable from '../../components/dataTable/dataTable'
+import DataTable from '../../_components/dataTable/dataTable'
 import { TableColumn } from '@/types/dataTable.type'
 import moment from 'moment'
 import { useContext } from 'react'
-import { CategoryContext } from '@/providers/category'
-import ConfirmModal from '../../components/modals/confirm'
+import { CategoryContext } from '@/contexts/category'
+import ConfirmModal from '../../_components/modals/confirm'
 import { useRouter } from 'next/navigation'
 import CategoryModal from '../categoryModal/modal'
-import PageLayout from '../../components/PageLayout/pageLayout'
+import PageLayout from '../../_components/PageLayout/pageLayout'
 
 interface CategoryPageProps {
   categories: CategoryProps[]
@@ -35,7 +34,7 @@ export default function CategoryPage({ categories }: CategoryPageProps) {
       return
     }
     try {
-      const res = await serviceConsumer('').executeDelete('/category', {
+      const res = await serviceConsumer().executeDelete('/category', {
         category_id: currentCategory.id
       })
       if (res.isOk) {

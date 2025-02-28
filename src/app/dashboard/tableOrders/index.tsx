@@ -7,7 +7,7 @@ import { toast } from 'sonner'
 import { TableProps } from '@/types/table.type'
 import { getLabel, TableStatus } from '@/utils/recordStatus'
 import { useState } from 'react'
-import PageLayout from '../components/PageLayout/pageLayout'
+import PageLayout from '../_components/PageLayout/pageLayout'
 
 interface Props {
   tablesData: TableProps[]

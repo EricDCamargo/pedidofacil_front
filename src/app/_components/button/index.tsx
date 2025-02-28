@@ -3,6 +3,7 @@
 import { ButtonHTMLAttributes } from 'react'
 import styles from './styles.module.css'
 import { useFormStatus } from 'react-dom'
+import { LoaderCircle } from 'lucide-react'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   type: 'button' | 'submit' | 'reset' | undefined
@@ -15,11 +16,11 @@ export function Button({ name, onClick, type, ...rest }: ButtonProps) {
     <button
       type={type}
       disabled={pending}
-      className={`${styles.button} ${styles.rest}`}
+      className={styles.button}
       onClick={onClick}
       {...rest}
     >
-      {pending ? 'Carregando...' : name}
+      {pending ? <LoaderCircle className={styles.icon} /> : name}
     </button>
   )
 }

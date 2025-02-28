@@ -11,7 +11,7 @@ import { toast } from 'sonner'
 import { serviceConsumer } from '@/services/service.consumer'
 import { StatusCodes } from 'http-status-codes'
 import { getCookieServer } from '@/lib/cookieServer'
-import { OrderContext } from '@/providers/order'
+import { OrderContext } from '@/contexts/order'
 import { getLabel, OrderStatus } from '@/utils/recordStatus'
 
 interface OrderModalProps {

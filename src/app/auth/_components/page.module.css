@@ -14,32 +14,15 @@
   justify-content: center;
   gap: 16px;
   width: 600px;
+  color: var(--white);
 
   .form {
-    color: var(--white);
     padding-bottom: 16px;
     font-size: 18px;
     display: flex;
     flex-direction: column;
     width: 90%;
     gap: 16px;
-  }
-
-  .button {
-    height: 40px;
-    font-size: 16px;
-    background-color: var(--red-900);
-    border: 0;
-    border-radius: 8px;
-    color: var(--white);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.5s;
-  }
-
-  .form .button:hover {
-    transform: scale(1.05);
   }
 }
 

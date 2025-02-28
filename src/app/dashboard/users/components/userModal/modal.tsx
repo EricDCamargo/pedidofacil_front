@@ -1,8 +1,8 @@
 import { use } from 'react'
-import AddEditModal from '../../../components/modals/addEdit'
-import { UserContext } from '@/providers/user'
+import AddEditModal from '../../../_components/modals/addEdit'
+import { UserContext } from '@/contexts/user'
 import styles from './modal.module.css'
-import Dropdown from '../../../components/dropDown'
+import Dropdown from '../../../_components/dropDown'
 import { toast } from 'sonner'
 import moment from 'moment'
 import { UserRole } from '@/types/user.type'
@@ -42,7 +42,7 @@ const UserModal: React.FC = () => {
 
     const updateUser = async () => {
       try {
-        const res = await serviceConsumer('').executePut(
+        const res = await serviceConsumer().executePut(
           '/users',
           { user_id: currentUser.id },
           { name, email, role }
@@ -64,7 +64,7 @@ const UserModal: React.FC = () => {
 
     const createUser = async () => {
       try {
-        const res = await serviceConsumer('').executePost('users', {
+        const res = await serviceConsumer().executePost('users', {
           name,
           email,
           role,

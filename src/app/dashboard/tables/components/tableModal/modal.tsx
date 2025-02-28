@@ -5,9 +5,9 @@ import moment from 'moment'
 import { serviceConsumer } from '@/services/service.consumer'
 import { useRouter } from 'next/navigation'
 import { StatusCodes } from 'http-status-codes'
-import { TableContext } from '@/providers/table'
-import AddEditModal from '@/app/dashboard/components/modals/addEdit'
-import Dropdown from '@/app/dashboard/components/dropDown'
+import { TableContext } from '@/contexts/table'
+import AddEditModal from '@/app/dashboard/_components/modals/addEdit'
+import Dropdown from '@/app/dashboard/_components/dropDown'
 import { TableStatus } from '@/utils/recordStatus'
 
 const TableModal: React.FC = () => {
@@ -34,7 +34,7 @@ const TableModal: React.FC = () => {
 
     const updateTable = async () => {
       try {
-        const res = await serviceConsumer('').executePut(
+        const res = await serviceConsumer().executePut(
           '/table/status',
           {},
           {
@@ -60,7 +60,7 @@ const TableModal: React.FC = () => {
 
     const createTable = async () => {
       try {
-        const res = await serviceConsumer('').executePost('/table', {
+        const res = await serviceConsumer().executePost('/table', {
           number: number as number
         })
 

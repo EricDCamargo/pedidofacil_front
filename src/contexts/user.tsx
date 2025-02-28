@@ -4,24 +4,21 @@ import {
   createContext,
   ReactNode,
   useState,
-  useEffect,
   Dispatch,
   SetStateAction
 } from 'react'
-import { toast } from 'sonner'
 import { UserProps, UserRole } from '@/types/user.type'
-import { serviceConsumer } from '@/services/service.consumer'
-import { getCookieClient } from '@/lib/cookieClient'
+import { getUserServer } from '@/services/retriveSSRData/retriveUserData'
 
 type UserContextData = {
   newUser: UserProps
-  loggedUser: UserProps | undefined
+  loggedUser: UserProps | null
   currentUser: UserProps
   isUserModalOpen: boolean
   isConfirmModalOpen: boolean
   onEdition: boolean
   setOnEdition: Dispatch<SetStateAction<boolean>>
-  setLoggedUser: Dispatch<SetStateAction<UserProps | undefined>>
+  setLoggedUser: Dispatch<SetStateAction<UserProps | null>>
   setcurrentUser: Dispatch<SetStateAction<UserProps>>
   setUserModalOpen: Dispatch<SetStateAction<boolean>>
   setConfirmModalOpen: Dispatch<SetStateAction<boolean>>
@@ -30,7 +27,7 @@ type UserContextData = {
 
 type UserProviderProps = {
   children: ReactNode
-  initialUser?: UserProps | null
+  initializeUser: UserProps | null
 }
 export const newUser: UserProps = {
   id: '',
@@ -43,30 +40,21 @@ export const newUser: UserProps = {
 }
 export const UserContext = createContext({} as UserContextData)
 
-export function UserProvider({ children, initialUser }: UserProviderProps) {
+export function UserProvider({ children, initializeUser }: UserProviderProps) {
   const [isUserModalOpen, setUserModalOpen] = useState<boolean>(false)
   const [isConfirmModalOpen, setConfirmModalOpen] = useState<boolean>(false)
   const [onEdition, setOnEdition] = useState<boolean>(true)
 
-  const [loggedUser, setLoggedUser] = useState<UserProps | undefined>(
-    initialUser || undefined
+  const [loggedUser, setLoggedUser] = useState<UserProps | null>(
+    initializeUser || null
   )
   const [currentUser, setcurrentUser] = useState<UserProps>(newUser)
 
   async function verifyUser(): Promise<void> {
-    const token = await getCookieClient()
-    try {
-      const res = await serviceConsumer(token).executeGet('/me')
-      setLoggedUser(res.data)
-    } catch (error) {
-      console.log(error)
-      toast.error('Você precisa estar logado para acessar essa página.')
-      setLoggedUser(undefined)
-    }
+    const user = await getUserServer()
+    setLoggedUser(user)
   }
-  useEffect(() => {
-    verifyUser()
-  }, [])
+
   return (
     <UserContext.Provider
       value={{

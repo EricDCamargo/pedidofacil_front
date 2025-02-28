@@ -1,9 +1,9 @@
 'use client'
 
 import { useEffect } from 'react'
-import { toast } from 'sonner'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { ErrorMessages } from '@/types/user.type'
+import { toast } from 'sonner'
 
 export default function ToastHandler() {
   const searchParams = useSearchParams()
@@ -30,7 +30,7 @@ export default function ToastHandler() {
 
     const newUrl = `${window.location.pathname}?${newParams.toString()}`
     router.replace(newUrl)
-  }, [searchParams])
+  }, [searchParams, router])
 
   return null
 }

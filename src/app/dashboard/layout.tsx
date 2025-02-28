@@ -1,36 +1,27 @@
-import { Header } from './components/header'
-import { OrderProvider } from '@/providers/order'
-import { PagesMenu } from './components/menu'
+import { Suspense } from 'react'
+import { Header } from './_components/header'
+import { PagesMenu } from './_components/menu'
 import styles from './layout.module.css'
-import { UserProvider } from '@/providers/user'
-import { getUserServer } from '@/services/retriveSSRData/retriveUserData'
-import { TableProvider } from '@/providers/table'
-import { ProductProvider } from '@/providers/product'
-import { CategoryProvider } from '@/providers/category'
+import AppProvider from './provider'
+import ToastHandler from '@/lib/toastHandler'
 
 export default async function DashboardLayout({
   children
 }: {
   children: React.ReactNode
 }) {
-  const user = await getUserServer()
   return (
     <main className={styles.grid}>
-      <OrderProvider>
-        <UserProvider initialUser={user}>
-          <TableProvider>
-            <ProductProvider>
-              <CategoryProvider>
-                <Header />
-                <div className={styles.content}>
-                  <PagesMenu />
-                  {children}
-                </div>
-              </CategoryProvider>
-            </ProductProvider>
-          </TableProvider>
-        </UserProvider>
-      </OrderProvider>
+      <AppProvider>
+        <Header />
+        <div className={styles.content}>
+          <PagesMenu />
+          <Suspense>
+            <ToastHandler />
+          </Suspense>
+          {children}
+        </div>
+      </AppProvider>
     </main>
   )
 }

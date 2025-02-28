@@ -2,17 +2,17 @@
 
 import styles from './styles.module.css'
 import { useContext, useEffect, useState } from 'react'
-import { OrderContext } from '@/providers/order'
+import { OrderContext } from '@/contexts/order'
 import { ArrowBigLeft, Eye, Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import OrderModal from '../../../components/modalOrder'
-import DataTable from '../../../components/dataTable/dataTable'
+import OrderModal from '../../../_components/modalOrder'
+import DataTable from '../../../_components/dataTable/dataTable'
 import { OrderProps } from '@/types/order.type'
 import { formatCurrency } from '@/utils'
 import { TableColumn } from '@/types/dataTable.type'
 import { getLabel, OrderStatus } from '@/utils/recordStatus'
-import Dropdown from '@/app/dashboard/components/dropDown'
-import { Button } from '@/app/dashboard/components/button'
+import Dropdown from '@/app/dashboard/_components/dropDown'
+import { Button } from '@/app/_components/button'
 
 interface DetailTableOrdersPage {
   orders: OrderProps[]

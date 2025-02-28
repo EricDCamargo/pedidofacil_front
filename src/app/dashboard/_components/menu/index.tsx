@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import styles from './styles.module.css'
-import { UserContext } from '@/providers/user'
+import { UserContext } from '@/contexts/user'
 import { useContext } from 'react'
 import { UserRole } from '@/types/user.type'
 import { menuItems } from '@/utils/paths'

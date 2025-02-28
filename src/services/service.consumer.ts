@@ -1,6 +1,5 @@
 import { CookieValueTypes } from 'cookies-next'
 import { debug, api } from './api'
-import { getCookieServer } from '@/lib/cookieServer'
 import { getCookieClient } from '@/lib/cookieClient'
 
 const { debugError, debugSuccess } = debug
@@ -14,7 +13,7 @@ interface ResponsePromise {
 }
 
 export const serviceConsumer = (
-  token: string | CookieValueTypes | Promise<CookieValueTypes> | null
+  token?: string | CookieValueTypes | Promise<CookieValueTypes>
 ) => ({
   //Get Method
   executeGet: async function (url: string, params?: any) {

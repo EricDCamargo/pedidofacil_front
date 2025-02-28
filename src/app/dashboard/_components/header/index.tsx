@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { deleteCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { UserContext } from '@/providers/user'
+import { UserContext } from '@/contexts/user'
 import { useContext } from 'react'
 import { LogOutIcon } from 'lucide-react'
 

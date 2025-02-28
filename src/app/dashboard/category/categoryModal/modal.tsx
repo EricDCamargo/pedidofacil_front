@@ -1,11 +1,11 @@
 import { use } from 'react'
-import AddEditModal from '../../components/modals/addEdit'
+import AddEditModal from '../../_components/modals/addEdit'
 import styles from './modal.module.css'
 import { toast } from 'sonner'
 import { serviceConsumer } from '@/services/service.consumer'
 import { useRouter } from 'next/navigation'
 import { StatusCodes } from 'http-status-codes'
-import { CategoryContext } from '@/providers/category'
+import { CategoryContext } from '@/contexts/category'
 import { getCookieServer } from '@/lib/cookieServer'
 
 const CategoryModal: React.FC = () => {

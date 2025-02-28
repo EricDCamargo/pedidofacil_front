@@ -4,15 +4,15 @@ import { useRouter } from 'next/navigation'
 import styles from './styles.module.css'
 import { TableProps } from '@/types/table.type'
 import { LayoutGrid } from 'lucide-react'
-import { TableContext } from '@/providers/table'
+import { TableContext } from '@/contexts/table'
 import { useContext } from 'react'
 import { serviceConsumer } from '@/services/service.consumer'
 import { StatusCodes } from 'http-status-codes'
 import { toast } from 'sonner'
-import ConfirmModal from '@/app/dashboard/components/modals/confirm'
+import ConfirmModal from '@/app/dashboard/_components/modals/confirm'
 import TableModal from '../tableModal/modal'
 import { getLabel, TableStatus } from '@/utils/recordStatus'
-import PageLayout from '@/app/dashboard/components/PageLayout/pageLayout'
+import PageLayout from '@/app/dashboard/_components/PageLayout/pageLayout'
 
 interface TablesPageProps {
   tables: TableProps[] | []
@@ -36,7 +36,7 @@ export default function TablesPage({ tables }: TablesPageProps) {
       return
     }
     try {
-      const res = await serviceConsumer('').executeDelete('/table', {
+      const res = await serviceConsumer().executeDelete('/table', {
         table_id: currentTable.id
       })
       if (res.isOk && res.status === StatusCodes.OK) {

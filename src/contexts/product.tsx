@@ -59,12 +59,12 @@ export function ProductProvider({ children }: ProductProviderProps) {
       const isUpdate = !!currentProduct.id
       try {
         const res = isUpdate
-          ? await serviceConsumer('').executePut(
+          ? await serviceConsumer().executePut(
               '/product',
               { product_id: currentProduct.id },
               DATA
             )
-          : await serviceConsumer('').executePost('/product', DATA)
+          : await serviceConsumer().executePost('/product', DATA)
 
         if (
           res.isOk &&
@@ -92,7 +92,7 @@ export function ProductProvider({ children }: ProductProviderProps) {
       return
     }
     try {
-      const res = await serviceConsumer('').executeDelete('/product', {
+      const res = await serviceConsumer().executeDelete('/product', {
         product_id: currentProduct.id
       })
       if (res.isOk) {

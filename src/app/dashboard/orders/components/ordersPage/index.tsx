@@ -1,8 +1,8 @@
 'use client'
 
-import DataTable from '@/app/dashboard/components/dataTable/dataTable'
-import Dropdown from '@/app/dashboard/components/dropDown'
-import OrderModal from '@/app/dashboard/components/modalOrder'
+import DataTable from '@/app/dashboard/_components/dataTable/dataTable'
+import Dropdown from '@/app/dashboard/_components/dropDown'
+import OrderModal from '@/app/dashboard/_components/modalOrder'
 import { TableColumn } from '@/types/dataTable.type'
 import { OrderProps } from '@/types/order.type'
 import { formatCurrency } from '@/utils'
@@ -10,8 +10,8 @@ import { getLabel, OrderStatus } from '@/utils/recordStatus'
 import { Eye, Trash2 } from 'lucide-react'
 import { useContext, useEffect, useState } from 'react'
 import styles from './styles.module.css'
-import { OrderContext } from '@/providers/order'
-import PageLayout from '@/app/dashboard/components/PageLayout/pageLayout'
+import { OrderContext } from '@/contexts/order'
+import PageLayout from '@/app/dashboard/_components/PageLayout/pageLayout'
 
 interface OrdersPageProps {
   orders: OrderProps[]
