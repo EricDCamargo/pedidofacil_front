@@ -8,6 +8,7 @@ import { TableProps } from '@/types/table.type'
 import { getLabel, TableStatus } from '@/utils/recordStatus'
 import { useState } from 'react'
 import PageLayout from '../_components/PageLayout/pageLayout'
+import { getTables } from '@/services/retriveSSRData/retriveTableData'
 
 interface Props {
   tablesData: TableProps[]
@@ -22,8 +23,8 @@ export function TableOrders({ tablesData }: Props) {
     router.push(`/dashboard/detailTableOrders/${table_id}`)
   }
 
-  function handleRefresh() {
-    router.refresh()
+  async function handleRefresh() {
+    setTables(await getTables())
     toast.success('Mesas atualizadas com sucesso!')
   }
 

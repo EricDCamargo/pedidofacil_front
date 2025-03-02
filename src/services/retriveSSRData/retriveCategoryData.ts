@@ -1,3 +1,5 @@
+'use server'
+
 import { getCookieServer } from '@/lib/cookieServer'
 import { serviceConsumer } from '../service.consumer'
 import { CategoryProps } from '@/types/category.type'

@@ -1,3 +1,5 @@
+'use server'
+
 import { serviceConsumer } from '../service.consumer'
 import { getCookieServer } from '@/lib/cookieServer'
 import { OrderProps } from '@/types/order.type'

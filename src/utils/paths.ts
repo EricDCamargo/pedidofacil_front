@@ -1,7 +1,16 @@
-import { MonitorDot, Logs, LayoutGrid, Menu, User } from 'lucide-react'
+import { MonitorDot, Logs, LayoutGrid, Menu, User, LucideProps } from 'lucide-react'
+import { ForwardRefExoticComponent, RefAttributes } from 'react'
 
-const menuItems = [
-  { href: '/dashboard', icon: MonitorDot, label: 'Pagina Inicial' },
+interface MenuItemsProps {
+  href: string
+  subHref?: string
+  icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>
+  label: string
+} 
+
+
+const menuItems: MenuItemsProps[] = [
+  { href: '/dashboard', subHref: '/detailTableOrders', icon: MonitorDot, label: 'Pagina Inicial' },
   { href: '/dashboard/product', icon: Logs, label: 'Gerenciar Produtos' },
   { href: '/dashboard/category', icon: Logs, label: 'Gerenciar Categorias' },
   { href: '/dashboard/tables', icon: LayoutGrid, label: 'Gerenciar Mesas' },
