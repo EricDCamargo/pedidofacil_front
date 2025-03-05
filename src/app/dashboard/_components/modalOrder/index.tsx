@@ -57,6 +57,17 @@ const OrderModal = ({ isOpen, order, onClose }: OrderModalProps) => {
       return
     }
   }
+  const handleClear = () => {
+    setPaymentModalOpen(false)
+    setPaymentMethod('')
+    setPaymentValue('')
+  }
+
+  const handleCloseModal = () => {
+    onClose()
+    handleClear()
+    setSelectedOrder(undefined)
+  }
 
   const handleDeletePayment = async (payment_id: string) => {
     try {
@@ -89,8 +100,6 @@ const OrderModal = ({ isOpen, order, onClose }: OrderModalProps) => {
       return
     }
 
-    console.log(data)
-
     try {
       const token = await getCookieServer()
       const res = await serviceConsumer(token).executePost(
@@ -99,7 +108,7 @@ const OrderModal = ({ isOpen, order, onClose }: OrderModalProps) => {
       )
       if (res.isOk && res.status === StatusCodes.OK) {
         toast.success(res.message)
-        setPaymentModalOpen(false)
+        handleClear()
         handleFetchOrder()
       } else {
         toast.error(res.message)
@@ -111,11 +120,7 @@ const OrderModal = ({ isOpen, order, onClose }: OrderModalProps) => {
       return
     }
   }
-  const handleCancel = () => {
-    setPaymentModalOpen(false)
-    setPaymentMethod('')
-    setPaymentValue('')
-  }
+
   const paymentOptions = [
     { value: '', label: 'Forma de pagamento' },
     { value: 'credit_card', label: 'Cartão de Crédito' },
@@ -157,7 +162,7 @@ const OrderModal = ({ isOpen, order, onClose }: OrderModalProps) => {
               {getLabel(order.status)}
             </div>
 
-            <button className={styles.dialogBack} onClick={onClose}>
+            <button className={styles.dialogBack} onClick={handleCloseModal}>
               <X size={40} color="#FF3f4b" />
             </button>
           </header>
@@ -256,29 +261,27 @@ const OrderModal = ({ isOpen, order, onClose }: OrderModalProps) => {
           modalText={{
             title: 'Registrar pagamento',
             message: (
-              <>
-                <div className={styles.paymentForm}>
-                  <Dropdown
-                    defaultValue={paymentMethod}
-                    options={paymentOptions}
-                    name={'paymentMethod'}
-                    onChange={setPaymentMethod}
-                  />
-                  <input
-                    type="text"
-                    name="paymentValue"
-                    value={formatCurrency(paymentValue)}
-                    onChange={handlePriceChange}
-                    required
-                    className={styles.input}
-                    placeholder="Preço do produto..."
-                  />
-                </div>
-              </>
+              <div className={styles.paymentForm}>
+                <Dropdown
+                  defaultValue={paymentMethod}
+                  options={paymentOptions}
+                  name={'paymentMethod'}
+                  onChange={setPaymentMethod}
+                />
+                <input
+                  type="text"
+                  name="paymentValue"
+                  value={formatCurrency(paymentValue)}
+                  onChange={handlePriceChange}
+                  required
+                  className={styles.input}
+                  placeholder="Vaor do pagamento..."
+                />
+              </div>
             )
           }}
           isOpen={isPaymentModalOpen}
-          onCancel={handleCancel}
+          onCancel={handleClear}
           onConfirm={handleSubmitPayment}
         />
       </dialog>

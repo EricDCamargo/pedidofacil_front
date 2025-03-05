@@ -13,14 +13,15 @@ import { TableColumn } from '@/types/dataTable.type'
 import { getLabel, OrderStatus } from '@/utils/recordStatus'
 import Dropdown from '@/app/dashboard/_components/dropDown'
 import { Button } from '@/app/_components/button'
+import { handleDetailTableOrders } from '@/services/retriveSSRData/retriveTableOrdersData'
 
 interface DetailTableOrdersPage {
-  orders: OrderProps[]
+  initialOrders: OrderProps[]
   currentTableId: string
 }
 
 export default function DetailTableOrdersPage({
-  orders,
+  initialOrders,
   currentTableId
 }: DetailTableOrdersPage) {
   const {
@@ -37,6 +38,7 @@ export default function DetailTableOrdersPage({
     router.push('/dashboard')
   }
   const [clientName, setClientName] = useState<string>('')
+  const [orders, setOrders] = useState<OrderProps[]>(initialOrders)
   const [filteredOrders, setFilteredOrders] = useState<OrderProps[]>(orders)
 
   const uniqueOrderNames = Array.from(new Set(orders.map(order => order.name)))
@@ -57,6 +59,11 @@ export default function DetailTableOrdersPage({
   const handleViewOrder = (order: OrderProps) => {
     setSelectedOrder(order)
     setOrderModalOpen(true)
+  }
+
+  const closeModal = async () => {
+    setOrderModalOpen(false)
+    setOrders(await handleDetailTableOrders(currentTableId))
   }
 
   const columns: TableColumn<OrderProps>[] = [
@@ -131,7 +138,7 @@ export default function DetailTableOrdersPage({
       <OrderModal
         isOpen={isOrderModalOpen}
         order={selectedOrder!}
-        onClose={() => setOrderModalOpen(false)}
+        onClose={closeModal}
       />
     </main>
   )

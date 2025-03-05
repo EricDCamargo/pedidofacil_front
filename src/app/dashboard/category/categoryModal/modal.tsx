@@ -1,15 +1,10 @@
 import { use } from 'react'
 import AddEditModal from '../../_components/modals/addEdit'
 import styles from './modal.module.css'
-import { toast } from 'sonner'
-import { serviceConsumer } from '@/services/service.consumer'
-import { useRouter } from 'next/navigation'
-import { StatusCodes } from 'http-status-codes'
 import { CategoryContext } from '@/contexts/category'
-import { getCookieServer } from '@/lib/cookieServer'
+import { Button } from '@/app/_components/button'
 
 const CategoryModal: React.FC = () => {
-  const router = useRouter()
   const {
     isCategoryModalOpen,
     currentCategory,
@@ -17,7 +12,8 @@ const CategoryModal: React.FC = () => {
     onEdition,
     setCategoryModalOpen,
     setCurrentCategory,
-    setOnEdition
+    setOnEdition,
+    handleCategorySubmit
   } = use(CategoryContext)
 
   const handleClose = () => {
@@ -26,59 +22,8 @@ const CategoryModal: React.FC = () => {
     setOnEdition(true)
   }
   const handleSubmit = async (formData: FormData) => {
-    const name = formData.get('name')
-
-    const token = await getCookieServer()
-
-    const updateUser = async () => {
-      try {
-        const res = await serviceConsumer(token).executePut(
-          '/category',
-          { category_id: currentCategory.id },
-          { name }
-        )
-        if (res.isOk && res.status === StatusCodes.OK) {
-          toast.success(res.message)
-          setCategoryModalOpen(false)
-          router.refresh()
-        } else {
-          toast.error(res.message)
-          setOnEdition(true)
-        }
-      } catch (err) {
-        console.error(err)
-        toast.error('Erro ao editar')
-        setOnEdition(true)
-      }
-    }
-
-    const createUser = async () => {
-      try {
-        const res = await serviceConsumer(token).executePost('category', {
-          name
-        })
-
-        if (res.isOk && res.status === StatusCodes.CREATED) {
-          toast.success(res.message)
-          setCategoryModalOpen(false)
-          router.refresh()
-        } else {
-          toast.error(res.message)
-        }
-      } catch (err) {
-        console.error(err)
-        toast.error('Erro ao cadastrar')
-        setCategoryModalOpen(false)
-        setOnEdition(true)
-      }
-    }
-
-    // DETERMINATE FORM ACTION
-    if (currentCategory.id) {
-      await updateUser()
-    } else {
-      await createUser()
-    }
+    const name = formData.get('name') as string
+    await handleCategorySubmit({ name })
   }
 
   const handleEditi = () => {
@@ -109,24 +54,13 @@ const CategoryModal: React.FC = () => {
             />
           </div>
 
-          <div className={styles.modalFooter}>
+          {!onEdition && (
             <div className={styles.buttonsContainer}>
-              {!onEdition && (
-                <>
-                  <button
-                    onClick={handleClose}
-                    type="button"
-                    className={styles.button}
-                  >
-                    Cancelar
-                  </button>
-                  <button type="submit" className={styles.button}>
-                    Salvar
-                  </button>
-                </>
-              )}
+              <Button onClick={handleClose} name="Cancelar" type="button" />
+
+              <Button name="Salvar" type="submit" />
             </div>
-          </div>
+          )}
         </form>
       </section>
     </AddEditModal>

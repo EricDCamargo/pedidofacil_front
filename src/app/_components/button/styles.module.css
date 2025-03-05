@@ -10,17 +10,19 @@
   align-items: center;
   justify-content: center;
   transition: all 0.5s;
-  width: 100%;
+  min-width: 100px;
 
-  &:hover {
+  &:hover:not([disabled]) {
     transform: scale(1.05);
+    background-color: var(--dark-900);
   }
 
   &[disabled] {
     cursor: not-allowed;
-    .icon {
-      animation: animate 2s infinite;
-    }
+    background-color: var(--dark-900);
+  }
+  .icon {
+    animation: animate 2s infinite;
   }
 }
 @keyframes animate {

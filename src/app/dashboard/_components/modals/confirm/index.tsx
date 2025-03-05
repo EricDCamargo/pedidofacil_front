@@ -19,7 +19,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
 
   return (
     <div className={styles.overlay}>
-      <div className={styles.modalContainer}>
+      <form className={styles.modalContainer} action={onConfirm}>
         <div className={styles.modalHeader}>
           <h2>{modalText.title}</h2>
         </div>
@@ -28,9 +28,9 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
         <div className={styles.modalFooter}>
           <Button name="Cancelar" type="button" onClick={onCancel} />
 
-          <Button name="Confirmar" type="submit" onClick={onConfirm} />
+          <Button name="Confirmar" type="submit" />
         </div>
-      </div>
+      </form>
     </div>
   )
 }

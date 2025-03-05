@@ -14,6 +14,9 @@ export default async function DetailTableOrders({
   const currentOrders: OrderProps[] = await handleDetailTableOrders(table_id)
 
   return (
-    <DetailTableOrdersPage orders={currentOrders} currentTableId={table_id} />
+    <DetailTableOrdersPage
+      initialOrders={currentOrders}
+      currentTableId={table_id}
+    />
   )
 }

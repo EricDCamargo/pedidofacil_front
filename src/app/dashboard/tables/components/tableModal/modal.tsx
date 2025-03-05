@@ -80,7 +80,8 @@ const TableModal: React.FC = () => {
 
           {!onEdition && (
             <div className={styles.buttonsContainer}>
-              <Button onClick={handleClose} type="button" name="Cancelar" />
+              <Button onClick={handleClose} name="Cancelar" type="button" />
+
               <Button name="Salvar" type="submit" />
             </div>
           )}

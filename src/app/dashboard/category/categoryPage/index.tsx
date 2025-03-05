@@ -1,16 +1,13 @@
 'use client'
 
-import { serviceConsumer } from '@/services/service.consumer'
-import { toast } from 'sonner'
 import { CategoryProps } from '@/types/category.type'
 import { BookPlus, Eye, Trash2 } from 'lucide-react'
 import DataTable from '../../_components/dataTable/dataTable'
 import { TableColumn } from '@/types/dataTable.type'
 import moment from 'moment'
-import { useContext } from 'react'
+import { use, useContext } from 'react'
 import { CategoryContext } from '@/contexts/category'
 import ConfirmModal from '../../_components/modals/confirm'
-import { useRouter } from 'next/navigation'
 import CategoryModal from '../categoryModal/modal'
 import PageLayout from '../../_components/PageLayout/pageLayout'
 
@@ -18,7 +15,6 @@ interface CategoryPageProps {
   categories: CategoryProps[]
 }
 export default function CategoryPage({ categories }: CategoryPageProps) {
-  const router = useRouter()
   const {
     isConfirmModalOpen,
     currentCategory,
@@ -26,28 +22,9 @@ export default function CategoryPage({ categories }: CategoryPageProps) {
     setCategoryModalOpen,
     setConfirmModalOpen,
     setCurrentCategory,
-    setOnEdition
-  } = useContext(CategoryContext)
-
-  const handleDelete = async () => {
-    if (!currentCategory.id) {
-      return
-    }
-    try {
-      const res = await serviceConsumer().executeDelete('/category', {
-        category_id: currentCategory.id
-      })
-      if (res.isOk) {
-        toast.success(res.message)
-        setConfirmModalOpen(false)
-        setCurrentCategory(newCategory)
-        router.refresh()
-      }
-    } catch (err) {
-      console.log(err)
-      toast.error('Erro ao remover categoria!')
-    }
-  }
+    setOnEdition,
+    handleCategoryDelete
+  } = use(CategoryContext)
 
   const handleCancel = () => {
     setConfirmModalOpen(false)
@@ -119,7 +96,7 @@ export default function CategoryPage({ categories }: CategoryPageProps) {
         }}
         isOpen={isConfirmModalOpen}
         onCancel={handleCancel}
-        onConfirm={handleDelete}
+        onConfirm={handleCategoryDelete}
       />
     </PageLayout>
   )

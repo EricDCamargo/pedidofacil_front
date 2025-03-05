@@ -20,7 +20,11 @@ export function Button({ name, onClick, type, ...rest }: ButtonProps) {
       onClick={onClick}
       {...rest}
     >
-      {pending ? <LoaderCircle className={styles.icon} /> : name}
+      {pending && type == 'submit' ? (
+        <LoaderCircle className={styles.icon} />
+      ) : (
+        name
+      )}
     </button>
   )
 }

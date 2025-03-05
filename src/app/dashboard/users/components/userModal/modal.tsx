@@ -6,6 +6,7 @@ import Dropdown from '../../../_components/dropDown'
 import { toast } from 'sonner'
 import moment from 'moment'
 import { UserRole } from '@/types/user.type'
+import { Button } from '@/app/_components/button'
 
 const UserModal: React.FC = () => {
   const {
@@ -120,16 +121,9 @@ const UserModal: React.FC = () => {
             <div className={styles.buttonsContainer}>
               {!onEdition && (
                 <>
-                  <button
-                    onClick={handleClose}
-                    type="button"
-                    className={styles.button}
-                  >
-                    Cancelar
-                  </button>
-                  <button type="submit" className={styles.button}>
-                    Salvar
-                  </button>
+                  <Button onClick={handleClose} name="Cancelar" type="button" />
+
+                  <Button name="Salvar" type="submit" />
                 </>
               )}
             </div>

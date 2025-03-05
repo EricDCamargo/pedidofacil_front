@@ -192,6 +192,7 @@ export function AddEditProduct({ isOpen, categories }: Props) {
               style={{ width: '100%' }}
               name="Salvar produto"
               type="submit"
+              disabled={onEdition}
             />
           </form>
         </div>
