@@ -1,4 +1,3 @@
-import ToastHandler from '@/lib/toastHandler'
 import OrdersPage from './components/ordersPage'
 import { getOrders } from '@/services/retriveSSRData/retriveTableOrdersData'
 

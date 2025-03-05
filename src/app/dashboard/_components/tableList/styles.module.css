@@ -1,7 +1,12 @@
+.emptyItem {
+  color: var(--gray-100);
+}
+
 .tableList {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  justify-content: center;
 }
 
 .tableList .tableItem {
@@ -10,11 +15,12 @@
   min-width: 200px;
   min-height: 100px;
   cursor: pointer;
+  width: calc(20% - 10px);
   display: flex;
   gap: 10px;
   color: var(--white);
+  align-self: stretch;
 }
-
 .tableItem.available {
   background: rgb(16, 150, 86);
   background: linear-gradient(
@@ -30,7 +36,6 @@
     rgba(31, 176, 106, 1) 100%
   );
 }
-
 .tableItem.occupied {
   background: rgb(140, 15, 22);
   background: linear-gradient(

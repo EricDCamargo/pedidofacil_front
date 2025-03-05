@@ -5,9 +5,6 @@ import { Eye, Trash2, UserRoundPlus } from 'lucide-react'
 import { UserProps, UserRole } from '@/types/user.type'
 import { newUser, UserContext } from '@/contexts/user'
 import { useContext } from 'react'
-import { serviceConsumer } from '@/services/service.consumer'
-import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
 import { TableColumn } from '@/types/dataTable.type'
 import { getLabel } from '@/utils/recordStatus'
 import DataTable from '@/app/dashboard/_components/dataTable/dataTable'
@@ -20,35 +17,15 @@ interface UsersPageProps {
 }
 
 export default function UsersPage({ users }: UsersPageProps) {
-  const router = useRouter()
   const {
     setUserModalOpen,
     isConfirmModalOpen,
     setConfirmModalOpen,
     setOnEdition,
     currentUser,
-    setcurrentUser
+    setcurrentUser,
+    handleDeleteUser
   } = useContext(UserContext)
-
-  const handleDelete = async () => {
-    if (!currentUser.id) {
-      return
-    }
-    try {
-      const res = await serviceConsumer().executeDelete('/users', {
-        user_id: currentUser.id
-      })
-      if (res.isOk) {
-        toast.success(res.message)
-        setConfirmModalOpen(false)
-        setcurrentUser(newUser)
-        router.refresh()
-      }
-    } catch (err) {
-      console.log(err)
-      toast.error('Erro ao remover usuario!')
-    }
-  }
 
   const handleCancel = () => {
     setConfirmModalOpen(false)
@@ -63,7 +40,7 @@ export default function UsersPage({ users }: UsersPageProps) {
     setcurrentUser(user)
     setUserModalOpen(true)
   }
-  const handleDeleteUser = (user: UserProps) => {
+  const handleDelete = (user: UserProps) => {
     setcurrentUser(user)
     setConfirmModalOpen(true)
   }
@@ -92,7 +69,7 @@ export default function UsersPage({ users }: UsersPageProps) {
           <button onClick={() => handleViewUser(row)}>
             <Eye />
           </button>
-          <button onClick={() => handleDeleteUser(row)}>
+          <button onClick={() => handleDelete(row)}>
             <Trash2 />
           </button>
         </div>
@@ -130,7 +107,7 @@ export default function UsersPage({ users }: UsersPageProps) {
         }}
         isOpen={isConfirmModalOpen}
         onCancel={handleCancel}
-        onConfirm={handleDelete}
+        onConfirm={handleDeleteUser}
       />
       <UserModal />
     </PageLayout>

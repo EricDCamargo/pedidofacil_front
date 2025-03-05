@@ -1,14 +1,13 @@
 'use client'
 
-import styles from './styles.module.css'
-import { LayoutGrid, RefreshCw } from 'lucide-react'
+import { RefreshCw } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { TableProps } from '@/types/table.type'
-import { getLabel, TableStatus } from '@/utils/recordStatus'
 import { useState } from 'react'
 import PageLayout from '../_components/PageLayout/pageLayout'
 import { getTables } from '@/services/retriveSSRData/retriveTableData'
+import { TableList } from '../_components/tableList/TableList'
 
 interface Props {
   tablesData: TableProps[]
@@ -19,8 +18,8 @@ export function TableOrders({ tablesData }: Props) {
 
   const [tables, setTables] = useState<TableProps[]>(tablesData)
 
-  const handleDetailTableOrders = (table_id: string) => {
-    router.push(`/dashboard/detailTableOrders/${table_id}`)
+  const handleDetailTableOrders = (table: TableProps) => {
+    router.push(`/dashboard/detailTableOrders/${table.id}`)
   }
 
   async function handleRefresh() {
@@ -39,29 +38,7 @@ export function TableOrders({ tablesData }: Props) {
         }
       }}
     >
-      {tables[0] ? (
-        <div className={styles.tableList}>
-          {tables.map(table => (
-            <div
-              key={table.id}
-              className={`${styles.tableItem} ${
-                table.status === TableStatus.AVAILABLE
-                  ? styles.available
-                  : styles.occupied
-              }`}
-              onClick={() => handleDetailTableOrders(table.id)}
-            >
-              <LayoutGrid />
-              <div>
-                <h2>Mesa {table.number}</h2>
-                <p>Status: {getLabel(table.status)}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <span className={styles.emptyItem}>Nenhuma mesa disponivel...</span>
-      )}
+      <TableList tables={tables} onTableClick={handleDetailTableOrders} />
     </PageLayout>
   )
 }

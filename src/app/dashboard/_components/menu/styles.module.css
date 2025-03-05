@@ -22,6 +22,10 @@
     color: var(--red-900);
     transform: scale(1.1);
   }
+
+  @media (max-width: 1024px) {
+    display: none;
+  }
 }
 .active {
   color: var(--red-900);

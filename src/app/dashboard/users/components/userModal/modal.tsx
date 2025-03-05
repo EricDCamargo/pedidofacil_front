@@ -6,12 +6,8 @@ import Dropdown from '../../../_components/dropDown'
 import { toast } from 'sonner'
 import moment from 'moment'
 import { UserRole } from '@/types/user.type'
-import { serviceConsumer } from '@/services/service.consumer'
-import { useRouter } from 'next/navigation'
-import { StatusCodes } from 'http-status-codes'
 
 const UserModal: React.FC = () => {
-  const router = useRouter()
   const {
     isUserModalOpen,
     currentUser,
@@ -20,7 +16,8 @@ const UserModal: React.FC = () => {
     loggedUser,
     setUserModalOpen,
     setcurrentUser,
-    setOnEdition
+    setOnEdition,
+    handleUserSubmit
   } = use(UserContext)
 
   const handleClose = () => {
@@ -29,10 +26,10 @@ const UserModal: React.FC = () => {
     setOnEdition(true)
   }
   const handleSubmit = async (formData: FormData) => {
-    const name = formData.get('name')
-    const email = formData.get('email')
+    const name = formData.get('name') as string
+    const email = formData.get('email') as string
     const role = formData.get('role') as UserRole
-    const password = formData.get('password')
+    const password = formData.get('password') as string
 
     if (currentUser.id === loggedUser?.id && role !== loggedUser.role) {
       toast.error('Você não pode alterar o seu próprio tipo de usuário!')
@@ -40,58 +37,7 @@ const UserModal: React.FC = () => {
       return
     }
 
-    const updateUser = async () => {
-      try {
-        const res = await serviceConsumer().executePut(
-          '/users',
-          { user_id: currentUser.id },
-          { name, email, role }
-        )
-        if (res.isOk && res.status === StatusCodes.OK) {
-          toast.success(res.message)
-          setUserModalOpen(false)
-          router.refresh()
-        } else {
-          toast.error(res.message)
-          setOnEdition(true)
-        }
-      } catch (err) {
-        console.error(err)
-        toast.error('Erro ao editar')
-        setOnEdition(true)
-      }
-    }
-
-    const createUser = async () => {
-      try {
-        const res = await serviceConsumer().executePost('users', {
-          name,
-          email,
-          role,
-          password
-        })
-
-        if (res.isOk && res.status === StatusCodes.CREATED) {
-          toast.success(res.message)
-          setUserModalOpen(false)
-          router.refresh()
-        } else {
-          toast.error(res.message)
-        }
-      } catch (err) {
-        console.error(err)
-        toast.error('Erro ao cadastrar')
-        setUserModalOpen(false)
-        setOnEdition(true)
-      }
-    }
-
-    // DETERMINATE FORM ACTION
-    if (currentUser.id) {
-      await updateUser()
-    } else {
-      await createUser()
-    }
+    await handleUserSubmit({ name, email, role, password })
   }
 
   const handleEditi = () => {

@@ -1,14 +1,20 @@
 'use client'
 
+import { serviceConsumer } from '@/services/service.consumer'
+import { UserProps, UserRole } from '@/types/user.type'
+import { menuItems, MenuItemsProps } from '@/utils/paths'
+import { deleteCookie } from 'cookies-next'
+import { StatusCodes } from 'http-status-codes'
+import { usePathname, useRouter } from 'next/navigation'
 import {
   createContext,
   ReactNode,
   useState,
   Dispatch,
-  SetStateAction
+  SetStateAction,
+  useCallback
 } from 'react'
-import { UserProps, UserRole } from '@/types/user.type'
-import { getUserServer } from '@/services/retriveSSRData/retriveUserData'
+import { toast } from 'sonner'
 
 type UserContextData = {
   newUser: UserProps
@@ -17,17 +23,27 @@ type UserContextData = {
   isUserModalOpen: boolean
   isConfirmModalOpen: boolean
   onEdition: boolean
+  filteredMenuItems: MenuItemsProps[]
+
   setOnEdition: Dispatch<SetStateAction<boolean>>
   setLoggedUser: Dispatch<SetStateAction<UserProps | null>>
   setcurrentUser: Dispatch<SetStateAction<UserProps>>
   setUserModalOpen: Dispatch<SetStateAction<boolean>>
   setConfirmModalOpen: Dispatch<SetStateAction<boolean>>
-  verifyUser: () => Promise<void>
+  handleLogout(): Promise<void>
+  determinatesActiveLink: (href: string, subHref: string | undefined) => boolean
+  handleDeleteUser: () => Promise<void>
+  handleUserSubmit: (DATA: {
+    name: string
+    email: string
+    role: UserRole
+    password?: string
+  }) => Promise<void>
 }
 
 type UserProviderProps = {
   children: ReactNode
-  initializeUser: UserProps | null
+  sessionUser: UserProps | null
 }
 export const newUser: UserProps = {
   id: '',
@@ -40,19 +56,94 @@ export const newUser: UserProps = {
 }
 export const UserContext = createContext({} as UserContextData)
 
-export function UserProvider({ children, initializeUser }: UserProviderProps) {
+export function UserProvider({ children, sessionUser }: UserProviderProps) {
+  const router = useRouter()
+  const pathname = usePathname()
   const [isUserModalOpen, setUserModalOpen] = useState<boolean>(false)
   const [isConfirmModalOpen, setConfirmModalOpen] = useState<boolean>(false)
   const [onEdition, setOnEdition] = useState<boolean>(true)
 
-  const [loggedUser, setLoggedUser] = useState<UserProps | null>(
-    initializeUser || null
-  )
+  const [loggedUser, setLoggedUser] = useState<UserProps | null>(sessionUser)
   const [currentUser, setcurrentUser] = useState<UserProps>(newUser)
 
-  async function verifyUser(): Promise<void> {
-    const user = await getUserServer()
-    setLoggedUser(user)
+  async function handleLogout() {
+    deleteCookie('session', { path: '/' })
+    router.replace('/')
+    toast.success('Logout feito com sucesso!')
+  }
+
+  const filteredMenuItems =
+    loggedUser?.role === UserRole.USER
+      ? menuItems.filter(({ href }) =>
+          ['/dashboard', '/dashboard/order'].includes(href)
+        )
+      : menuItems
+
+  const determinatesActiveLink = (
+    href: string,
+    subHref: string | undefined
+  ) => {
+    if (pathname === href || (subHref && pathname.includes(subHref))) {
+      return true
+    }
+    return false
+  }
+
+  const handleUserSubmit = useCallback(
+    async (DATA: {
+      name: string
+      email: string
+      role: UserRole
+      password?: string
+    }) => {
+      const isUpdate = !!currentUser.id
+      try {
+        const res = isUpdate
+          ? await serviceConsumer().executePut(
+              '/users',
+              { user_id: currentUser.id },
+              DATA
+            )
+          : await serviceConsumer().executePost('users', DATA)
+        if (
+          res.isOk &&
+          (res.status === StatusCodes.CREATED || res.status === StatusCodes.OK)
+        ) {
+          toast.success(res.message)
+          setUserModalOpen(false)
+          setcurrentUser(newUser)
+          setOnEdition(true)
+          router.refresh()
+        } else {
+          toast.error(res.message)
+        }
+      } catch (err) {
+        console.error(err)
+        toast.error(`Erro ao ${isUpdate ? 'editar' : 'cadastrar'} usuario!`)
+        setOnEdition(true)
+      }
+    },
+    [currentUser]
+  )
+
+  const handleDeleteUser = async () => {
+    if (!currentUser.id) {
+      return
+    }
+    try {
+      const res = await serviceConsumer().executeDelete('/users', {
+        user_id: currentUser.id
+      })
+      if (res.isOk) {
+        toast.success(res.message)
+        setConfirmModalOpen(false)
+        setcurrentUser(newUser)
+        router.refresh()
+      }
+    } catch (err) {
+      console.log(err)
+      toast.error('Erro ao remover usuario!')
+    }
   }
 
   return (
@@ -64,12 +155,16 @@ export function UserProvider({ children, initializeUser }: UserProviderProps) {
         isUserModalOpen,
         onEdition,
         isConfirmModalOpen,
+        filteredMenuItems,
         setConfirmModalOpen,
         setOnEdition,
         setUserModalOpen,
         setcurrentUser,
         setLoggedUser,
-        verifyUser
+        handleLogout,
+        determinatesActiveLink,
+        handleDeleteUser,
+        handleUserSubmit
       }}
     >
       {children}
