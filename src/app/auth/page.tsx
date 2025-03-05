@@ -1,7 +1,10 @@
-import SignInPage from './signin/SignInPage.tsx'
+import AuthLayout from './layout'
+import SignIn from './signin/page'
 
-const AuthHome: React.FC = () => {
-  return <SignInPage />
+export default function AuthHome() {
+  return (
+    <AuthLayout>
+      <SignIn />
+    </AuthLayout>
+  )
 }
-
-export default AuthHome
