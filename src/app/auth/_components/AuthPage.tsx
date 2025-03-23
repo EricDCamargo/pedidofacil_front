@@ -22,7 +22,13 @@ const AuthPage: React.FC<AuthPageProps> & AuthPageSubcomponents = ({
 }) => {
   return (
     <div className={styles.containerCenter}>
-      <Image src="/logo.svg" alt="Pedido Facil" width={180} height={38} />
+      <Image
+        className={styles.logo}
+        src="/logo.svg"
+        alt="Pedido Facil"
+        width={360}
+        height={76}
+      />
       <section className={styles.login}>{children}</section>
     </div>
   )
