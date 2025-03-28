@@ -38,6 +38,7 @@ const TableModal: React.FC = () => {
   const handleDelete = () => {
     setConfirmModalOpen(true)
   }
+
   return (
     <AddEditModal
       isOpen={isTableModalOpen}
@@ -47,8 +48,8 @@ const TableModal: React.FC = () => {
           : 'Adicionar Mesa'
       }
       onCancel={handleClose}
-      enableEdition={handleEditi}
-      onDelete={handleDelete}
+      enableEdition={currentTable.id ? handleEditi : undefined}
+      onDelete={currentTable.id ? handleDelete: undefined}
     >
       <section className={styles.formulary}>
         <form className={styles.form} action={handleSubmit}>

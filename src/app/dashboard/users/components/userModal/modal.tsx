@@ -51,7 +51,7 @@ const UserModal: React.FC = () => {
         currentUser.id ? `Editar ${currentUser.name}` : 'Adicionar Usuario'
       }
       onCancel={handleClose}
-      enableEdition={handleEditi}
+      enableEdition={currentUser.id ? handleEditi : undefined}
     >
       <section className={styles.formulary}>
         <form className={styles.form} action={handleSubmit}>

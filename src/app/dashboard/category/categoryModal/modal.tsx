@@ -38,7 +38,7 @@ const CategoryModal: React.FC = () => {
           : 'Adicionar Categoria'
       }
       onCancel={handleClose}
-      enableEdition={handleEditi}
+      enableEdition={currentCategory.id ? handleEditi : undefined}
     >
       <section className={styles.formulary}>
         <form className={styles.form} action={handleSubmit}>
