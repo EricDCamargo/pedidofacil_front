@@ -11,8 +11,3 @@ export enum UserRole {
   ADMIN = 'ADMIN',
   USER = 'USER'
 }
-export enum ErrorMessages {
-  TOKEN_EXPIRED = 'token-expired',
-  SERVICE_UNAVAILABLE = 'service-unavailable',
-  UNAUTHORIZED = 'unauthorized'
-}

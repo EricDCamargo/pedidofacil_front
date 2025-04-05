@@ -2,8 +2,8 @@
 
 import { useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { ErrorMessages } from '@/types/user.type'
 import { toast } from 'sonner'
+import { ErrorMessages } from '@/services/errors/AuthTokenErorr'
 
 export default function ToastHandler() {
   const searchParams = useSearchParams()

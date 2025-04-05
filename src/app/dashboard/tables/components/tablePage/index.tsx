@@ -53,13 +53,7 @@ export default function TablesPage({ tables }: TablesPageProps) {
       <ConfirmModal
         modalText={{
           title: 'Remover mesa ' + currentTable.number,
-          message: (
-            <>
-              Tem certeza quer remover a mesa? <br />
-              <br />
-              {currentTable.status}
-            </>
-          )
+          message: 'Tem certeza quer remover a mesa?'
         }}
         isOpen={isConfirmModalOpen}
         onCancel={handleCancel}

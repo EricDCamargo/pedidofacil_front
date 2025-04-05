@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getCookieServer } from '@/lib/cookieServer'
-import { ErrorMessages, UserRole } from './types/user.type'
+import { UserRole } from './types/user.type'
 import { getUserServer } from './services/retriveSSRData/retriveUserData'
+import { ErrorMessages } from './services/errors/AuthTokenErorr'
 
 const protectedRoutesForUser = [
   '/dashboard/product',
