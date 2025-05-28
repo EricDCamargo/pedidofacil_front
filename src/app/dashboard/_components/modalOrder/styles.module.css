@@ -94,7 +94,7 @@
   .printer {
     color: var(--gray-100);
   }
-  svg {
+  .close {
     color: var(--red-900);
   }
 }

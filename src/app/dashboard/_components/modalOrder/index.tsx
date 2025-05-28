@@ -170,7 +170,7 @@ const OrderModal = ({ isOpen, order, onClose }: OrderModalProps) => {
               <Printer size={30} className={styles.printer} />
             </button>
             <button className={styles.dialogBack} onClick={handleCloseModal}>
-              <X size={40} />
+              <X size={40} className={styles.close} />
             </button>
           </header>
           <section className={styles.body}>
