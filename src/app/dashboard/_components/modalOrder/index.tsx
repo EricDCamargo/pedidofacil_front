@@ -1,7 +1,7 @@
 'use client'
 
 import styles from './styles.module.css'
-import { Trash2, X } from 'lucide-react'
+import { Trash2, X, Printer } from 'lucide-react'
 import { ChangeEvent, useContext, useMemo, useState } from 'react'
 import { OrderProps } from '@/types/order.type'
 import { formatCurrency } from '@/utils'
@@ -25,7 +25,8 @@ const OrderModal = ({ isOpen, order, onClose }: OrderModalProps) => {
   const [paymentMethod, setPaymentMethod] = useState<string>('')
   const [paymentValue, setPaymentValue] = useState<string>('')
 
-  const { setSelectedOrder } = useContext(OrderContext)
+  const { setSelectedOrder, handlePrintOrderToCkitchen } =
+    useContext(OrderContext)
 
   const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value.replace(/\D/g, '')
@@ -162,8 +163,14 @@ const OrderModal = ({ isOpen, order, onClose }: OrderModalProps) => {
               {getLabel(order.status)}
             </div>
 
+            <button
+              className={styles.dialogBack}
+              onClick={() => handlePrintOrderToCkitchen(order.id)}
+            >
+              <Printer size={30} className={styles.printer} />
+            </button>
             <button className={styles.dialogBack} onClick={handleCloseModal}>
-              <X size={40} color="#FF3f4b" />
+              <X size={40} />
             </button>
           </header>
           <section className={styles.body}>

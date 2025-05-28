@@ -21,8 +21,12 @@ export const serviceConsumer = (
   },
 
   //Post Method
-  executePost: async function (url: string, body: FormData | any | Array<any>) {
-    return await this.executeService(token, 'POST', url, '', body)
+  executePost: async function (
+    url: string,
+    body: FormData | any | Array<any>,
+    params?: any
+  ) {
+    return await this.executeService(token, 'POST', url, params, body)
   },
 
   //Put Method

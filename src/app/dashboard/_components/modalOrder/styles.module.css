@@ -91,6 +91,12 @@
 .dialogBack {
   background-color: transparent;
   border: 0;
+  .printer {
+    color: var(--gray-100);
+  }
+  svg {
+    color: var(--red-900);
+  }
 }
 
 .item {

@@ -21,6 +21,7 @@ type OrderContextData = {
   setOrderModalOpen: Dispatch<SetStateAction<boolean>>
   handleDeleteOrder: (order: OrderProps) => Promise<void>
   handleCloseBill: (table_id: string) => Promise<void>
+  handlePrintOrderToCkitchen: (order_id: string) => Promise<void>
 }
 
 type OrderProviderProps = {
@@ -40,8 +41,6 @@ export function OrderProvider({ children }: OrderProviderProps) {
       const res = await serviceConsumer(token).executePut('/table/close', {
         table_id
       })
-      console.log(res)
-
       if (res.isOk && res.status === StatusCodes.OK) {
         toast.success(res.message)
         router.push('/dashboard')
@@ -74,6 +73,27 @@ export function OrderProvider({ children }: OrderProviderProps) {
       return
     }
   }
+  const handlePrintOrderToCkitchen = async (order_id: string) => {
+    try {
+      const token = await getCookieServer()
+      const res = await serviceConsumer(token).executePost(
+        '/printer/order',
+        {},
+        {
+          order_id
+        }
+      )
+      if (res.isOk && res.status === StatusCodes.OK) {
+        toast.success(res.message)
+      } else {
+        toast.error(res.message)
+        return
+      }
+    } catch (error) {
+      console.error('Error printing order:', error)
+      return
+    }
+  }
 
   return (
     <OrderContext.Provider
@@ -83,7 +103,8 @@ export function OrderProvider({ children }: OrderProviderProps) {
         setSelectedOrder,
         setOrderModalOpen,
         handleDeleteOrder,
-        handleCloseBill
+        handleCloseBill,
+        handlePrintOrderToCkitchen
       }}
     >
       {children}
