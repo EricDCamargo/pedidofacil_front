@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   frontend:
     container_name: pedidofacil_frontend
@@ -10,9 +8,9 @@ services:
       - '3000:3000'
     env_file: .env
     networks:
-      - pedidofacilapi_default
+      - pedidofacil_default
     restart: unless-stopped
 
 networks:
-  pedidofacilapi_default:
+  pedidofacil_default:
     external: true
