@@ -22,6 +22,7 @@ type OrderContextData = {
   handleDeleteOrder: (order: OrderProps) => Promise<void>
   handleCloseBill: (table_id: string) => Promise<void>
   handlePrintOrderToCkitchen: (order_id: string) => Promise<void>
+  fetchTableOrders: (table_id?: string) => Promise<OrderProps[] | []>
 }
 
 type OrderProviderProps = {
@@ -34,6 +35,20 @@ export function OrderProvider({ children }: OrderProviderProps) {
   const [selectedOrder, setSelectedOrder] = useState<OrderProps>() // selected order by current table
   const [isOrderModalOpen, setOrderModalOpen] = useState(false)
   const router = useRouter()
+
+  const fetchTableOrders = async (
+    table_id?: string
+  ): Promise<OrderProps[] | []> => {
+    try {
+      const response = await serviceConsumer().executeGet('/orders', {
+        table_id
+      })
+      return response.data || []
+    } catch (err) {
+      console.log(err)
+      return []
+    }
+  }
 
   const handleCloseBill = async (table_id: string) => {
     try {
@@ -104,7 +119,8 @@ export function OrderProvider({ children }: OrderProviderProps) {
         setOrderModalOpen,
         handleDeleteOrder,
         handleCloseBill,
-        handlePrintOrderToCkitchen
+        handlePrintOrderToCkitchen,
+        fetchTableOrders
       }}
     >
       {children}

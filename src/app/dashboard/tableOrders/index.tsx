@@ -8,6 +8,7 @@ import { useState } from 'react'
 import PageLayout from '../_components/PageLayout/pageLayout'
 import { getTables } from '@/services/retriveSSRData/retriveTableData'
 import { TableList } from '../_components/tableList/TableList'
+import { socket, SocketEvents } from '@/socket'
 
 interface Props {
   tablesData: TableProps[]
@@ -17,6 +18,10 @@ export function TableOrders({ tablesData }: Props) {
   const router = useRouter()
 
   const [tables, setTables] = useState<TableProps[]>(tablesData)
+
+  socket.on(SocketEvents.TABLE_STATUS_CHANGED, async () =>
+    setTables(await getTables())
+  )
 
   const handleDetailTableOrders = (table: TableProps) => {
     router.push(`/dashboard/detailTableOrders/${table.id}`)

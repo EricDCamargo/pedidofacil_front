@@ -14,6 +14,8 @@ import { getLabel, OrderStatus } from '@/utils/recordStatus'
 import Dropdown from '@/app/dashboard/_components/dropDown'
 import { Button } from '@/app/_components/button'
 import { handleDetailTableOrders } from '@/services/retriveSSRData/retriveTableOrdersData'
+import { socket, SocketEvents } from '@/socket'
+import { serviceConsumer } from '@/services/service.consumer'
 
 interface DetailTableOrdersPage {
   initialOrders: OrderProps[]
@@ -30,7 +32,8 @@ export default function DetailTableOrdersPage({
     setOrderModalOpen,
     setSelectedOrder,
     handleDeleteOrder,
-    handleCloseBill
+    handleCloseBill,
+    fetchTableOrders
   } = useContext(OrderContext)
   const router = useRouter()
 
@@ -40,6 +43,21 @@ export default function DetailTableOrdersPage({
   const [clientName, setClientName] = useState<string>('')
   const [orders, setOrders] = useState<OrderProps[]>(initialOrders)
   const [filteredOrders, setFilteredOrders] = useState<OrderProps[]>(orders)
+
+  useEffect(() => {
+    const onOrderChanged = async (payload: any) => {
+      if (!payload) return
+      const { table_id } = payload
+      if (table_id && table_id !== currentTableId) return
+      setOrders(await fetchTableOrders(currentTableId))
+    }
+
+    socket.on(SocketEvents.ORDER_CHANGED, onOrderChanged)
+
+    return () => {
+      socket.off(SocketEvents.ORDER_CHANGED, onOrderChanged)
+    }
+  }, [])
 
   const uniqueOrderNames = Array.from(new Set(orders.map(order => order.name)))
 

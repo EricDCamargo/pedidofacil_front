@@ -12,21 +12,36 @@ import { useContext, useEffect, useState } from 'react'
 import styles from './styles.module.css'
 import { OrderContext } from '@/contexts/order'
 import PageLayout from '@/app/dashboard/_components/PageLayout/pageLayout'
+import { socket, SocketEvents } from '@/socket'
 
 interface OrdersPageProps {
-  orders: OrderProps[]
+  initialOrders: OrderProps[]
 }
 
-export default function OrdersPage({ orders }: OrdersPageProps) {
+export default function OrdersPage({ initialOrders }: OrdersPageProps) {
   const {
     isOrderModalOpen,
     selectedOrder,
     setOrderModalOpen,
     setSelectedOrder,
-    handleDeleteOrder
+    handleDeleteOrder,
+    fetchTableOrders
   } = useContext(OrderContext)
   const [clientName, setClientName] = useState<string>('')
+  const [orders, setOrders] = useState<OrderProps[]>(initialOrders)
   const [filteredOrders, setFilteredOrders] = useState<OrderProps[]>(orders)
+
+  useEffect(() => {
+    const onOrderChanged = async () => {
+      setOrders(await fetchTableOrders())
+    }
+
+    socket.on(SocketEvents.ORDER_CHANGED, onOrderChanged)
+
+    return () => {
+      socket.off(SocketEvents.ORDER_CHANGED, onOrderChanged)
+    }
+  }, [])
 
   const uniqueOrderNames = Array.from(new Set(orders.map(order => order.name)))
 

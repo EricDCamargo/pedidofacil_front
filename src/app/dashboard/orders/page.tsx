@@ -3,5 +3,5 @@ import { getOrders } from '@/services/retriveSSRData/retriveTableOrdersData'
 
 export default async function Orders() {
   const orders = await getOrders()
-  return <OrdersPage orders={orders} />
+  return <OrdersPage initialOrders={orders} />
 }
