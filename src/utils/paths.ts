@@ -28,7 +28,8 @@ const menuItems: MenuItemsProps[] = [
   { href: '/dashboard/category', icon: Logs, label: 'Gerenciar Categorias' },
   { href: '/dashboard/tables', icon: LayoutGrid, label: 'Gerenciar Mesas' },
   { href: '/dashboard/orders', icon: Menu, label: 'Gerenciar Pedidos' },
-  { href: '/dashboard/users', icon: User, label: 'Gerenciar Usuarios' }
+  { href: '/dashboard/users', icon: User, label: 'Gerenciar Usuarios' },
+  { href: '/dashboard/logs', icon: Logs, label: 'Visualizar Logs' }
 ]
 
 export { menuItems }

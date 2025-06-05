@@ -24,9 +24,11 @@ type UserContextData = {
   isConfirmModalOpen: boolean
   onEdition: boolean
   filteredMenuItems: MenuItemsProps[]
+  selectedUser: string
 
   setOnEdition: Dispatch<SetStateAction<boolean>>
   setLoggedUser: Dispatch<SetStateAction<UserProps | null>>
+  setSelectedUser: Dispatch<SetStateAction<string>>
   setcurrentUser: Dispatch<SetStateAction<UserProps>>
   setUserModalOpen: Dispatch<SetStateAction<boolean>>
   setConfirmModalOpen: Dispatch<SetStateAction<boolean>>
@@ -65,6 +67,8 @@ export function UserProvider({ children, sessionUser }: UserProviderProps) {
 
   const [loggedUser, setLoggedUser] = useState<UserProps | null>(sessionUser)
   const [currentUser, setcurrentUser] = useState<UserProps>(newUser)
+
+  const [selectedUser, setSelectedUser] = useState<string>('')
 
   async function handleLogout() {
     deleteCookie('session', { path: '/' })
@@ -156,6 +160,7 @@ export function UserProvider({ children, sessionUser }: UserProviderProps) {
         onEdition,
         isConfirmModalOpen,
         filteredMenuItems,
+        selectedUser,
         setConfirmModalOpen,
         setOnEdition,
         setUserModalOpen,
@@ -164,7 +169,8 @@ export function UserProvider({ children, sessionUser }: UserProviderProps) {
         handleLogout,
         determinatesActiveLink,
         handleDeleteUser,
-        handleUserSubmit
+        handleUserSubmit,
+        setSelectedUser
       }}
     >
       {children}

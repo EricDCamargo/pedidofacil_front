@@ -1,4 +1,5 @@
 import { CategoryProps } from '@/types/category.type'
+import { UserProps } from '@/types/user.type'
 import { ChangeEvent } from 'react'
 
 const handleChange = <T extends Record<string, any>>(
@@ -22,6 +23,13 @@ const getCategoryOptions = (categories: CategoryProps[]) => {
   return categoryOptions
 }
 
+const getUserOptions = (users: UserProps[]) => {
+  return users.map(user => ({
+    label: user.name,
+    value: user.id
+  }))
+}
+
 const formatPrice = (value: FormDataEntryValue | null | number) => {
   if (!value) return ''
   const num = Number(value.toString().replace(/\D/g, '')) / 100
@@ -43,4 +51,10 @@ const formatCurrency = (value: string | number) => {
   })
 }
 
-export { handleChange, formatPrice, formatCurrency, getCategoryOptions }
+export {
+  handleChange,
+  formatPrice,
+  formatCurrency,
+  getCategoryOptions,
+  getUserOptions
+}
