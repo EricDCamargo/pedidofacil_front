@@ -93,8 +93,8 @@ const UserModal: React.FC = () => {
                 defaultValue={currentUser.role}
                 name="role"
                 options={[
-                  { label: 'User', value: UserRole.USER },
-                  { label: 'Admin', value: UserRole.ADMIN }
+                  { label: 'Usuário', value: UserRole.USER },
+                  { label: 'Administrador', value: UserRole.ADMIN }
                 ]}
                 width="100%"
               />
