@@ -4,7 +4,7 @@ import { RefreshCw } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { TableProps } from '@/types/table.type'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import PageLayout from '../_components/PageLayout/pageLayout'
 import { getTables } from '@/services/retriveSSRData/retriveTableData'
 import { TableList } from '../_components/tableList/TableList'
@@ -19,9 +19,15 @@ export function TableOrders({ tablesData }: Props) {
 
   const [tables, setTables] = useState<TableProps[]>(tablesData)
 
-  socket.on(SocketEvents.TABLE_STATUS_CHANGED, async () =>
-    setTables(await getTables())
-  )
+  useEffect(() => {
+    const updateTables = async () => {
+      setTables(await getTables())
+    }
+    socket.on(SocketEvents.TABLE_STATUS_CHANGED, updateTables)
+    return () => {
+      socket.off(SocketEvents.TABLE_STATUS_CHANGED, updateTables)
+    }
+  }, [])
 
   const handleDetailTableOrders = (table: TableProps) => {
     router.push(`/dashboard/detailTableOrders/${table.id}`)

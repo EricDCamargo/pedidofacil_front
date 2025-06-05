@@ -5,13 +5,14 @@ import PageLayout from '../../_components/PageLayout/pageLayout'
 import { TableColumn } from '@/types/dataTable.type'
 import DataTable from '../../_components/dataTable/dataTable'
 import { UserProps } from '@/types/user.type'
-import { useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { UserContext } from '@/contexts/user'
 import { getUserOptions } from '@/utils'
 import Dropdown from '../../_components/dropDown'
 import { getLogs } from '@/services/retriveSSRData/retriveLogData'
 import { DateInput } from '../../_components/dateInput/dateInput'
 import { Search } from 'lucide-react'
+import { socket, SocketEvents } from '@/socket'
 
 interface LogsPageProps {
   initialLogs: LogProps[]
@@ -25,14 +26,25 @@ export default function LogsPage({ initialLogs, users }: LogsPageProps) {
   const [startDate, setStartDate] = useState<string>('')
   const [endDate, setEndDate] = useState<string>('')
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     const NewUsersList = await getLogs({
       user_id: selectedUser,
       startDate: startDate || undefined,
       endDate: endDate || undefined
     })
     setCurrentLogs(NewUsersList)
-  }
+  }, [selectedUser, startDate, endDate])
+
+  useEffect(() => {
+    const onLogCreated = () => {
+      fetchUsers()
+    }
+
+    socket.on(SocketEvents.LOG_CREATED, onLogCreated)
+    return () => {
+      socket.off(SocketEvents.LOG_CREATED, onLogCreated)
+    }
+  }, [fetchUsers])
 
   const optionsWithAll = [
     { label: 'Todos', value: '' },
